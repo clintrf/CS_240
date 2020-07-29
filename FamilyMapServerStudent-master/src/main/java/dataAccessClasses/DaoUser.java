@@ -63,7 +63,7 @@ public class DaoUser {
                 " person_id" +
                 ")" +
                 " values (?,?,?,?,?,?,?);";
-        try(PreparedStatement stmt = this.conn.prepareStatement(sql)){
+        try(PreparedStatement stmt = conn.prepareStatement(sql)){
             stmt.setString(1, user.getUserName());
             stmt.setString(2, user.getPassword());
             stmt.setString(3, user.getEmail());

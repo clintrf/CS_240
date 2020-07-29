@@ -1,5 +1,10 @@
 package databaseClasses;
 
+import dataAccessClasses.DaoAuthToken;
+import dataAccessClasses.DaoEvent;
+import dataAccessClasses.DaoPerson;
+import dataAccessClasses.DaoUser;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -8,6 +13,10 @@ import java.sql.Statement;
 public class DatabaseDatabase {
 
     private Connection conn;
+    private DaoAuthToken tokenDao ;
+    private DaoPerson personDao ;
+    private DaoUser userDao;
+    private DaoEvent eventsDao ;
 
     static {
         // Name of class that implements database driver
@@ -20,7 +29,36 @@ public class DatabaseDatabase {
         }
     }
 
-    //Whenever we want to make a change to our database we will have to open a connection and use
+
+
+    public DatabaseDatabase() throws DatabaseException {
+        conn = this.openConnection();
+
+        tokenDao = new DaoAuthToken(conn);
+        personDao = new DaoPerson(conn);
+        userDao = new DaoUser(conn);
+        eventsDao = new DaoEvent(conn);
+
+        tokenDao.create();
+        personDao.create();
+        userDao.create();
+        eventsDao.create();
+
+    }
+    public DaoAuthToken getTokenDao(){
+        return  tokenDao;
+    }
+    public DaoPerson getPersonDao(){
+        return personDao;
+    }
+    public DaoUser getUserDao(){
+        return userDao;
+    }
+    public DaoEvent getEventsDao(){
+        return eventsDao;
+    }
+
+        //Whenever we want to make a change to our database we will have to open a connection and use
     //Statements created by that connection to initiate transactions
     public Connection openConnection() throws DatabaseException {
         try {

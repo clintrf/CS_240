@@ -5,28 +5,34 @@ import java.util.ArrayList;
 
 import dataAccessClasses.DaoAuthToken;
 import dataAccessClasses.DaoEvent;
+import dataAccessClasses.DaoPerson;
+import dataAccessClasses.DaoUser;
 import databaseClasses.DatabaseDatabase;
 import databaseClasses.DatabaseException;
+import handlerClasses.EncoderDecoder;
+import handlerClasses.Handler;
 import modelClasses.*;
 
 public class ResultsEvents {
+
+    private DaoAuthToken tokenDao;
+    private DaoEvent eventDao;
 
     private ArrayList<ModelEvent> data;
     private Boolean success;
     private String message;
 
-    public ResultsEvents(String authToken) throws DatabaseException {
-        this.data = new ArrayList<ModelEvent>();
-        this.success = false;
-        this.message = "Error";
 
-        DatabaseDatabase database = new DatabaseDatabase();
-        Connection conn = database.openConnection();
-        DaoAuthToken tokenDao = new DaoAuthToken(conn);
-        DaoEvent eventDao = new DaoEvent(conn);
+    public ResultsEvents(DatabaseDatabase database) {
+        tokenDao = database.getTokenDao();
+        eventDao = database.getEventsDao();
 
-        String username;
+        setData(null);
+        setSuccess(false);
+        setMessage("Fail");
+    }
 
+    public void eventsResult(String authToken)  {
         try { ModelAuthToken tokenObj = tokenDao.findAuthTokenByToken(authToken);
             try { ArrayList<ModelEvent> eventObj = eventDao.findEventsByAssociatedUserName(tokenObj.getUserName());
                 if(eventObj.size() == 0){
@@ -48,6 +54,8 @@ public class ResultsEvents {
             e.printStackTrace();
         }
     }
+
+
 
     public void setData(ArrayList<ModelEvent> data) {
         this.data = data;

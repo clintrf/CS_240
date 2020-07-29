@@ -13,8 +13,24 @@ public class RequestRegister {
         this.email = null;
         this.firstName = null;
         this.lastName = null;
-        this.gender = null;
+        this.gender = "m";
     }
+
+    public RequestRegister(
+            String userName,
+            String password,
+            String email,
+            String firstName,
+            String lastName,
+            String gender){
+        setUserName(userName);
+        setPassword(password);
+        setEmail(email);
+        setFirstName(firstName);
+        setLastName(lastName);
+        setGender(gender);
+    }
+
 
     public void setUserName(String userName) {
         this.userName = userName;

@@ -1,19 +1,75 @@
 package serviceClasses.resultService;
 
+import dataAccessClasses.DaoAuthToken;
+import dataAccessClasses.DaoUser;
+import databaseClasses.DatabaseDatabase;
+import databaseClasses.DatabaseException;
+import modelClasses.ModelAuthToken;
+import modelClasses.ModelUser;
+import serviceClasses.Services;
+import serviceClasses.requestService.RequestLogin;
+
 public class ResultsLogin {
+
+    private DaoAuthToken tokenDao;
+    private DaoUser userDao;
+
     private String authToken;
     private String userName;
     private String personId;
     private Boolean success;
     private String message;
 
-    public ResultsLogin(){
-        this.authToken = null;
-        this.userName = null;
-        this.personId = null;
-        this.success = false;
-        this.message = "Error";
+    public ResultsLogin(DatabaseDatabase database) {
+        this.tokenDao = database.getTokenDao();
+        this.userDao = database.getUserDao();
+
+        setAuthToken(null);
+        setUserName(null);
+        setPersonId(null);
+        setSuccess(false);
+        setMessage("Fail");
     }
+
+    public void loginResult(RequestLogin request) {
+
+        try { ModelUser userObj = userDao.findUserByUserName(request.getUserName());
+            if(!(userObj.getPassword().equals(request.getPassword()))){
+                setMessage("Passwords are not equal");
+                setSuccess(false);
+                return;
+            }
+
+            try{ ModelAuthToken tokenObj = tokenDao.findAuthTokenByUserName(userObj.getUserName());
+                setAuthToken(Services.getRandomId());
+                setUserName(tokenObj.getUserName());
+                setPersonId(Services.getRandomId());
+
+                try { tokenDao.insert(new ModelAuthToken(getAuthToken(),tokenObj.getUserName(),tokenObj.getPassword()));
+                    setSuccess(true);
+                    setMessage("Success");
+
+                } catch (DatabaseException e) {
+                    setSuccess(false);
+                    setMessage("Error");
+                    e.printStackTrace();
+                }
+            } catch (DatabaseException e) {
+                setSuccess(false);
+                setMessage("Error");
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            setSuccess(false);
+            setMessage("Error");
+            e.printStackTrace();
+        }
+
+
+
+    }
+
+
 
 
     public void setAuthToken(String authToken) {

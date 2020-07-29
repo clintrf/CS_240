@@ -7,47 +7,40 @@ import dataAccessClasses.DaoUser;
 import databaseClasses.DatabaseDatabase;
 import databaseClasses.DatabaseException;
 
-import java.sql.Connection;
-
 /**
  * Response Body for Clear
  */
 public class ResultsClear {
+    private DaoAuthToken tokenDao;
+    private DaoEvent eventDao;
+    private DaoUser userDao;
+    private DaoPerson personDao;
 
-    /**
-     * Boolean to indicate if Response Body is a success
-     */
     private Boolean success;
-
-    /**
-     * Message to describe if Response Body succeeded or failed
-     */
     private String message;
 
-    /**
-     * Constructor for resultsClear
-     */
-    public ResultsClear() {
+    public ResultsClear(DatabaseDatabase database) {
+        tokenDao = database.getTokenDao();
+        eventDao = database.getEventsDao();
+        userDao = database.getUserDao();
+        personDao = database.getPersonDao();
+
         this.success = false;
         this.message = "Error";
-        DatabaseDatabase database = new DatabaseDatabase();
+    }
+
+    public void clearResult(){
 
         try {
-            Connection conn = database.openConnection();
-            DaoAuthToken tokenObj = new DaoAuthToken(conn);
-            DaoEvent eventObj = new DaoEvent(conn);
-            DaoPerson personObj = new DaoPerson(conn);
-            DaoUser userObj = new DaoUser(conn);
+            tokenDao.drop();
+            eventDao.drop();
+            personDao.drop();
+            userDao.drop();
 
-            tokenObj.drop();
-            eventObj.drop();
-            personObj.drop();
-            userObj.drop();
-
-            tokenObj.create();
-            eventObj.create();
-            personObj.create();
-            userObj.create();
+            tokenDao.create();
+            eventDao.create();
+            personDao.create();
+            userDao.create();
 
             setMessage("Clear and create success");
             setSuccess(true);
@@ -57,8 +50,6 @@ public class ResultsClear {
             setSuccess(false);
             e.printStackTrace();
         }
-
-
     }
 
     /**

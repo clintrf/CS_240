@@ -25,8 +25,9 @@ public class userTest {
     @BeforeEach
     public void init() throws DatabaseException {
         this.database = new DatabaseDatabase();
-        this.conn = database.openConnection();
-        this.tempDao = new DaoUser(conn);
+        //this.conn = database.openConnection();
+        //this.tempDao = new DaoUser(conn);
+        this.tempDao = database.getUserDao();
         this.tempModel01 = new ModelUser(
                 "user_name_01",
                 "password_01",

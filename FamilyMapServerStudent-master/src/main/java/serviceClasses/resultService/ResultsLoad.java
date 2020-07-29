@@ -1,26 +1,75 @@
 package serviceClasses.resultService;
 
+import dataAccessClasses.DaoAuthToken;
+import dataAccessClasses.DaoEvent;
+import dataAccessClasses.DaoPerson;
+import dataAccessClasses.DaoUser;
+import databaseClasses.DatabaseDatabase;
+import databaseClasses.DatabaseException;
+import modelClasses.ModelEvent;
+import modelClasses.ModelPerson;
+import modelClasses.ModelUser;
+import serviceClasses.requestService.RequestLoad;
+
+import java.sql.Connection;
+
 /**
  * Response Body for Load
  */
 public class ResultsLoad {
 
-    /**
-     * Boolean to indicate if Response Body is a success
-     */
-    private Boolean success;
+    private DaoUser userDao;
+    private DaoPerson personDao;
+    private DaoEvent eventDao;
 
-    /**
-     * Message to describe if Response Body succeeded or failed
-     */
+    private Boolean success;
     private String message;
 
-    /**
-     * Constructor for resultsLoad
-     */
-    public ResultsLoad(){
-        this.success = false;
-        this.message = "Error";
+    public ResultsLoad(DatabaseDatabase database) {
+        this.userDao = database.getUserDao();
+        this.personDao = database.getPersonDao();
+        this.eventDao = database.getEventsDao();
+
+        setSuccess(false);
+        setMessage("Fail");
+    }
+
+
+
+    public void loadResult(RequestLoad requestLoad) throws DatabaseException {
+        try {
+            for (ModelUser u : requestLoad.getUsers()) {
+                userDao.insert(u);
+            }
+        } catch (DatabaseException e) {
+            setMessage("Didnt add user in load to database");
+            setSuccess(false);
+            e.printStackTrace();
+        }
+
+        try {
+            for (ModelPerson p : requestLoad.getPersons()) {
+                personDao.insert(p);
+            }
+        } catch (DatabaseException e) {
+            setMessage("Didnt add person in load to database");
+            setSuccess(false);
+            e.printStackTrace();
+        }
+
+        try {
+            for (ModelEvent e : requestLoad.getEvents()) {
+                eventDao.insert(e);
+            }
+        } catch (DatabaseException e) {
+            setMessage("Didnt add event in load to database");
+            setSuccess(false);
+            e.printStackTrace();
+        }
+
+        setMessage("Success in load person/ users");
+        setSuccess(true);
+
     }
 
     /**

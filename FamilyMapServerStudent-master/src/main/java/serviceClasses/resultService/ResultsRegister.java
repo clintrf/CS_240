@@ -4,11 +4,14 @@ import dataAccessClasses.DaoAuthToken;
 import dataAccessClasses.DaoUser;
 import databaseClasses.DatabaseDatabase;
 import databaseClasses.DatabaseException;
+import handlerClasses.EncoderDecoder;
+import handlerClasses.Handler;
 import modelClasses.ModelAuthToken;
 import modelClasses.ModelUser;
+import serviceClasses.Services;
 import serviceClasses.requestService.RequestRegister;
 
-import java.sql.Connection;
+import java.util.PrimitiveIterator;
 import java.util.UUID;
 
 /**
@@ -16,6 +19,10 @@ import java.util.UUID;
  * Description: Responce Body
  */
 public class ResultsRegister {
+    private EncoderDecoder coder;
+    private DaoUser userDao;
+    private DaoAuthToken tokenDao;
+
     private String userName;
     private String authToken;
     private String personId;
@@ -23,33 +30,45 @@ public class ResultsRegister {
     private String message;
 
 
-    public ResultsRegister(ModelUser user) throws DatabaseException {
-        this.userName = user.getUserName();
-        this.authToken = UUID.randomUUID().toString().substring(0, 8);
-        this.personId = UUID.randomUUID().toString().substring(0, 8);
-        this.success = false;
-        this.message = "Error";
+    public ResultsRegister(DatabaseDatabase database) {
+        this.coder = new EncoderDecoder();
+        this.userDao = database.getUserDao();
+        this.tokenDao = database.getTokenDao();
 
-        DatabaseDatabase database = new DatabaseDatabase();
-        Connection conn = database.openConnection();
+        setUserName(null);
+        setAuthToken(null);
+        setPersonId(null);
+        setSuccess(false);
+        setMessage("Fail");
+    }
 
-        ModelAuthToken authToken = new ModelAuthToken(this.authToken, user.getUserName(), user.getPassword());
+    public void registerResult(RequestRegister request) {
+        setAuthToken(Services.getRandomId());
+        setPersonId(Services.getRandomId());
 
-        DaoUser userDao = new DaoUser(conn);
-        DaoAuthToken tokenDao = new DaoAuthToken(conn);
+        ModelUser user = coder.decodeToUser(coder.encode(request));
+        user.setPersonId(getPersonId());
+
+        setUserName(user.getUserName());
+        setSuccess(false);
+        setMessage("Error");
+
+        ModelAuthToken authToken = new ModelAuthToken(
+                getAuthToken(),
+                user.getUserName(),
+                user.getPassword()
+        );
 
         try{
             userDao.insert(user);
             tokenDao.insert(authToken);
-            this.success = true;
+            setMessage("added to database in ResultsRegister service");
+            setSuccess(true);
         } catch (DatabaseException e) {
-            this.message = "Could not add to database in ResultsRegister service";
-            this.success = false;
+            setMessage("Could not add to database in ResultsRegister service");
+            setSuccess(false);
             e.printStackTrace();
         }
-
-
-        database.closeConnection(false);
     }
 
     public void setUserName(String userName) {

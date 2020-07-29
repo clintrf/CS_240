@@ -2,8 +2,6 @@ package serviceClasses.resultService;
 
 import dataAccessClasses.DaoAuthToken;
 import dataAccessClasses.DaoEvent;
-import dataAccessClasses.DaoPerson;
-import dataAccessClasses.DaoUser;
 import databaseClasses.DatabaseDatabase;
 import databaseClasses.DatabaseException;
 import modelClasses.ModelAuthToken;
@@ -12,6 +10,9 @@ import modelClasses.ModelEvent;
 import java.sql.Connection;
 
 public class ResultsEvent {
+    private DaoAuthToken tokenDao;
+    private DaoEvent eventDao;
+
     private String eventId;
     private String associatedUserName;
     private String personId;
@@ -24,12 +25,24 @@ public class ResultsEvent {
     private Boolean success;
     private String message;
 
-    public ResultsEvent(String authToken, String eventId) throws DatabaseException {
-        DatabaseDatabase database = new DatabaseDatabase();
-        Connection conn = database.openConnection();
-        DaoAuthToken tokenDao = new DaoAuthToken(conn);
-        DaoEvent eventDao = new DaoEvent(conn);
+    public ResultsEvent(DatabaseDatabase database){
+        tokenDao = database.getTokenDao();
+        eventDao = database.getEventsDao();
 
+        setEventId(null);
+        setAssociatedUserName(null);
+        setPersonId(null);
+        setLatitude(0.0);
+        setLongitude(0.0);
+        setCountry(null);
+        setCity(null);
+        setEventType(null);
+        setYear(2020);
+        setSuccess(false);
+        setMessage("Fail");
+    }
+
+    public void eventResult(String authToken, String eventId) {
         try { ModelAuthToken tokenObj = tokenDao.findAuthTokenByToken(authToken);
             try { ModelEvent eventObj = eventDao.findEventById(eventId);
                 if(!(eventObj.getAssociatedUserName().equals(tokenObj.getUserName()))){
@@ -59,6 +72,8 @@ public class ResultsEvent {
                 e.printStackTrace();
         }
     }
+
+
 
     public void setAssociatedUserName(String associatedUserName) {
         this.associatedUserName = associatedUserName;
