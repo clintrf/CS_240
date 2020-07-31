@@ -8,6 +8,7 @@ import modelClasses.ModelAuthToken;
 import modelClasses.ModelUser;
 import serviceClasses.Services;
 import serviceClasses.requestService.RequestLogin;
+import serviceClasses.requestService.RequestRegister;
 
 public class ResultsLogin {
 
@@ -31,42 +32,51 @@ public class ResultsLogin {
         setMessage("Fail");
     }
 
+    public ResultsLogin(RequestLogin request){
+        loginResult(request);
+    }
+
     public void loginResult(RequestLogin request) {
 
-        try { ModelUser userObj = userDao.findUserByUserName(request.getUserName());
+        try {
+            ModelUser userObj = userDao.findUserByUserName(request.getUserName());
+            if(userObj.getUserName() == null){
+                setAuthToken(null);
+                setUserName(null);
+                setPersonId(null);
+                setMessage("No user");
+                setSuccess(false);
+                return;
+            }
+
             if(!(userObj.getPassword().equals(request.getPassword()))){
+                setAuthToken(null);
+                setUserName(null);
+                setPersonId(null);
                 setMessage("Passwords are not equal");
                 setSuccess(false);
                 return;
             }
 
-            try{ ModelAuthToken tokenObj = tokenDao.findAuthTokenByUserName(userObj.getUserName());
-                setAuthToken(Services.getRandomId());
-                setUserName(tokenObj.getUserName());
-                setPersonId(Services.getRandomId());
 
-                try { tokenDao.insert(new ModelAuthToken(getAuthToken(),tokenObj.getUserName(),tokenObj.getPassword()));
-                    setSuccess(true);
-                    setMessage("Success");
+            ModelAuthToken tokenObj = tokenDao.findAuthTokenByUserName(userObj.getUserName());
 
-                } catch (DatabaseException e) {
-                    setSuccess(false);
-                    setMessage("Error");
-                    e.printStackTrace();
-                }
-            } catch (DatabaseException e) {
-                setSuccess(false);
-                setMessage("Error");
-                e.printStackTrace();
-            }
-        } catch (Exception e) {
+            setAuthToken(Services.getRandomId());
+            setUserName(userObj.getUserName());
+            setPersonId(Services.getRandomId());
+
+            tokenDao.insert(new ModelAuthToken(getAuthToken(),getUserName(),userObj.getPassword()));
+            setSuccess(true);
+            setMessage("Success");
+
+        } catch (DatabaseException e) {
+            setAuthToken(null);
+            setUserName(null);
+            setPersonId(null);
+            setMessage("Error Database");
             setSuccess(false);
-            setMessage("Error");
             e.printStackTrace();
         }
-
-
-
     }
 
 

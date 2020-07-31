@@ -32,24 +32,40 @@ public class ResultsEvents {
         setMessage("Fail");
     }
 
+    public ResultsEvents(String authToken){
+        eventsResult(authToken);
+    }
+
     public void eventsResult(String authToken)  {
-        try { ModelAuthToken tokenObj = tokenDao.findAuthTokenByToken(authToken);
-            try { ArrayList<ModelEvent> eventObj = eventDao.findEventsByAssociatedUserName(tokenObj.getUserName());
-                if(eventObj.size() == 0){
-                    setMessage("No events related to username");
-                    setSuccess(false);
-                    return;
-                }
-                setData(eventObj);
-                setMessage("Success");
-                setSuccess(true);
-            } catch (DatabaseException e) {
-                setMessage("No user found with username");
+        try {
+            ModelAuthToken tokenObj = tokenDao.findAuthTokenByToken(authToken);
+            if (tokenObj.getUserName() == null){
+                setData(null);
+                setMessage("invalid auth token");
                 setSuccess(false);
-                e.printStackTrace();
+                return;
             }
+            ArrayList<ModelEvent> eventObj = eventDao.findEventsByAssociatedUserName(tokenObj.getUserName());
+            if(eventObj == null) {
+                setData(null);
+                setMessage("No events related to username");
+                setSuccess(false);
+                return;
+            }
+            if(eventObj.size() == 0){
+                setData(null);
+                setMessage("User has no events");
+                setSuccess(false);
+                return;
+            }
+
+            setData(eventObj);
+            setMessage("Success");
+            setSuccess(true);
+
         } catch (DatabaseException e) {
-            setMessage("invalid auth token");
+            setData(null);
+            setMessage("Error Database");
             setSuccess(false);
             e.printStackTrace();
         }

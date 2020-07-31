@@ -1,11 +1,13 @@
 package dataAccessClasses;
 
 import databaseClasses.*;
+import handlerClasses.Handler;
 import modelClasses.ModelAuthToken;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
+import serviceClasses.Services;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,6 +18,7 @@ import java.util.Arrays;
 import java.util.function.BooleanSupplier;
 
 public class authTokenTest {
+    Services services = new Services();
 
     DatabaseDatabase database;
     Connection conn;
@@ -24,11 +27,15 @@ public class authTokenTest {
     ModelAuthToken tempModel02;
     ModelAuthToken tempModel03;
 
+    public authTokenTest() throws DatabaseException {
+    }
+
     @BeforeEach
     public void init() throws DatabaseException {
-        this.database = new DatabaseDatabase();
-        this.conn = database.openConnection();
-        this.tempDao = new DaoAuthToken(conn);
+
+        this.database = services.getDatabase();
+        this.tempDao = services.getDatabase().getTokenDao();
+        tempDao.clear();
         this.tempModel01 = new ModelAuthToken(
                 "authToken01",
                 "username01",

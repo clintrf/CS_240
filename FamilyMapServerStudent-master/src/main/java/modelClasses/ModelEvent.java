@@ -8,54 +8,54 @@ public class ModelEvent {
     /**
      * Unique identifier for this event (non-empty string)
      */
-    private String eventId = null;
+    private String eventID;
 
     /**
      * User (Username) to which this person belongs
      */
-    private String associatedUserName = null;
+    private String associatedUsername;
 
     /**
      * ID of person to which this event belongs
      */
-    private String personId = null;
+    private String personID;
 
     /**
      * Latitude of event’s location
      */
-    private Double latitude = null;
+    private Double latitude;
 
     /**
      * Longitude of event’s location
      */
-    private Double longitude = null;
+    private Double longitude;
 
     /**
      * Country in which event occurred
      */
-    private String country = null;
+    private String country;
 
     /**
      * City in which event occurred
      */
-    private String city = null;
+    private String city;
 
     /**
      * Type of event (birth, baptism, christening, marriage, death, etc.)
      */
-    private String eventType = null;
+    private String eventType;
 
     /**
      * Year in which event occurred
      */
-    private Integer year = null;
+    private Integer year;
 
 
     /**
      * Constructor for eventModel. Inits all user vars
-     * @param eventId Unique identifier for this event (non-empty string)
-     * @param associatedUserName User (Username) to which this person belongs
-     * @param personId ID of person to which this event belongs
+     * @param eventID Unique identifier for this event (non-empty string)
+     * @param associatedUsername User (Username) to which this person belongs
+     * @param personID ID of person to which this event belongs
      * @param latitude Latitude of event’s location
      * @param longitude Longitude of event’s location
      * @param country Country in which event occurred
@@ -63,18 +63,18 @@ public class ModelEvent {
      * @param eventType Type of event (birth, baptism, christening, marriage, death, etc.)
      * @param year Year in which event occurred
      */
-    public ModelEvent(String eventId,
-                      String associatedUserName,
-                      String personId,
+    public ModelEvent(String eventID,
+                      String associatedUsername,
+                      String personID,
                       Double latitude,
                       Double longitude,
                       String country,
                       String city,
                       String eventType,
                       Integer year){
-        this.eventId = eventId;
-        this.associatedUserName = associatedUserName;
-        this.personId = personId;
+        this.eventID = eventID;
+        this.associatedUsername = associatedUsername;
+        this.personID = personID;
         this.latitude = latitude;
         this.longitude = longitude;
         this.country = country;
@@ -87,24 +87,24 @@ public class ModelEvent {
      * Sets the eventId variable
      * @param eventId Unique identifier for this event (non-empty string)
      */
-    public void setEventId(String eventId){
-        this.eventId = eventId;
+    public void setEventID(String eventId){
+        this.eventID = eventId;
     }
 
     /**
-     * Sets the associatedUserName variable
-     * @param associatedUserName User (Username) to which this person belongs
+     * Sets the associatedUsername variable
+     * @param associatedUsername User (Username) to which this person belongs
      */
-    public void setAssociatedUserName(String associatedUserName){
-        this.associatedUserName = associatedUserName;
+    public void setAssociatedUserName(String associatedUsername){
+        this.associatedUsername = associatedUsername;
     }
 
     /**
-     * Sets the personId variable
-     * @param personId ID of person to which this event belongs
+     * Sets the personID variable
+     * @param personID ID of person to which this event belongs
      */
-    public void setPersonId(String personId){
-        this.personId = personId;
+    public void setPersonID(String personID){
+        this.personID = personID;
     }
 
     /**
@@ -160,24 +160,24 @@ public class ModelEvent {
      * Gets the eventId variable
      * @return eventId
      */
-    public String getEventId(){
-        return this.eventId;
+    public String getEventID(){
+        return this.eventID;
     }
 
     /**
      * Gets the associatedUserName variable
      * @return associatedUserName
      */
-    public String getAssociatedUserName(){
-        return this.associatedUserName;
+    public String getAssociatedUsername(){
+        return this.associatedUsername;
     }
 
     /**
      * Gets the personId variable
      * @return personId
      */
-    public String getPersonId(){
-        return this.personId;
+    public String getPersonID(){
+        return this.personID;
     }
 
     /**

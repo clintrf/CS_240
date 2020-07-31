@@ -7,6 +7,8 @@ import dataAccessClasses.DaoUser;
 import databaseClasses.DatabaseDatabase;
 import databaseClasses.DatabaseException;
 
+import java.security.PublicKey;
+
 /**
  * Response Body for Clear
  */
@@ -29,6 +31,10 @@ public class ResultsClear {
         this.message = "Error";
     }
 
+    public ResultsClear(){
+        clearResult();
+    }
+
     public void clearResult(){
 
         try {
@@ -42,7 +48,7 @@ public class ResultsClear {
             personDao.create();
             userDao.create();
 
-            setMessage("Clear and create success");
+            setMessage("clear succeeded");
             setSuccess(true);
 
         } catch (DatabaseException e) {

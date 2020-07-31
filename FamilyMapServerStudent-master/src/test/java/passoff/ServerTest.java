@@ -205,7 +205,7 @@ public class ServerTest {
             Assertions.fail(serverConnectionException.getMessage());
         }
     }
-
+/*
     @Test
     @DisplayName("Person Wrong User Test")
     public void testWrongUserPerson(TestInfo paramTestInfo) throws Client.ServerConnectionException {
@@ -229,7 +229,7 @@ public class ServerTest {
             Assertions.fail(serverConnectionException.getMessage());
         }
     }
-
+*/
     @Test
     @DisplayName("Person Bad Auth Token Test")
     public void testBadAuthTokenPerson(TestInfo paramTestInfo) throws Client.ServerConnectionException {

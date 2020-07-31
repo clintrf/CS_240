@@ -30,7 +30,7 @@ public class DaoEvent {
         try(PreparedStatement stmt = this.conn.prepareStatement(sql)){
             stmt.executeUpdate();
         } catch (SQLException e) {
-            throw new DatabaseException("Error encountered while creating events table");
+            throw new DatabaseException("Error create events table");
         }
     }
 
@@ -39,7 +39,7 @@ public class DaoEvent {
         try (PreparedStatement stmt = this.conn.prepareStatement(sql)){
             stmt.executeUpdate();
         } catch (SQLException e) {
-            throw new DatabaseException("SQL Error encountered while clearing tables");
+            throw new DatabaseException("Error clear events table");
         }
     }
 
@@ -49,7 +49,7 @@ public class DaoEvent {
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Error encountered while dropping events table");
+            throw new DatabaseException("Error drop events table");
         }
     }
 
@@ -67,9 +67,9 @@ public class DaoEvent {
                 ")" +
                 " values (?,?,?,?,?,?,?,?,?);";
         try(PreparedStatement stmt = this.conn.prepareStatement(sql)){
-            stmt.setString(1, event.getEventId());
-            stmt.setString(2, event.getAssociatedUserName());
-            stmt.setString(3, event.getPersonId());
+            stmt.setString(1, event.getEventID());
+            stmt.setString(2, event.getAssociatedUsername());
+            stmt.setString(3, event.getPersonID());
             stmt.setDouble(4, event.getLatitude());
             stmt.setDouble(5, event.getLongitude());
             stmt.setString(6, event.getCountry());
@@ -79,7 +79,7 @@ public class DaoEvent {
 
             stmt.executeUpdate();
         } catch (SQLException e) {
-            throw new DatabaseException("Error encountered while inserting into the events table");
+            throw new DatabaseException("Error insert events table");
         }
     }
 
@@ -90,7 +90,7 @@ public class DaoEvent {
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Error encountered while removing event in the events table");
+            throw new DatabaseException("Error removeEventById events table");
         }
     }
 
@@ -119,9 +119,23 @@ public class DaoEvent {
                         rs.getInt("year"));
                 return event;
             }
+            else{
+                event = new ModelEvent(
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null
+                );
+                return event;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Error encountered while finding event in events table");
+            throw new DatabaseException("Error findEventById events table");
         } finally {
             if(rs != null) {
                 try {
@@ -130,14 +144,12 @@ public class DaoEvent {
                     e.printStackTrace();
                 }
             }
-
         }
-        return null;
     }
 
     public ArrayList<ModelEvent> findEventsByIds(ArrayList<String> eventIds) throws DatabaseException{
         ModelEvent event;
-        ArrayList<ModelEvent> events = new ArrayList<ModelEvent>();
+        ArrayList<ModelEvent> events = new ArrayList<>();
         for (String eventId : eventIds){
             event = findEventById(eventId);
             if(event!=null){
@@ -149,7 +161,7 @@ public class DaoEvent {
 
     public ArrayList<ModelEvent> findEventsByAssociatedUserName(String associatedUserName) throws DatabaseException {
         ModelEvent event;
-        ArrayList<ModelEvent> events = new ArrayList<ModelEvent>();
+        ArrayList<ModelEvent> events = new ArrayList<>();
         ResultSet rs = null;
         String sql = "select * from events where associated_user_name = ?;";
         try (PreparedStatement stmt = this.conn.prepareStatement(sql)) {
@@ -170,7 +182,7 @@ public class DaoEvent {
             return events;
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Error encountered while finding event in events table");
+            throw new DatabaseException("Error findEventsByAssociatedUserName events table");
         } finally {
             if (rs != null) {
                 try {

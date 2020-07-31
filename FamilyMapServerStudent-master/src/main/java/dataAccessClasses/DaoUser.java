@@ -29,7 +29,7 @@ public class DaoUser {
         try(PreparedStatement stmt = this.conn.prepareStatement(sql)){
             stmt.executeUpdate();
         } catch (SQLException e) {
-            throw new DatabaseException("Error encountered while creating users table");
+            throw new DatabaseException("Error create users table");
         }
     }
 
@@ -38,7 +38,7 @@ public class DaoUser {
         try (PreparedStatement stmt = this.conn.prepareStatement(sql)){
             stmt.executeUpdate();
         } catch (SQLException e) {
-            throw new DatabaseException("SQL Error encountered while clearing tables");
+            throw new DatabaseException("Error clear users table");
         }
     }
 
@@ -48,7 +48,7 @@ public class DaoUser {
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Error encountered while dropping users table");
+            throw new DatabaseException("Error drop users table");
         }
     }
 
@@ -70,11 +70,11 @@ public class DaoUser {
             stmt.setString(4, user.getFirstName());
             stmt.setString(5, user.getLastName());
             stmt.setString(6, user.getGender());
-            stmt.setString(7, user.getPersonId());
+            stmt.setString(7, user.getPersonID());
 
             stmt.executeUpdate();
         } catch (SQLException e) {
-            throw new DatabaseException("Error encountered while inserting into the users table");
+            throw new DatabaseException("Error insert users table");
         }
     }
 
@@ -85,7 +85,7 @@ public class DaoUser {
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Error encountered while removing user in the users table");
+            throw new DatabaseException("Error removeUserByUserName users table");
         }
     }
 
@@ -114,9 +114,20 @@ public class DaoUser {
                 );
                 return user;
             }
+            else {
+                user = new ModelUser(
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null);
+                return user;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Error encountered while finding user in users table");
+            throw new DatabaseException("Error findUserByUserName users table");
         } finally {
             if(rs != null) {
                 try {
@@ -125,14 +136,12 @@ public class DaoUser {
                     e.printStackTrace();
                 }
             }
-
         }
-        return null;
     }
 
     public ArrayList<ModelUser> findUsersByUserNames(ArrayList<String> userNames) throws DatabaseException{
         ModelUser name;
-        ArrayList<ModelUser> names = new ArrayList<ModelUser>();
+        ArrayList<ModelUser> names = new ArrayList<>();
         for (String userName : userNames){
             name = findUserByUserName(userName);
             if(name!=null){

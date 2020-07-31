@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="d53df2a6-afa6-402b-a253-9e6734210fa4" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/family_map-master.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Fmserver/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/FMS_Passoff.log" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/FMS_Passoff.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/database.db" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/database.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/database.db-journal" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/database.db-journal" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/dataAccessClasses/DaoAuthToken.java" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/dataAccessClasses/DaoAuthToken.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/dataAccessClasses/DaoEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/dataAccessClasses/DaoEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/dataAccessClasses/DaoPerson.java" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/dataAccessClasses/DaoPerson.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/dataAccessClasses/DaoUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/dataAccessClasses/DaoUser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/databaseClasses/DatabaseDatabase.java" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/databaseClasses/DatabaseDatabase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/handlerClasses/EncoderDecoder.java" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/handlerClasses/EncoderDecoder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/modelClasses/ModelEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/modelClasses/ModelEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/serviceClasses/resultService/ResultsFill.java" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/serviceClasses/resultService/ResultsFill.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/serviceClasses/resultService/ResultsRegister.java" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/serviceClasses/resultService/ResultsRegister.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/test/java/dataAccessClasses/userTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/test/java/dataAccessClasses/userTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/test/java/serviceAccessClasses/ResultsTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/test/java/serviceAccessClasses/ResultsTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/dataAccessClasses/DaoAuthToken.class" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/dataAccessClasses/DaoAuthToken.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/dataAccessClasses/DaoEvent.class" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/dataAccessClasses/DaoEvent.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/dataAccessClasses/DaoPerson.class" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/dataAccessClasses/DaoPerson.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/dataAccessClasses/DaoUser.class" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/dataAccessClasses/DaoUser.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/databaseClasses/DatabaseDatabase.class" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/databaseClasses/DatabaseDatabase.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/handlerClasses/EncoderDecoder.class" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/handlerClasses/EncoderDecoder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/modelClasses/ModelEvent.class" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/modelClasses/ModelEvent.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/serviceClasses/resultService/ResultsFill.class" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/serviceClasses/resultService/ResultsFill.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/serviceClasses/resultService/ResultsRegister.class" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/serviceClasses/resultService/ResultsRegister.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/test-classes/dataAccessClasses/userTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/test-classes/dataAccessClasses/userTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/test-classes/serviceAccessClasses/ResultsTests.class" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/test-classes/serviceAccessClasses/ResultsTests.class" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="1fNVx1vlTaZnPaMGF0IW7v902Ur" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/Fmserver/fm_server_lib" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="d53df2a6-afa6-402b-a253-9e6734210fa4" name="Default Changelist" comment="" />
+      <created>1596058779343</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1596058779343</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="6689" y="964" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1596062924849">
+      <screen x="5760" y="540" width="2880" height="1620" />
+    </state>
+    <state x="6689" y="964" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.1080.1920.1080/5760.540.2880.1620/1920.0.3840.2160@5760.540.2880.1620" timestamp="1596062924849" />
+    <state x="6909" y="978" width="624" height="711" key="FileChooserDialogImpl" timestamp="1596132601021">
+      <screen x="5760" y="540" width="2880" height="1620" />
+    </state>
+    <state x="6909" y="978" width="624" height="711" key="FileChooserDialogImpl/0.1080.1920.1080/5760.540.2880.1620/1920.0.3840.2160@5760.540.2880.1620" timestamp="1596132601021" />
+    <state x="6458" y="700" width="1536" height="1261" key="SettingsEditor" timestamp="1596062869057">
+      <screen x="5760" y="540" width="2880" height="1620" />
+    </state>
+    <state x="6458" y="700" width="1536" height="1261" key="SettingsEditor/0.1080.1920.1080/5760.540.2880.1620/1920.0.3840.2160@5760.540.2880.1620" timestamp="1596062869057" />
+  </component>
+</project>

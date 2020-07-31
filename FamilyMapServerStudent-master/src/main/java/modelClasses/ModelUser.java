@@ -39,7 +39,7 @@ public class ModelUser {
      * Unique Person ID assigned to this user’s generated Person object -
      * see Family History Information section for details (non-empty string)
      */
-    private String personId;
+    private String personID;
 
     /**
      * Constructor for userModel. Inits all user vars
@@ -64,7 +64,7 @@ public class ModelUser {
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
-        this.personId = personId;
+        this.personID = personId;
 
     }
 
@@ -118,10 +118,10 @@ public class ModelUser {
 
     /**
      * Sets personId variable
-     * @param personId Unique Person ID assigned to this user’s generated Person object
+     * @param personID Unique Person ID assigned to this user’s generated Person object
      */
-    public void setPersonId(String personId){
-        this.personId = personId;
+    public void setPersonID(String personID){
+        this.personID = personID;
     }
 
 
@@ -177,7 +177,7 @@ public class ModelUser {
      * Returns personId variable
      * @return personId
      */
-    public String getPersonId(){
-        return this.personId;
+    public String getPersonID(){
+        return this.personID;
     }
 }

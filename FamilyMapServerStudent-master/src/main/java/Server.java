@@ -17,7 +17,7 @@ public class Server {
 
 
 
-        private void run(String portNumber)  {
+        private void run(String portNumber) throws DatabaseException {
 
         System.out.println("Initializing HTTP Server");
 
@@ -57,7 +57,7 @@ public class Server {
         System.out.println("Server started");
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws DatabaseException {
         if(args.length!=0){
             System.out.println(args.length);
             String portNumber = args[0];

@@ -10,6 +10,7 @@ import modelClasses.ModelEvent;
 import modelClasses.ModelPerson;
 import modelClasses.ModelUser;
 import serviceClasses.requestService.RequestLoad;
+import serviceClasses.requestService.RequestLogin;
 
 import java.sql.Connection;
 
@@ -34,9 +35,14 @@ public class ResultsLoad {
         setMessage("Fail");
     }
 
+    public ResultsLoad(RequestLoad requestLoad){
+        loadResult(requestLoad);
+    }
 
+    public void loadResult(RequestLoad requestLoad) {
+        setMessage("Success in load person/ users");
+        setSuccess(true);
 
-    public void loadResult(RequestLoad requestLoad) throws DatabaseException {
         try {
             for (ModelUser u : requestLoad.getUsers()) {
                 userDao.insert(u);
@@ -67,8 +73,7 @@ public class ResultsLoad {
             e.printStackTrace();
         }
 
-        setMessage("Success in load person/ users");
-        setSuccess(true);
+
 
     }
 

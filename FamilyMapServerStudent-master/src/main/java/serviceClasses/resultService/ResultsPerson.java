@@ -5,17 +5,15 @@ import dataAccessClasses.DaoPerson;
 import databaseClasses.DatabaseDatabase;
 import databaseClasses.DatabaseException;
 import handlerClasses.EncoderDecoder;
-import handlerClasses.Handler;
 import modelClasses.ModelAuthToken;
 import modelClasses.ModelPerson;
-
-import java.sql.Connection;
 
 public class ResultsPerson {
 
     private EncoderDecoder coder;
     private DaoAuthToken tokenDao;
     private DaoPerson personDao;
+
 
     private String associatedUserName;
     private String personId;
@@ -33,48 +31,80 @@ public class ResultsPerson {
         this.tokenDao = database.getTokenDao();
         this.personDao = database.getPersonDao();
 
-        setAssociatedUserName(null);
-        setPersonId(null);
-        setFirstName(null);
-        setGender("m");
-        setFatherId(null);
-        setMotherId(null);
-        setSpouseId(null);
+
         setSuccess(false);
         setMessage("Fail");
+    }
+
+    public ResultsPerson(String auth_token, String personId) {
+    personResult(auth_token,personId);
     }
 
     public void personResult(String auth_token, String personId) {
         try {
             ModelAuthToken tokenObj = tokenDao.findAuthTokenByToken(auth_token);
-            try { ModelPerson personObj = personDao.findPersonById(personId);
-                if(!(personObj.getAssociatedUserName().equals(tokenObj.getUserName()))){
-                    setMessage("permission denied");
-                    setSuccess(false);
-                    return;
-                }
-                setAssociatedUserName(personObj.getAssociatedUserName());
-                setPersonId(personObj.getPersonId());
-                setFirstName(personObj.getFirstName());
-                setLastName(personObj.getLastName());
-                setGender(personObj.getGender());
-                setFatherId(personObj.getFatherId());
-                setMotherId(personObj.getMotherId());
-                setSpouseId(personObj.getSpouseId());
-                setMessage("success in results person");
-                setSuccess(true);
-            } catch (DatabaseException e) {
-                setMessage("PersonId not found");
+            if(tokenObj.getUserName() == null){
+                setAssociatedUserName(null);
+                setPersonId(null);
+                setFirstName(null);
+                setGender(null);
+                setFatherId(null);
+                setMotherId(null);
+                setSpouseId(null);
+                setMessage("token not found/ invalid token");
                 setSuccess(false);
-                e.printStackTrace();
+                return;
             }
+            ModelPerson personObj = personDao.findPersonById(personId);
+            if(personObj.getPersonID() == null) {
+                setAssociatedUserName(null);
+                setPersonId(null);
+                setFirstName(null);
+                setGender(null);
+                setFatherId(null);
+                setMotherId(null);
+                setSpouseId(null);
+                setMessage("Cant find person");
+                setSuccess(false);
+                return;
+            }
+            if (!(personObj.getAssociatedUsername().equals(tokenObj.getUserName()))) {
+                setAssociatedUserName(null);
+                setPersonId(null);
+                setFirstName(null);
+                setGender(null);
+                setFatherId(null);
+                setMotherId(null);
+                setSpouseId(null);
+                setMessage("permission denied");
+                setSuccess(false);
+                return;
+            }
+            //ResultsPerson response = coder.decodeToResultsPerson(coder.encode(personObj));
+            setAssociatedUserName(personObj.getAssociatedUsername());
+            setPersonId(personObj.getPersonID());
+            setFirstName(personObj.getFirstName());
+            setLastName(personObj.getLastName());
+            setGender(personObj.getGender());
+            setFatherId(personObj.getFatherID());
+            setMotherId(personObj.getMotherID());
+            setSpouseId(personObj.getSpouseID());
+            setMessage("success in results person");
+            setSuccess(true);
+
         } catch (DatabaseException e) {
-            setMessage("token not found/ invalid token");
+            setAssociatedUserName(null);
+            setPersonId(null);
+            setFirstName(null);
+            setGender(null);
+            setFatherId(null);
+            setMotherId(null);
+            setSpouseId(null);
+            setMessage("Error Database");
             setSuccess(false);
             e.printStackTrace();
         }
     }
-
 
 
     public void setAssociatedUserName(String associatedUserName) {

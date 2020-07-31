@@ -31,7 +31,7 @@ public class DaoPerson {
         try (PreparedStatement stmt = this.conn.prepareStatement(sql)) {
             stmt.executeUpdate();
         } catch (SQLException e) {
-            throw new DatabaseException("Error encountered while creating people table");
+            throw new DatabaseException("Error create people table");
         }
     }
 
@@ -40,7 +40,7 @@ public class DaoPerson {
         try (PreparedStatement stmt = this.conn.prepareStatement(sql)){
             stmt.executeUpdate();
         } catch (SQLException e) {
-            throw new DatabaseException("SQL Error encountered while clearing tables");
+            throw new DatabaseException("Error clear people table");
         }
     }
 
@@ -50,7 +50,7 @@ public class DaoPerson {
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Error encountered while dropping people table");
+            throw new DatabaseException("Error drop people table");
         }
     }
 
@@ -67,18 +67,18 @@ public class DaoPerson {
                 ")" +
                 " values (?,?,?,?,?,?,?,?);";
         try (PreparedStatement stmt = this.conn.prepareStatement(sql)) {
-            stmt.setString(1, person.getPersonId());
-            stmt.setString(2, person.getAssociatedUserName());
+            stmt.setString(1, person.getPersonID());
+            stmt.setString(2, person.getAssociatedUsername());
             stmt.setString(3, person.getFirstName());
             stmt.setString(4, person.getLastName());
             stmt.setString(5, person.getGender());
-            stmt.setString(6, person.getFatherId());
-            stmt.setString(7, person.getMotherId());
-            stmt.setString(8, person.getSpouseId());
+            stmt.setString(6, person.getFatherID());
+            stmt.setString(7, person.getMotherID());
+            stmt.setString(8, person.getSpouseID());
 
             stmt.executeUpdate();
         } catch (SQLException e) {
-            throw new DatabaseException("Error encountered while inserting into the people table");
+            throw new DatabaseException("Error insert people table");
         }
     }
 
@@ -89,7 +89,7 @@ public class DaoPerson {
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Error encountered while removing person in the people table");
+            throw new DatabaseException("Error removePersonById people table");
         }
     }
 
@@ -118,9 +118,22 @@ public class DaoPerson {
                         rs.getString("spouse_id"));
                 return person;
             }
+            else{
+                person = new ModelPerson(
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null
+                );
+                return person;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Error encountered while finding person in people table");
+            throw new DatabaseException("Error findPersonById people table");
         } finally {
             if (rs != null) {
                 try {
@@ -129,14 +142,12 @@ public class DaoPerson {
                     e.printStackTrace();
                 }
             }
-
         }
-        return null;
     }
 
     public ArrayList<ModelPerson> findPeopleByIds(ArrayList<String> personIds) throws DatabaseException{
         ModelPerson person;
-        ArrayList<ModelPerson> people = new ArrayList<ModelPerson>();
+        ArrayList<ModelPerson> people = new ArrayList<>();
         for (String personId : personIds){
             person = findPersonById(personId);
             if(person!=null){
@@ -148,7 +159,7 @@ public class DaoPerson {
 
     public ArrayList<ModelPerson> findPeopleByAssociatedUserName(String associatedUserName) throws DatabaseException {
         ModelPerson person;
-        ArrayList<ModelPerson> people = new ArrayList<ModelPerson>();
+        ArrayList<ModelPerson> people = new ArrayList<>();
         ResultSet rs = null;
         String sql = "select * from people where associated_user_name = ?;";
         try (PreparedStatement stmt = this.conn.prepareStatement(sql)) {
@@ -168,7 +179,7 @@ public class DaoPerson {
             return people;
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Error encountered while finding person in people table");
+            throw new DatabaseException("Error findPeopleByAssociatedUserName people table");
         } finally {
             if (rs != null) {
                 try {

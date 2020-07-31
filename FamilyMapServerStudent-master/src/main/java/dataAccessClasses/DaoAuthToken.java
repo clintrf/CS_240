@@ -24,8 +24,9 @@ public class DaoAuthToken {
                 " );";
         try(PreparedStatement stmt = this.conn.prepareStatement(sql)){
             stmt.executeUpdate();
+            stmt.close();
         } catch (SQLException e) {
-            throw new DatabaseException("Error encountered while creating auth_tokens table");
+            throw new DatabaseException("Error create auth_tokens table");
         }
     }
 
@@ -34,7 +35,7 @@ public class DaoAuthToken {
         try (PreparedStatement stmt = this.conn.prepareStatement(sql)){
             stmt.executeUpdate();
         } catch (SQLException e) {
-            throw new DatabaseException("SQL Error encountered while clearing tables");
+            throw new DatabaseException("Error clear auth_tokens table");
         }
     }
 
@@ -44,7 +45,7 @@ public class DaoAuthToken {
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Error encountered while dropping auth_tokens table");
+            throw new DatabaseException("Error drop auth_tokens table");
         }
     }
 
@@ -62,7 +63,7 @@ public class DaoAuthToken {
 
             stmt.executeUpdate();
         } catch (SQLException e) {
-            throw new DatabaseException("Error encountered while inserting into the auth_tokens table");
+            throw new DatabaseException("Error insert auth_tokens table");
         }
     }
 
@@ -73,7 +74,7 @@ public class DaoAuthToken {
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Error encountered while removing authToken in the authTokens table");
+            throw new DatabaseException("Error removeAuthTokenByToken auth_tokens table");
         }
     }
 
@@ -98,9 +99,17 @@ public class DaoAuthToken {
                 );
                 return authToken;
             }
+            else{
+                authToken = new ModelAuthToken(
+                        null,
+                        null,
+                        null
+                );
+                return authToken;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Error encountered while finding authToken in auth_tokens table");
+            throw new DatabaseException("Error findAuthTokenMyToken auth_tokens table");
         } finally {
             if(rs != null) {
                 try {
@@ -109,14 +118,12 @@ public class DaoAuthToken {
                     e.printStackTrace();
                 }
             }
-
         }
-        return null;
     }
 
     public ArrayList<ModelAuthToken> findAuthTokensByTokens(ArrayList<String> tokens) throws DatabaseException{
         ModelAuthToken authToken;
-        ArrayList<ModelAuthToken> authTokens = new ArrayList<ModelAuthToken>();
+        ArrayList<ModelAuthToken> authTokens = new ArrayList<>();
         for (String token : tokens){
             authToken = findAuthTokenByToken(token);
             if(authToken!=null){
@@ -141,9 +148,17 @@ public class DaoAuthToken {
                 );
                 return name;
             }
+            else{
+                name = new ModelAuthToken(
+                        null,
+                        null,
+                        null
+                );
+                return name;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Error encountered while finding userName in auth_tokens table");
+            throw new DatabaseException("Error findAuthTokenMyUserName auth_tokens table");
         } finally {
             if (rs != null) {
                 try {
@@ -154,7 +169,5 @@ public class DaoAuthToken {
             }
 
         }
-        return null;
     }
-
 }

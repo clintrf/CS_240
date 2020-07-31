@@ -100,8 +100,8 @@ public class personTest {
         tempDao.insert(tempModel_new);
 
         assertEquals(
-                tempModel_new.getPersonId(),
-                tempDao.findPersonById("person_id_new").getPersonId(),
+                tempModel_new.getPersonID(),
+                tempDao.findPersonById("person_id_new").getPersonID(),
                 "person_id are not equal"
         );
     }
@@ -130,18 +130,18 @@ public class personTest {
     public void findPersonByIdTest() throws DatabaseException {
 
         assertEquals(
-                tempModel01.getPersonId(),
-                tempDao.findPersonById("person_id_01").getPersonId(),
+                tempModel01.getPersonID(),
+                tempDao.findPersonById("person_id_01").getPersonID(),
                 "Id's are not equal"
         );
         assertEquals(
-                tempModel02.getPersonId(),
-                tempDao.findPersonById("person_id_02").getPersonId(),
+                tempModel02.getPersonID(),
+                tempDao.findPersonById("person_id_02").getPersonID(),
                 "Id's are not equal"
         );
         assertEquals(
-                tempModel03.getPersonId(),
-                tempDao.findPersonById("person_id_03").getPersonId(),
+                tempModel03.getPersonID(),
+                tempDao.findPersonById("person_id_03").getPersonID(),
                 "Id's are not equal"
         );
     }
@@ -151,16 +151,16 @@ public class personTest {
         ArrayList<String> tempStringArray = new ArrayList<String>();
         tempStringArray.add("person_id_01");
         tempStringArray.add("person_id_02");
-        assertEquals(tempModel01.getPersonId(), tempDao.findPeopleByIds(tempStringArray).get(0).getPersonId(), "Multiple find not working");
-        assertEquals(tempModel02.getPersonId(), tempDao.findPeopleByIds(tempStringArray).get(1).getPersonId(), "Multiple find not working");
+        assertEquals(tempModel01.getPersonID(), tempDao.findPeopleByIds(tempStringArray).get(0).getPersonID(), "Multiple find not working");
+        assertEquals(tempModel02.getPersonID(), tempDao.findPeopleByIds(tempStringArray).get(1).getPersonID(), "Multiple find not working");
 
     }
 
     @Test
     public void findPeopleByAssociatedUserNameTest() throws DatabaseException {
         assertEquals(
-                tempModel01.getAssociatedUserName(),
-                tempDao.findPeopleByAssociatedUserName("associated_user_name_01").get(0).getAssociatedUserName(),
+                tempModel01.getAssociatedUsername(),
+                tempDao.findPeopleByAssociatedUserName("associated_user_name_01").get(0).getAssociatedUsername(),
                 "find by username find not working");
 
     }

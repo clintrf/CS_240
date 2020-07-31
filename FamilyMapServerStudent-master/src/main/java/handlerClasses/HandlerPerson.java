@@ -3,20 +3,30 @@ package handlerClasses;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import databaseClasses.DatabaseException;
+import serviceClasses.Services;
 import serviceClasses.resultService.ResultsEvents;
 import serviceClasses.resultService.ResultsPeople;
 import serviceClasses.resultService.ResultsPerson;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 
 public class HandlerPerson implements HttpHandler {
+
+    public Services services;
+
+    public HandlerPerson() throws DatabaseException {
+        services = new Services();
+    }
+
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
-        ResultsPerson personResult = Handler.services.getPersonResult();
-        ResultsPeople peopleResult = Handler.services.getPeopleResult();
-        EncoderDecoder coder;
+        ResultsPerson personResult = services.getPersonResult();
+        ResultsPeople peopleResult = services.getPeopleResult();
+        EncoderDecoder coder = services.getCoder();
         String auth_token = null;
 
         try {
@@ -25,14 +35,13 @@ public class HandlerPerson implements HttpHandler {
             if (reqHeaders.containsKey("Authorization")) {
                 auth_token = reqHeaders.getFirst("Authorization");
             }
-            coder = new EncoderDecoder();
             if(uri.length > 2){
                 String personId = uri[2];
                 personResult.personResult(auth_token,personId);
                 if (httpExchange.getRequestMethod().toLowerCase().equals("get")) {
                     httpExchange.sendResponseHeaders(HttpURLConnection.HTTP_OK,0);
                     OutputStream respBody = httpExchange.getResponseBody();
-                    Handler.writeString(coder.encode(personResult), respBody);
+                    writeString(coder.encode(personResult), respBody);
                     respBody.close();
                 }
                 if(!personResult.getSuccess()){
@@ -45,7 +54,7 @@ public class HandlerPerson implements HttpHandler {
                 if (httpExchange.getRequestMethod().toLowerCase().equals("get")) {
                     httpExchange.sendResponseHeaders(HttpURLConnection.HTTP_OK,0);
                     OutputStream respBody = httpExchange.getResponseBody();
-                    Handler.writeString(coder.encode(peopleResult), respBody);
+                    writeString(coder.encode(peopleResult), respBody);
                     respBody.close();
                 }
                 if(!peopleResult.getSuccess()){
@@ -58,5 +67,11 @@ public class HandlerPerson implements HttpHandler {
             e.printStackTrace();
         }
 
+    }
+
+    public static void writeString(String str, OutputStream os) throws IOException {
+        OutputStreamWriter sw = new OutputStreamWriter(os);
+        sw.write(str);
+        sw.flush();
     }
 }

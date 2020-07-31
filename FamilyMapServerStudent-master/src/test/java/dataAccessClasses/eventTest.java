@@ -3,10 +3,12 @@ package dataAccessClasses;
 
 import databaseClasses.DatabaseDatabase;
 import databaseClasses.DatabaseException;
+import handlerClasses.Handler;
 import modelClasses.ModelEvent;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import serviceClasses.Services;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -15,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class eventTest {
+    Services services = new Services();
 
     DatabaseDatabase database;
     Connection conn;
@@ -23,11 +26,15 @@ public class eventTest {
     ModelEvent tempModel02;
     ModelEvent tempModel03;
 
+    public eventTest() throws DatabaseException {
+    }
+
     @BeforeEach
     public void init() throws DatabaseException {
-        this.database = new DatabaseDatabase();
-        this.conn = database.openConnection();
-        this.tempDao = new DaoEvent(conn);
+        this.database = services.getDatabase();
+        this.tempDao = services.getDatabase().getEventsDao();
+        tempDao.clear();
+
         this.tempModel01 = new ModelEvent(
                 "event_id_01",
                 "associated_user_name_01",
@@ -106,8 +113,8 @@ public class eventTest {
         tempDao.insert(tempModel_new);
 
         assertEquals(
-                tempModel_new.getEventId(),
-                tempDao.findEventById("event_id_new").getEventId(),
+                tempModel_new.getEventID(),
+                tempDao.findEventById("event_id_new").getEventID(),
                 "AuthTokens are not equal"
         );
     }
@@ -136,18 +143,18 @@ public class eventTest {
     public void findEventByIdTest() throws DatabaseException {
 
         assertEquals(
-                tempModel01.getEventId(),
-                tempDao.findEventById("event_id_01").getEventId(),
+                tempModel01.getEventID(),
+                tempDao.findEventById("event_id_01").getEventID(),
                 "Id's are not equal"
         );
         assertEquals(
-                tempModel02.getEventId(),
-                tempDao.findEventById("event_id_02").getEventId(),
+                tempModel02.getEventID(),
+                tempDao.findEventById("event_id_02").getEventID(),
                 "Id's are not equal"
         );
         assertEquals(
-                tempModel03.getEventId(),
-                tempDao.findEventById("event_id_03").getEventId(),
+                tempModel03.getEventID(),
+                tempDao.findEventById("event_id_03").getEventID(),
                 "Id's are not equal"
         );
     }
@@ -157,16 +164,16 @@ public class eventTest {
         ArrayList<String> tempStringArray = new ArrayList<String>();
         tempStringArray.add("event_id_01");
         tempStringArray.add("event_id_02");
-        assertEquals(tempModel01.getEventId(), tempDao.findEventsByIds(tempStringArray).get(0).getEventId(), "Multiple find not working");
-        assertEquals(tempModel02.getEventId(), tempDao.findEventsByIds(tempStringArray).get(1).getEventId(), "Multiple find not working");
+        assertEquals(tempModel01.getEventID(), tempDao.findEventsByIds(tempStringArray).get(0).getEventID(), "Multiple find not working");
+        assertEquals(tempModel02.getEventID(), tempDao.findEventsByIds(tempStringArray).get(1).getEventID(), "Multiple find not working");
 
     }
 
     @Test
     public void findEventsByAssociatedUserNameTest() throws DatabaseException {
         assertEquals(
-                tempModel01.getAssociatedUserName(),
-                tempDao.findEventsByAssociatedUserName("associated_user_name_01").get(0).getAssociatedUserName(),
+                tempModel01.getAssociatedUsername(),
+                tempDao.findEventsByAssociatedUserName("associated_user_name_01").get(0).getAssociatedUsername(),
                 "find by username find not working");
 
     }

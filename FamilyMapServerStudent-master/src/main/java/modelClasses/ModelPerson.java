@@ -8,12 +8,12 @@ public class ModelPerson {
     /**
      * Unique identifier for this person (non-empty string)
      */
-    private String personId;
+    private String personID;
 
     /**
      * User (Username) to which this person belongs
      */
-    private String associatedUserName;
+    private String associatedUsername;
 
     /**
      * Person’s first name (non-empty string)
@@ -33,17 +33,17 @@ public class ModelPerson {
     /**
      * Person ID of person’s father (possibly null)
      */
-    private String fatherId;
+    private String fatherID;
 
     /**
      * Person ID of person’s mother (possibly null)
      */
-    private String motherId;
+    private String motherID;
 
     /**
      * Person ID of person’s spouse (possibly null)
      */
-    private String spouseId;
+    private String spouseID;
 
 
     /**
@@ -65,30 +65,30 @@ public class ModelPerson {
                        String fatherId,
                        String motherId,
                        String spouseId){
-        this.personId = personId;
-        this.associatedUserName = associatedUserName;
+        this.personID = personId;
+        this.associatedUsername = associatedUserName;
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
-        this.fatherId = fatherId;
-        this.motherId = motherId;
-        this.spouseId = spouseId;
+        this.fatherID = fatherId;
+        this.motherID = motherId;
+        this.spouseID = spouseId;
     }
 
     /**
      * Sets the personId variable
-     * @param personId Unique identifier for this person (non-empty string)
+     * @param personID Unique identifier for this person (non-empty string)
      */
-    public void setPersonId(String personId){
-        this.personId = personId;
+    public void setPersonID(String personID){
+        this.personID = personID;
     }
 
     /**
      * Sets the associatedUserName variable
-     * @param associatedUserName Username: User (Username) to which this person belongs
+     * @param associatedUsername Username: User (Username) to which this person belongs
      */
-    public void setAssociatedUserName(String associatedUserName){
-        this.associatedUserName = associatedUserName;
+    public void setAssociatedUsername(String associatedUsername){
+        this.associatedUsername = associatedUsername;
     }
 
     /**
@@ -117,26 +117,26 @@ public class ModelPerson {
 
     /**
      * Sets the fatherId variable
-     * @param fatherId Person ID of person’s father (possibly null)
+     * @param fatherID Person ID of person’s father (possibly null)
      */
-    public void setFatherId(String fatherId){
-        this.fatherId = fatherId;
+    public void setFatherID(String fatherID){
+        this.fatherID = fatherID;
     }
 
     /**
      * Sets the motherId variable
-     * @param motherId Person ID of person’s mother (possibly null)
+     * @param motherID Person ID of person’s mother (possibly null)
      */
-    public void setMotherId(String motherId){
-        this.motherId = motherId;
+    public void setMotherID(String motherID){
+        this.motherID = motherID;
     }
 
     /**
      * Sets the spouseId variable
-     * @param spouseId Person ID of person’s spouse (possibly null)
+     * @param spouseID Person ID of person’s spouse (possibly null)
      */
-    public void setSpouseId(String spouseId){
-        this.spouseId = spouseId;
+    public void setSpouseID(String spouseID){
+        this.spouseID = spouseID;
     }
 
 
@@ -144,16 +144,16 @@ public class ModelPerson {
      * Gets the personId variable
      * @return personId
      */
-    public String getPersonId(){
-        return this.personId;
+    public String getPersonID(){
+        return this.personID;
     }
 
     /**
      * Gets the associatedUserName variable
      * @return associatedUserName
      */
-    public String getAssociatedUserName(){
-        return this.associatedUserName;
+    public String getAssociatedUsername(){
+        return this.associatedUsername;
     }
 
     /**
@@ -184,23 +184,23 @@ public class ModelPerson {
      * Gets the fatherId variable
      * @return fatherId
      */
-    public String getFatherId(){
-        return this.fatherId;
+    public String getFatherID(){
+        return this.fatherID;
     }
 
     /**
      * Gets the motherId variable
      * @return motherId
      */
-    public String getMotherId(){
-        return this.motherId;
+    public String getMotherID(){
+        return this.motherID;
     }
 
     /**
      * Gets the spouseId variable
      * @return spouseId
      */
-    public String getSpouseId(){
-        return this.spouseId;
+    public String getSpouseID(){
+        return this.spouseID;
     }
 }

@@ -1,21 +1,19 @@
 package serviceClasses.resultService;
 
 import com.google.gson.Gson;
-import dataAccessClasses.DaoAuthToken;
 import dataAccessClasses.DaoEvent;
 import dataAccessClasses.DaoPerson;
 import dataAccessClasses.DaoUser;
 import databaseClasses.DatabaseDatabase;
 import databaseClasses.DatabaseException;
 import handlerClasses.EncoderDecoder;
-import handlerClasses.Handler;
 import modelClasses.ModelEvent;
 import modelClasses.ModelPerson;
 import modelClasses.ModelUser;
 
 
+import java.awt.*;
 import java.io.FileReader;
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
@@ -23,6 +21,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import serviceClasses.Services;
 
 /**
  * Response Body for Fill
@@ -55,20 +54,29 @@ public class ResultsFill {
 
     }
 
+    public ResultsFill(String username, Integer genNum){
+        fillResult(username,genNum);
+    }
+
     public void fillResult( String username, Integer genNum ) {
+        try{
+            ModelUser userObj = userDao.findUserByUserName(username);
+            if(userObj.getUserName() == null){
+                this.success = false;
+                this.message = "Cant find user in database";
+                return;
+            }
 
-        try { ModelUser userObj = userDao.findUserByUserName(username);
+            eventDao.removeEventById(userObj.getPersonID());
+            personDao.removePersonById(userObj.getPersonID());
 
-            eventDao.removeEventById(userObj.getPersonId());
-            personDao.removePersonById(userObj.getPersonId());
-
-            ModelPerson personObj = (ModelPerson) coder.decode(coder.encode(userObj));
-
+            ModelPerson personObj = coder.decodeToModelPerson(coder.encode(userObj));
+            personObj.setAssociatedUsername(username);
             createBirth(personObj, 0);
 
             ArrayList<ModelPerson> useList = new ArrayList<>();
             ArrayList<ModelPerson> nextList = new ArrayList<>();
-            nextList.add((ModelPerson) coder.decode(coder.encode(userObj)));
+            nextList.add(personObj);
 
             int num_people = 0;
             for(int i = 1; i <= genNum; i++){
@@ -78,8 +86,8 @@ public class ResultsFill {
                 nextList.clear();
                 for(ModelPerson obj: useList){
                     ArrayList<ModelPerson> parents = createParents(username, obj, i);
-                    obj.setFatherId(parents.get(0).getPersonId());
-                    obj.setMotherId(parents.get(1).getPersonId());
+                    obj.setFatherID(parents.get(0).getPersonID());
+                    obj.setMotherID(parents.get(1).getPersonID());
                     try {
                         personDao.insert(obj);
                         num_people++;
@@ -88,15 +96,12 @@ public class ResultsFill {
                         setMessage("Did not add person in fill to database");
                         return;
                     }
-
                     nextList.addAll(parents);
-
                 }
 
             }
             for(ModelPerson obj: nextList){
                 try{
-
                     personDao.insert(obj); //add the last generation
                 }catch(DatabaseException ex) {
                     setSuccess(false);
@@ -110,9 +115,9 @@ public class ResultsFill {
             setMessage("Added " + num_people + "people & ?? num of events to database" );
 
 
-        } catch (DatabaseException e) {
+        } catch (DatabaseException | NullPointerException e) {
             this.success = false;
-            this.message = "Cant find user in database";
+            this.message = "Error Database";
             e.printStackTrace();
         }
     }
@@ -132,7 +137,7 @@ public class ResultsFill {
         }
 
         ModelPerson personObj = new ModelPerson(
-                UUID.randomUUID().toString().replace("-","").substring(0, 8),
+                Services.getRandomId(),
                 username,
                 firstName,
                 lastName,
@@ -149,8 +154,8 @@ public class ResultsFill {
         ArrayList<ModelPerson> parents = new ArrayList<>();
         ModelPerson father = createPerson(username,child.getLastName(),"m", gen);
         ModelPerson mother = createPerson(username,child.getLastName(),"f", gen);
-        father.setSpouseId(mother.getPersonId());
-        mother.setSpouseId(father.getPersonId());
+        father.setSpouseID(mother.getPersonID());
+        mother.setSpouseID(father.getPersonID());
         createMarriage(father, mother);
 
         parents.add(father);
@@ -163,10 +168,10 @@ public class ResultsFill {
         int around_year_of_birth = currentYear - 25 - (gen*20);
         int rand_year_of_birth = (around_year_of_birth - 5) + (int)(Math.random() * (((around_year_of_birth + 5) - (around_year_of_birth - 5)) + 1));
 
-        ModelEvent birth = (ModelEvent) coder.decode(coder.encode(returnObjectFromFile(LOCATIONS)));
-        birth.setEventId(UUID.randomUUID().toString().replace("-","").substring(0, 8));
-        birth.setPersonId(personObj.getPersonId());
-        birth.setAssociatedUserName(personObj.getAssociatedUserName());
+        ModelEvent birth = coder.decodeToModelEvent(coder.encode(returnObjectFromFile(LOCATIONS)));
+        birth.setEventID(Services.getRandomId());
+        birth.setPersonID(personObj.getPersonID());
+        birth.setAssociatedUserName(personObj.getAssociatedUsername());
         birth.setEventType("birth");
         birth.setYear(rand_year_of_birth);
 
@@ -184,10 +189,10 @@ public class ResultsFill {
         int around_year_of_death = birth.getYear() + 75;
         int rand_year_of_death = (around_year_of_death - 10) + (int)(Math.random() * (((around_year_of_death + 10) - (around_year_of_death - 10)) + 1));
 
-        ModelEvent death = (ModelEvent) coder.decode(coder.encode(returnObjectFromFile(LOCATIONS)));
-        death.setEventId(UUID.randomUUID().toString().replace("-","").substring(0, 8));
-        death.setPersonId(birth.getPersonId());
-        death.setAssociatedUserName(birth.getAssociatedUserName());
+        ModelEvent death = coder.decodeToModelEvent(coder.encode(returnObjectFromFile(LOCATIONS)));
+        death.setEventID(UUID.randomUUID().toString().replace("-","").substring(0, 8));
+        death.setPersonID(birth.getPersonID());
+        death.setAssociatedUserName(birth.getAssociatedUsername());
         death.setEventType("death");
         death.setYear(rand_year_of_death);
         try {
@@ -199,7 +204,7 @@ public class ResultsFill {
 
     public void createMarriage(ModelPerson father, ModelPerson mother) throws DatabaseException {
         Integer birthYear = 0;
-        for(ModelEvent e:eventDao.findEventsByAssociatedUserName(mother.getAssociatedUserName()) ){
+        for(ModelEvent e:eventDao.findEventsByAssociatedUserName(mother.getAssociatedUsername()) ){
             if(e.getEventType().equals("birth")){
                 birthYear = e.getYear();
                 break;
@@ -208,17 +213,17 @@ public class ResultsFill {
 
         int year_of_marriage = birthYear + 18;
         Object obj = returnObjectFromFile(LOCATIONS);
-        ModelEvent marriageMother = (ModelEvent) coder.decode((String) obj);
-        marriageMother.setEventId(UUID.randomUUID().toString().replace("-","").substring(0, 8));
-        marriageMother.setPersonId(mother.getPersonId());
-        marriageMother.setAssociatedUserName(mother.getAssociatedUserName());
+        ModelEvent marriageMother = coder.decodeToModelEvent(coder.encode(obj));
+        marriageMother.setEventID(Services.getRandomId());
+        marriageMother.setPersonID(mother.getPersonID());
+        marriageMother.setAssociatedUserName(mother.getAssociatedUsername());
         marriageMother.setEventType("mariage");
         marriageMother.setYear(year_of_marriage);
 
-        ModelEvent marriageFather = (ModelEvent) coder.decode((String) obj);
-        marriageFather.setEventId(UUID.randomUUID().toString().replace("-","").substring(0, 8));
-        marriageFather.setPersonId(father.getPersonId());
-        marriageFather.setAssociatedUserName(father.getAssociatedUserName());
+        ModelEvent marriageFather = coder.decodeToModelEvent(coder.encode(obj));
+        marriageFather.setEventID(Services.getRandomId());
+        marriageFather.setPersonID(father.getPersonID());
+        marriageFather.setAssociatedUserName(father.getAssociatedUsername());
         marriageFather.setEventType("mariage");
         marriageFather.setYear(year_of_marriage);
 

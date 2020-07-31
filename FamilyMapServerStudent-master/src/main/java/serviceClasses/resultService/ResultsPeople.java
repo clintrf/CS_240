@@ -29,33 +29,44 @@ public class ResultsPeople {
         setMessage("Fail");
     }
 
+    public ResultsPeople(String auth_token) throws DatabaseException {
+        peopleResult(auth_token);
+    }
+
     public void peopleResult(String auth_token) throws DatabaseException {
         try {
             ModelAuthToken tokenObj = tokenDao.findAuthTokenByToken(auth_token);
-            try { ArrayList<ModelPerson> peopleObj = personDao.findPeopleByAssociatedUserName(tokenObj.getUserName());
-                if (peopleObj.size() == 0 ){
-                    setMessage("no people found");
-                    setSuccess(false);
-                    return;
-                }
-                setData(peopleObj);
-                setMessage("success in resultsPeople");
-                setSuccess(true);
-
-            } catch (DatabaseException e) {
-                setMessage("Persons not found");
+            if(tokenObj.getUserName() == null){
+                setData(null);
+                setMessage("token not found/ invalid token");
                 setSuccess(false);
-                e.printStackTrace();
+                return;
             }
+
+            ArrayList<ModelPerson> data = personDao.findPeopleByAssociatedUserName(tokenObj.getUserName());
+            if(data == null) {
+                setData(null);
+                setMessage("Data not found");
+                setSuccess(false);
+                return;
+            }
+
+            if (data.size() == 0 ){
+                setData(null);
+                setMessage("no people found");
+                setSuccess(false);
+                return;
+            }
+            setData(data);
+            setMessage("success in resultsPeople");
+            setSuccess(true);
+
         } catch (DatabaseException e) {
+            setData(null);
             setMessage("token not found/ invalid token");
             setSuccess(false);
             e.printStackTrace();
         }
-
-        this.data = new ArrayList<>();
-        this.success = false;
-        this.message = "Error";
     }
 
 

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$" />
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/Fmserver/fm_server_lib/libs" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="file://$MODULE_DIR$/Fmserver/fm_server_lib/libs" />
+        </SOURCES>
+        <jarDirectory url="file://$MODULE_DIR$/Fmserver/fm_server_lib/libs" recursive="false" />
+        <jarDirectory url="file://$MODULE_DIR$/Fmserver/fm_server_lib/libs" recursive="false" type="SOURCES" />
+      </library>
+    </orderEntry>
+  </component>
+</module>

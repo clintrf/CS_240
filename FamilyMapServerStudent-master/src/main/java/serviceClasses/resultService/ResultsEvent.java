@@ -7,8 +7,6 @@ import databaseClasses.DatabaseException;
 import modelClasses.ModelAuthToken;
 import modelClasses.ModelEvent;
 
-import java.sql.Connection;
-
 public class ResultsEvent {
     private DaoAuthToken tokenDao;
     private DaoEvent eventDao;
@@ -32,44 +30,91 @@ public class ResultsEvent {
         setEventId(null);
         setAssociatedUserName(null);
         setPersonId(null);
-        setLatitude(0.0);
-        setLongitude(0.0);
+        setLatitude(null);
+        setLongitude(null);
         setCountry(null);
         setCity(null);
         setEventType(null);
-        setYear(2020);
+        setYear(null);
         setSuccess(false);
-        setMessage("Fail");
+        setMessage("fail");
+    }
+
+    public ResultsEvent(String authToken, String eventId){
+        eventResult(authToken, eventId);
     }
 
     public void eventResult(String authToken, String eventId) {
-        try { ModelAuthToken tokenObj = tokenDao.findAuthTokenByToken(authToken);
-            try { ModelEvent eventObj = eventDao.findEventById(eventId);
-                if(!(eventObj.getAssociatedUserName().equals(tokenObj.getUserName()))){
-                    setMessage("Requested event does not belong to this user");
-                    setSuccess(false);
-                    return;
-                }
-                setEventId(eventObj.getEventId());
-                setAssociatedUserName(eventObj.getAssociatedUserName());
-                setPersonId(eventObj.getPersonId());
-                setLatitude(eventObj.getLatitude());
-                setLongitude(eventObj.getLongitude());
-                setCountry(eventObj.getCountry());
-                setCity(eventObj.getCity());
-                setEventType(eventObj.getEventType());
-                setYear(eventObj.getYear());
-                setMessage("Success");
-                setSuccess(true);
-            } catch (DatabaseException e) {
-                setMessage("event not in database");
-                setSuccess(false);
-                e.printStackTrace();
-            }
-        } catch (DatabaseException e) {
+        try {
+            ModelAuthToken tokenObj = tokenDao.findAuthTokenByToken(authToken);
+            if (tokenObj.getUserName() == null){
+                setEventId(null);
+                setAssociatedUserName(null);
+                setPersonId(null);
+                setLatitude(null);
+                setLongitude(null);
+                setCountry(null);
+                setCity(null);
+                setEventType(null);
+                setYear(null);
                 setMessage("invalid auth token");
                 setSuccess(false);
-                e.printStackTrace();
+                return;
+            }
+            ModelEvent eventObj = eventDao.findEventById(eventId);
+            if(eventObj.getEventID() == null) {
+                setEventId(null);
+                setAssociatedUserName(null);
+                setPersonId(null);
+                setLatitude(null);
+                setLongitude(null);
+                setCountry(null);
+                setCity(null);
+                setEventType(null);
+                setYear(null);
+                setMessage("event not in database");
+                setSuccess(false);
+                return;
+            }
+            if(!(eventObj.getAssociatedUsername().equals(tokenObj.getUserName()))){
+                setEventId(null);
+                setAssociatedUserName(null);
+                setPersonId(null);
+                setLatitude(null);
+                setLongitude(null);
+                setCountry(null);
+                setCity(null);
+                setEventType(null);
+                setYear(null);
+                setMessage("Requested event does not belong to this user");
+                setSuccess(false);
+                return;
+            }
+            setEventId(eventObj.getEventID());
+            setAssociatedUserName(eventObj.getAssociatedUsername());
+            setPersonId(eventObj.getPersonID());
+            setLatitude(eventObj.getLatitude());
+            setLongitude(eventObj.getLongitude());
+            setCountry(eventObj.getCountry());
+            setCity(eventObj.getCity());
+            setEventType(eventObj.getEventType());
+            setYear(eventObj.getYear());
+            setMessage("Success");
+            setSuccess(true);
+
+        } catch (DatabaseException e) {
+            setEventId(null);
+            setAssociatedUserName(null);
+            setPersonId(null);
+            setLatitude(null);
+            setLongitude(null);
+            setCountry(null);
+            setCity(null);
+            setEventType(null);
+            setYear(null);
+            setMessage("Error Database");
+            setSuccess(false);
+            e.printStackTrace();
         }
     }
 

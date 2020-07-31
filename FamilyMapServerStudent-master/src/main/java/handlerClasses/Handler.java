@@ -21,15 +21,15 @@ import java.util.UUID;
 public class Handler implements HttpHandler {
 
 
-    public static Services services;
-
-    static {
-        try {
-            services = new Services();
-        } catch (DatabaseException e) {
-            e.printStackTrace();
-        }
-    }
+//    public static Services services;
+//
+//    static {
+//        try {
+//            services = new Services();
+//        } catch (DatabaseException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
@@ -57,21 +57,21 @@ public class Handler implements HttpHandler {
         }
     }
 
-    public static String inStringReader(InputStream requestBody) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        InputStreamReader sr = new InputStreamReader(requestBody);
-        char[] buffer = new char[1024];
-        int temp = sr.read(buffer);
-        while (temp > 0) {
-            sb.append(buffer, 0, temp);
-            temp = sr.read(buffer);
-        }
-        return sb.toString();
-    }
-
-    public static void writeString(String str, OutputStream os) throws IOException {
-        OutputStreamWriter sw = new OutputStreamWriter(os);
-        sw.write(str);
-        sw.flush();
-    }
+//    public static String inStringReader(InputStream requestBody) throws IOException {
+//        StringBuilder sb = new StringBuilder();
+//        InputStreamReader sr = new InputStreamReader(requestBody);
+//        char[] buffer = new char[1024];
+//        int temp = sr.read(buffer);
+//        while (temp > 0) {
+//            sb.append(buffer, 0, temp);
+//            temp = sr.read(buffer);
+//        }
+//        return sb.toString();
+//    }
+//
+//    public static void writeString(String str, OutputStream os) throws IOException {
+//        OutputStreamWriter sw = new OutputStreamWriter(os);
+//        sw.write(str);
+//        sw.flush();
+//    }
 }

@@ -6,6 +6,7 @@ import modelClasses.ModelUser;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import serviceClasses.Services;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -15,6 +16,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class userTest {
 
+    Services services = new Services();
+
     DatabaseDatabase database;
     Connection conn;
     DaoUser tempDao;
@@ -22,12 +25,13 @@ public class userTest {
     ModelUser tempModel02;
     ModelUser tempModel03;
 
+    public userTest() throws DatabaseException {
+    }
+
     @BeforeEach
     public void init() throws DatabaseException {
-        this.database = new DatabaseDatabase();
-        //this.conn = database.openConnection();
-        //this.tempDao = new DaoUser(conn);
-        this.tempDao = database.getUserDao();
+        this.database = services.getDatabase();
+        this.tempDao = services.getDatabase().getUserDao();
         this.tempModel01 = new ModelUser(
                 "user_name_01",
                 "password_01",

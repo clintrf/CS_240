@@ -1,8 +1,15 @@
 package handlerClasses;
 
 import com.google.gson.Gson;
+import modelClasses.ModelEvent;
+import modelClasses.ModelPerson;
 import modelClasses.ModelUser;
+import serviceClasses.requestService.RequestLoad;
 import serviceClasses.requestService.RequestLogin;
+import serviceClasses.requestService.RequestRegister;
+import serviceClasses.resultService.ResultsPerson;
+
+import java.lang.reflect.Type;
 
 public class EncoderDecoder {
 
@@ -14,15 +21,24 @@ public class EncoderDecoder {
     }
 
     //Json to Object decoding
-    public Object decode(String Json){
-        return gson.fromJson(Json, Object.class);
-    }
-
-    public ModelUser decodeToUser(String Json){
+    public ModelUser decodeToModelUser(String Json){
         return gson.fromJson(Json, ModelUser.class);
     }
+    public ModelPerson decodeToModelPerson(String Json){
+        return gson.fromJson(Json,ModelPerson.class);
+    }
+    public ModelEvent decodeToModelEvent(String Json){
+        return gson.fromJson(Json, ModelEvent.class );
+    }
 
-    public RequestLogin decodeToRequestLoad(String Json) {
+    public RequestLogin decodeToRequestLogin(String Json) {
         return gson.fromJson(Json, RequestLogin.class);
     }
+    public RequestLoad decodeToRequestLoad(String Json) {
+        return gson.fromJson(Json, RequestLoad.class);
+    }
+    public RequestRegister decodeToRequestRegister(String Json) {
+        return gson.fromJson(Json, RequestRegister.class);
+    }
+
 }

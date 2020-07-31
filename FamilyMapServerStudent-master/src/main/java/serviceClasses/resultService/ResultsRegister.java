@@ -5,14 +5,10 @@ import dataAccessClasses.DaoUser;
 import databaseClasses.DatabaseDatabase;
 import databaseClasses.DatabaseException;
 import handlerClasses.EncoderDecoder;
-import handlerClasses.Handler;
 import modelClasses.ModelAuthToken;
 import modelClasses.ModelUser;
 import serviceClasses.Services;
 import serviceClasses.requestService.RequestRegister;
-
-import java.util.PrimitiveIterator;
-import java.util.UUID;
 
 /**
  * URL Path: /user/register
@@ -42,16 +38,18 @@ public class ResultsRegister {
         setMessage("Fail");
     }
 
+    public ResultsRegister(RequestRegister request){
+        registerResult(request);
+    }
+
     public void registerResult(RequestRegister request) {
         setAuthToken(Services.getRandomId());
         setPersonId(Services.getRandomId());
 
-        ModelUser user = coder.decodeToUser(coder.encode(request));
-        user.setPersonId(getPersonId());
+        ModelUser user = coder.decodeToModelUser(coder.encode(request));
+        user.setPersonID(getPersonId());
 
         setUserName(user.getUserName());
-        setSuccess(false);
-        setMessage("Error");
 
         ModelAuthToken authToken = new ModelAuthToken(
                 getAuthToken(),
@@ -65,6 +63,9 @@ public class ResultsRegister {
             setMessage("added to database in ResultsRegister service");
             setSuccess(true);
         } catch (DatabaseException e) {
+            setUserName(null);
+            setAuthToken(null);
+            setPersonId(null);
             setMessage("Could not add to database in ResultsRegister service");
             setSuccess(false);
             e.printStackTrace();
