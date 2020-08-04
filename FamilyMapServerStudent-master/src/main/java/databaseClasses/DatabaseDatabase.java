@@ -13,10 +13,10 @@ import java.sql.Statement;
 public class DatabaseDatabase {
 
     public Connection conn;
-    private DaoAuthToken tokenDao ;
-    private DaoPerson personDao ;
-    private DaoUser userDao;
-    private DaoEvent eventsDao ;
+    public DaoAuthToken tokenDao ;
+    public DaoPerson personDao ;
+    public DaoUser userDao;
+    public DaoEvent eventsDao ;
 
     static {
         final String driver = "org.sqlite.JDBC";
@@ -28,18 +28,24 @@ public class DatabaseDatabase {
 
 
 
-    public DatabaseDatabase() throws DatabaseException {
+    public DatabaseDatabase() {
         conn = this.openConnection();
 
-        tokenDao = new DaoAuthToken(conn);
-        personDao = new DaoPerson(conn);
-        userDao = new DaoUser(conn);
-        eventsDao = new DaoEvent(conn);
+        tokenDao = new DaoAuthToken();
+        personDao = new DaoPerson();
+        userDao = new DaoUser();
+        eventsDao = new DaoEvent();
 
-        tokenDao.create();
-        personDao.create();
-        userDao.create();
-        eventsDao.create();
+
+
+        tokenDao.create(conn);
+        personDao.create(conn);
+        userDao.create(conn);
+        eventsDao.create(conn);
+
+        tokenDao.drop(conn);
+
+        tokenDao.create(conn);
 
 
     }
@@ -57,23 +63,21 @@ public class DatabaseDatabase {
         return eventsDao;
     }
 
-    public Connection openConnection() throws DatabaseException {
+    public Connection openConnection() {
         try {
             final String CONNECTION_URL = "jdbc:sqlite:database.db";
             conn = DriverManager.getConnection(CONNECTION_URL);
-            //conn.setAutoCommit(false);
+            conn.setAutoCommit(true);
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Unable to open connection to database");
         }
         return conn;
     }
-    public Connection getConnection() throws DatabaseException {
+    public Connection getConnection()  {
         if(conn == null) {
-            return openConnection();
-        } else {
-            return conn;
+            conn = this.openConnection();
         }
+        return conn;
     }
 
     public void closeConnection(boolean commit) throws DatabaseException {

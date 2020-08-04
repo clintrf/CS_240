@@ -3,32 +3,33 @@ package handlerClasses;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import databaseClasses.DatabaseException;
-import modelClasses.ModelUser;
+import org.apache.commons.io.IOUtils;
 import serviceClasses.Services;
-import serviceClasses.requestService.RequestLogin;
-import serviceClasses.resultService.ResultsLogin;
-import serviceClasses.resultService.ResultsRegister;
+import serviceClasses.RequestLogin;
+import serviceClasses.ResponseLogin;
 
 import java.io.*;
 import java.net.HttpURLConnection;
+import java.nio.charset.StandardCharsets;
 
 public class HandlerLogin implements HttpHandler {
 
     public Services services;
 
-    public HandlerLogin() throws DatabaseException {
-        services = new Services();
+    public HandlerLogin(Services services) throws DatabaseException {
+        this.services = services;
     }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
-        ResultsLogin loginResult = services.getLoginResult();
+        ResponseLogin loginResult = new ResponseLogin(services.database);
         RequestLogin loginRequest;
-        EncoderDecoder coder = services.getCoder();
+        EncoderDecoder coder = new EncoderDecoder();
 
         try {
             loginRequest = coder.decodeToRequestLogin(
-                            inStringReader(httpExchange.getRequestBody())
+                            //inStringReader(httpExchange.getRequestBody())
+                    IOUtils.toString(httpExchange.getRequestBody(), StandardCharsets.UTF_8)
             );
             loginResult.loginResult(
                     coder.decodeToRequestLogin(

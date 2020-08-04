@@ -5,9 +5,8 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import databaseClasses.DatabaseException;
 import serviceClasses.Services;
-import serviceClasses.resultService.ResultsEvents;
-import serviceClasses.resultService.ResultsPeople;
-import serviceClasses.resultService.ResultsPerson;
+import serviceClasses.ResponsePeople;
+import serviceClasses.ResponsePerson;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -18,15 +17,15 @@ public class HandlerPerson implements HttpHandler {
 
     public Services services;
 
-    public HandlerPerson() throws DatabaseException {
-        services = new Services();
+    public HandlerPerson(Services services) throws DatabaseException {
+        this.services = services;
     }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
-        ResultsPerson personResult = services.getPersonResult();
-        ResultsPeople peopleResult = services.getPeopleResult();
-        EncoderDecoder coder = services.getCoder();
+        ResponsePerson personResult = new ResponsePerson(services.database);
+        ResponsePeople peopleResult = new ResponsePeople(services.database);
+        EncoderDecoder coder = new EncoderDecoder();
         String auth_token = null;
 
         try {

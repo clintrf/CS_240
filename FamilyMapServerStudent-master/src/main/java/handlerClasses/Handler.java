@@ -1,35 +1,15 @@
 package handlerClasses;
 
-import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import databaseClasses.DatabaseException;
-import modelClasses.ModelUser;
-import serviceClasses.Services;
-import serviceClasses.requestService.RequestLoad;
-import serviceClasses.requestService.RequestLogin;
-import serviceClasses.requestService.RequestRegister;
-import serviceClasses.resultService.*;
 
 import java.io.*;
-import java.net.HttpURLConnection;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.UUID;
 
 public class Handler implements HttpHandler {
 
-
-//    public static Services services;
-//
-//    static {
-//        try {
-//            services = new Services();
-//        } catch (DatabaseException e) {
-//            e.printStackTrace();
-//        }
-//    }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {

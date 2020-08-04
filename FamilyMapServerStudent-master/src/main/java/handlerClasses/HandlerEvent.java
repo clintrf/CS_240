@@ -5,8 +5,8 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import databaseClasses.DatabaseException;
 import serviceClasses.Services;
-import serviceClasses.resultService.ResultsEvent;
-import serviceClasses.resultService.ResultsEvents;
+import serviceClasses.ResponseEvent;
+import serviceClasses.ResponseEvents;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -17,15 +17,15 @@ public class HandlerEvent implements HttpHandler {
 
     public Services services;
 
-    public HandlerEvent() throws DatabaseException {
-        services = new Services();
+    public HandlerEvent(Services services) throws DatabaseException {
+        this.services = services;
     }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
-        ResultsEvent eventResult;
-        ResultsEvents eventsResult;
-        EncoderDecoder coder = services.getCoder();
+        ResponseEvent eventResult;
+        ResponseEvents eventsResult;
+        EncoderDecoder coder = new EncoderDecoder();
         String auth_token = null;
 
         try{
@@ -38,7 +38,7 @@ public class HandlerEvent implements HttpHandler {
 
             if (uri.length>2){
                 String eventId = uri[2];
-                eventResult = services.getEventResult();
+                eventResult = new ResponseEvent(services.database);
                 eventResult.eventResult(auth_token,eventId);
                 if (httpExchange.getRequestMethod().toLowerCase().equals("get")) {
                     httpExchange.sendResponseHeaders(HttpURLConnection.HTTP_OK,0);
@@ -52,7 +52,7 @@ public class HandlerEvent implements HttpHandler {
                 }
             }
             else{
-                eventsResult = services.getEventsResult();
+                eventsResult = new ResponseEvents(services.database);
                 eventsResult.eventsResult(auth_token);
                 if (httpExchange.getRequestMethod().toLowerCase().equals("get")) {
                     httpExchange.sendResponseHeaders(HttpURLConnection.HTTP_OK,0);

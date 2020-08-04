@@ -2,10 +2,9 @@ package handlerClasses;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import databaseClasses.DatabaseDatabase;
 import databaseClasses.DatabaseException;
 import serviceClasses.Services;
-import serviceClasses.resultService.ResultsClear;
+import serviceClasses.ResponseClear;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -16,18 +15,18 @@ public class HandlerClear implements HttpHandler {
 
     public Services services;
 
-    public HandlerClear() throws DatabaseException {
-        services = new Services();
+    public HandlerClear(Services services) throws DatabaseException {
+        this.services = services;
     }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
-        ResultsClear clearResult;
+        ResponseClear clearResult;
         EncoderDecoder coder;
-        clearResult = services.getClearResult();
+        clearResult = new ResponseClear(services.database);
         clearResult.clearResult();
-        coder = services.getCoder();
-        System.out.println(clearResult.getSuccess());
+        coder = new EncoderDecoder();
+
         try {
             System.out.println(clearResult.getSuccess());
             if(!clearResult.getSuccess()){

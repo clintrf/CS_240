@@ -2,36 +2,91 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d53df2a6-afa6-402b-a253-9e6734210fa4" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/family_map-master.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Fmserver/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Copy/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Copy/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Copy/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Copy/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Copy/Copy.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Copy/libs/FMSTestingObf.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Copy/libs/JUnit5/apiguardian-api-1.1.0.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Copy/libs/JUnit5/junit-jupiter-5.5.2.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Copy/libs/JUnit5/junit-jupiter-api-5.5.2.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Copy/libs/JUnit5/junit-jupiter-engine-5.5.2.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Copy/libs/JUnit5/junit-jupiter-params-5.5.2.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Copy/libs/JUnit5/junit-platform-commons-1.5.2.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Copy/libs/JUnit5/junit-platform-engine-1.5.2.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Copy/libs/JUnit5/opentest4j-1.2.0.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Copy/libs/apiguardian-api-1.1.0.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Copy/libs/commons-io-2.5.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Copy/libs/gson-2.6.2.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Copy/libs/json-20160212.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Copy/libs/junit-jupiter-5.5.2.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Copy/libs/junit-jupiter-api-5.5.2.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Copy/libs/junit-jupiter-engine-5.5.2.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Copy/libs/junit-jupiter-params-5.5.2.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Copy/libs/junit-platform-commons-1.5.2.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Copy/libs/junit-platform-engine-1.5.2.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Copy/libs/opentest4j-1.2.0.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Copy/libs/org.json.simple-0.4.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Copy/libs/sqlite-jdbc-3.28.0.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Copy/passoffFiles/LoadData.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Copy/src/test/java/passoff/ServerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/libs/commons-io-2.5.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/test/java/handlerClasses/HandlerTests.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/FMS_Passoff.log" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/FMS_Passoff.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/database.db" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/database.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/database.db-journal" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/database.db-journal" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/Server.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/dataAccessClasses/DaoAuthToken.java" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/dataAccessClasses/DaoAuthToken.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/dataAccessClasses/DaoEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/dataAccessClasses/DaoEvent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/dataAccessClasses/DaoPerson.java" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/dataAccessClasses/DaoPerson.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/dataAccessClasses/DaoUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/dataAccessClasses/DaoUser.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/databaseClasses/DatabaseDatabase.java" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/databaseClasses/DatabaseDatabase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/handlerClasses/EncoderDecoder.java" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/handlerClasses/EncoderDecoder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/modelClasses/ModelEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/modelClasses/ModelEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/serviceClasses/resultService/ResultsFill.java" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/serviceClasses/resultService/ResultsFill.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/handlerClasses/Handler.java" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/handlerClasses/Handler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/handlerClasses/HandlerClear.java" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/handlerClasses/HandlerClear.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/handlerClasses/HandlerEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/handlerClasses/HandlerEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/handlerClasses/HandlerFill.java" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/handlerClasses/HandlerFill.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/handlerClasses/HandlerLoad.java" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/handlerClasses/HandlerLoad.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/handlerClasses/HandlerLogin.java" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/handlerClasses/HandlerLogin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/handlerClasses/HandlerPerson.java" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/handlerClasses/HandlerPerson.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/handlerClasses/HandlerRegister.java" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/handlerClasses/HandlerRegister.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/serviceClasses/Services.java" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/serviceClasses/Services.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/serviceClasses/resultService/ResultsClear.java" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/serviceClasses/resultService/ResultsClear.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/serviceClasses/resultService/ResultsEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/serviceClasses/resultService/ResultsEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/serviceClasses/resultService/ResultsEvents.java" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/serviceClasses/resultService/ResultsEvents.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/serviceClasses/resultService/ResultsLoad.java" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/serviceClasses/resultService/ResultsLoad.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/serviceClasses/resultService/ResultsLogin.java" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/serviceClasses/resultService/ResultsLogin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/serviceClasses/resultService/ResultsPeople.java" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/serviceClasses/resultService/ResultsPeople.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/serviceClasses/resultService/ResultsPerson.java" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/serviceClasses/resultService/ResultsPerson.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/serviceClasses/resultService/ResultsRegister.java" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/main/java/serviceClasses/resultService/ResultsRegister.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/test/java/dataAccessClasses/authTokenTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/test/java/dataAccessClasses/authTokenTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/test/java/dataAccessClasses/userTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/test/java/dataAccessClasses/userTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/test/java/serviceAccessClasses/ResultsTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/src/test/java/serviceAccessClasses/ResultsTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/Server.class" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/Server.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/dataAccessClasses/DaoAuthToken.class" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/dataAccessClasses/DaoAuthToken.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/dataAccessClasses/DaoEvent.class" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/dataAccessClasses/DaoEvent.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/dataAccessClasses/DaoPerson.class" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/dataAccessClasses/DaoPerson.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/dataAccessClasses/DaoUser.class" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/dataAccessClasses/DaoUser.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/databaseClasses/DatabaseDatabase.class" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/databaseClasses/DatabaseDatabase.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/handlerClasses/EncoderDecoder.class" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/handlerClasses/EncoderDecoder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/modelClasses/ModelEvent.class" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/modelClasses/ModelEvent.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/serviceClasses/resultService/ResultsFill.class" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/serviceClasses/resultService/ResultsFill.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/serviceClasses/resultService/ResultsRegister.class" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/serviceClasses/resultService/ResultsRegister.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/dataAccessClasses/DaoEvent.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/dataAccessClasses/DaoPerson.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/dataAccessClasses/DaoUser.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/databaseClasses/DatabaseDatabase.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/handlerClasses/Handler.class" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/handlerClasses/Handler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/handlerClasses/HandlerClear.class" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/handlerClasses/HandlerClear.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/handlerClasses/HandlerEvent.class" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/handlerClasses/HandlerEvent.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/handlerClasses/HandlerFill.class" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/handlerClasses/HandlerFill.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/handlerClasses/HandlerLoad.class" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/handlerClasses/HandlerLoad.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/handlerClasses/HandlerLogin.class" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/handlerClasses/HandlerLogin.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/handlerClasses/HandlerPerson.class" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/handlerClasses/HandlerPerson.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/handlerClasses/HandlerRegister.class" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/handlerClasses/HandlerRegister.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/serviceClasses/Services.class" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/serviceClasses/Services.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/serviceClasses/resultService/ResultsClear.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/serviceClasses/resultService/ResultsEvent.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/serviceClasses/resultService/ResultsEvents.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/serviceClasses/resultService/ResultsFill$NamesData.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/serviceClasses/resultService/ResultsFill.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/serviceClasses/resultService/ResultsLoad.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/serviceClasses/resultService/ResultsLogin.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/serviceClasses/resultService/ResultsPeople.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/serviceClasses/resultService/ResultsPerson.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/classes/serviceClasses/resultService/ResultsRegister.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/test-classes/dataAccessClasses/authTokenTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/test-classes/dataAccessClasses/authTokenTest.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/test-classes/dataAccessClasses/userTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/test-classes/dataAccessClasses/userTest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/test-classes/serviceAccessClasses/ResultsTests.class" beforeDir="false" afterPath="$PROJECT_DIR$/../FamilyMapServerStudent-master/target/test-classes/serviceAccessClasses/ResultsTests.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,7 +105,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/Fmserver/fm_server_lib" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Copy" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
@@ -85,10 +140,11 @@
       <screen x="5760" y="540" width="2880" height="1620" />
     </state>
     <state x="6689" y="964" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.1080.1920.1080/5760.540.2880.1620/1920.0.3840.2160@5760.540.2880.1620" timestamp="1596062924849" />
-    <state x="6909" y="978" width="624" height="711" key="FileChooserDialogImpl" timestamp="1596132601021">
-      <screen x="5760" y="540" width="2880" height="1620" />
+    <state x="3452" y="584" width="624" height="711" key="FileChooserDialogImpl" timestamp="1596437405290">
+      <screen x="1920" y="0" width="3840" height="2160" />
     </state>
     <state x="6909" y="978" width="624" height="711" key="FileChooserDialogImpl/0.1080.1920.1080/5760.540.2880.1620/1920.0.3840.2160@5760.540.2880.1620" timestamp="1596132601021" />
+    <state x="3452" y="584" key="FileChooserDialogImpl/5760.540.2880.1620/1920.0.3840.2160/0.1080.1920.1080@1920.0.3840.2160" timestamp="1596437405290" />
     <state x="6458" y="700" width="1536" height="1261" key="SettingsEditor" timestamp="1596062869057">
       <screen x="5760" y="540" width="2880" height="1620" />
     </state>

@@ -28,7 +28,7 @@ public class eventTest {
 
     public eventTest() throws DatabaseException {
     }
-
+/*
     @BeforeEach
     public void init() throws DatabaseException {
         this.database = services.getDatabase();
@@ -177,4 +177,6 @@ public class eventTest {
                 "find by username find not working");
 
     }
+
+ */
 }

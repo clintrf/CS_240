@@ -21,7 +21,7 @@ public class personTest {
     ModelPerson tempModel01;
     ModelPerson tempModel02;
     ModelPerson tempModel03;
-
+/*
     @BeforeEach
     public void init() throws DatabaseException {
         this.database = new DatabaseDatabase();
@@ -164,4 +164,6 @@ public class personTest {
                 "find by username find not working");
 
     }
+
+ */
 }

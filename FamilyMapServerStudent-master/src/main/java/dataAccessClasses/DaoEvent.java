@@ -10,12 +10,12 @@ import databaseClasses.DatabaseException;
 import modelClasses.*;
 
 public class DaoEvent {
-    private Connection conn;
-    public DaoEvent(Connection conn){
-        this.conn = conn;
-    }
+    //private Connection conn;
+//    public DaoEvent(Connection conn){
+//        this.conn = conn;
+//    }
 
-    public void create() throws DatabaseException {
+    public void create(Connection conn)  {
         String sql = "create table if not exists events (" +
                 " event_id text primary key," +
                 " associated_user_name text not null," +
@@ -27,25 +27,25 @@ public class DaoEvent {
                 " event_type text not null," +
                 " year integer not null" +
                 " );";
-        try(PreparedStatement stmt = this.conn.prepareStatement(sql)){
+        try(PreparedStatement stmt = conn.prepareStatement(sql)){
             stmt.executeUpdate();
         } catch (SQLException e) {
-            throw new DatabaseException("Error create events table");
+            //throw new DatabaseException("Error create events table");
         }
     }
 
-    public void clear() throws DatabaseException{
+    public void clear(Connection conn) throws DatabaseException{
         String sql = "delete from events";
-        try (PreparedStatement stmt = this.conn.prepareStatement(sql)){
+        try (PreparedStatement stmt = conn.prepareStatement(sql)){
             stmt.executeUpdate();
         } catch (SQLException e) {
             throw new DatabaseException("Error clear events table");
         }
     }
 
-    public void drop() throws DatabaseException {
+    public void drop(Connection conn) throws DatabaseException {
         String sql = "drop table if exists events";
-        try(PreparedStatement stmt = this.conn.prepareStatement(sql)){
+        try(PreparedStatement stmt = conn.prepareStatement(sql)){
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -53,7 +53,7 @@ public class DaoEvent {
         }
     }
 
-    public void insert(ModelEvent event) throws DatabaseException {
+    public void insert(ModelEvent event,Connection conn ) throws DatabaseException {
         String sql = "insert into events ("+
                 " event_id," +
                 " associated_user_name," +
@@ -66,7 +66,7 @@ public class DaoEvent {
                 " year" +
                 ")" +
                 " values (?,?,?,?,?,?,?,?,?);";
-        try(PreparedStatement stmt = this.conn.prepareStatement(sql)){
+        try(PreparedStatement stmt = conn.prepareStatement(sql)){
             stmt.setString(1, event.getEventID());
             stmt.setString(2, event.getAssociatedUsername());
             stmt.setString(3, event.getPersonID());
@@ -83,9 +83,9 @@ public class DaoEvent {
         }
     }
 
-    public void removeEventById(String eventId) throws DatabaseException {
+    public void removeEventById(String eventId, Connection conn) throws DatabaseException {
         String sql = "delete from events where event_id = ?;";
-        try(PreparedStatement stmt = this.conn.prepareStatement(sql)){
+        try(PreparedStatement stmt = conn.prepareStatement(sql)){
             stmt.setString(1,eventId);
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -94,17 +94,17 @@ public class DaoEvent {
         }
     }
 
-    public void removeEventsByIds(ArrayList<String> eventIds) throws DatabaseException {
+    public void removeEventsByIds(ArrayList<String> eventIds, Connection conn) throws DatabaseException {
         for(String eventId : eventIds){
-            removeEventById(eventId);
+            removeEventById(eventId, conn);
         }
     }
 
-    public ModelEvent findEventById(String eventId) throws DatabaseException{
+    public ModelEvent findEventById(String eventId, Connection conn) throws DatabaseException{
         ModelEvent event;
         ResultSet rs = null;
         String sql = "select * from events where event_id = ?;";
-        try (PreparedStatement stmt = this.conn.prepareStatement(sql)) {
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, eventId);
             rs = stmt.executeQuery();
             if (rs.next()) {
@@ -147,11 +147,11 @@ public class DaoEvent {
         }
     }
 
-    public ArrayList<ModelEvent> findEventsByIds(ArrayList<String> eventIds) throws DatabaseException{
+    public ArrayList<ModelEvent> findEventsByIds(ArrayList<String> eventIds, Connection conn) throws DatabaseException{
         ModelEvent event;
         ArrayList<ModelEvent> events = new ArrayList<>();
         for (String eventId : eventIds){
-            event = findEventById(eventId);
+            event = findEventById(eventId, conn);
             if(event!=null){
                 events.add(event);
             }
@@ -159,12 +159,12 @@ public class DaoEvent {
         return events;
     }
 
-    public ArrayList<ModelEvent> findEventsByAssociatedUserName(String associatedUserName) throws DatabaseException {
+    public ArrayList<ModelEvent> findEventsByAssociatedUserName(String associatedUserName, Connection conn) throws DatabaseException {
         ModelEvent event;
         ArrayList<ModelEvent> events = new ArrayList<>();
         ResultSet rs = null;
         String sql = "select * from events where associated_user_name = ?;";
-        try (PreparedStatement stmt = this.conn.prepareStatement(sql)) {
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, associatedUserName);
             rs = stmt.executeQuery();
             while (rs.next()) {

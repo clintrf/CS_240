@@ -4,12 +4,9 @@ import com.google.gson.Gson;
 import modelClasses.ModelEvent;
 import modelClasses.ModelPerson;
 import modelClasses.ModelUser;
-import serviceClasses.requestService.RequestLoad;
-import serviceClasses.requestService.RequestLogin;
-import serviceClasses.requestService.RequestRegister;
-import serviceClasses.resultService.ResultsPerson;
-
-import java.lang.reflect.Type;
+import serviceClasses.RequestLoad;
+import serviceClasses.RequestLogin;
+import serviceClasses.RequestRegister;
 
 public class EncoderDecoder {
 

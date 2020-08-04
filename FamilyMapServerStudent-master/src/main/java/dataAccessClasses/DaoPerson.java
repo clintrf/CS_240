@@ -12,11 +12,11 @@ import modelClasses.*;
 public class DaoPerson {
     private Connection conn;
 
-    public DaoPerson(Connection conn) {
-        this.conn = conn;
-    }
+//    public DaoPerson(Connection conn) {
+//        this.conn = conn;
+//    }
 
-    public void create() throws DatabaseException {
+    public void create(Connection conn) {
         String sql = "create table if not exists people (" +
                 " person_id text primary key," +
                 " associated_user_name text not null," +
@@ -28,25 +28,25 @@ public class DaoPerson {
                 " spouse_id text" +
                 " constraint ck_gender check (gender in ('f', 'm'))" +
                 " );";
-        try (PreparedStatement stmt = this.conn.prepareStatement(sql)) {
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.executeUpdate();
         } catch (SQLException e) {
-            throw new DatabaseException("Error create people table");
+//            throw new DatabaseException("Error create people table");
         }
     }
 
-    public void clear() throws DatabaseException{
+    public void clear(Connection conn) throws DatabaseException{
         String sql = "delete from people";
-        try (PreparedStatement stmt = this.conn.prepareStatement(sql)){
+        try (PreparedStatement stmt = conn.prepareStatement(sql)){
             stmt.executeUpdate();
         } catch (SQLException e) {
             throw new DatabaseException("Error clear people table");
         }
     }
 
-    public void drop() throws DatabaseException {
+    public void drop(Connection conn) throws DatabaseException {
         String sql = "drop table if exists people";
-        try (PreparedStatement stmt = this.conn.prepareStatement(sql)) {
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -54,7 +54,7 @@ public class DaoPerson {
         }
     }
 
-    public void insert(ModelPerson person) throws DatabaseException {
+    public void insert(ModelPerson person, Connection conn) throws DatabaseException {
         String sql = "insert into people (" +
                 " person_id," +
                 " associated_user_name," +
@@ -66,7 +66,7 @@ public class DaoPerson {
                 " spouse_id" +
                 ")" +
                 " values (?,?,?,?,?,?,?,?);";
-        try (PreparedStatement stmt = this.conn.prepareStatement(sql)) {
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, person.getPersonID());
             stmt.setString(2, person.getAssociatedUsername());
             stmt.setString(3, person.getFirstName());
@@ -82,9 +82,9 @@ public class DaoPerson {
         }
     }
 
-    public void removePersonById(String personId) throws DatabaseException {
+    public void removePersonById(String personId, Connection conn) throws DatabaseException {
         String sql = "delete from people where person_id = ?;";
-        try (PreparedStatement stmt = this.conn.prepareStatement(sql)) {
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, personId);
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -93,17 +93,17 @@ public class DaoPerson {
         }
     }
 
-    public void removePeopleByIds(ArrayList<String> people) throws DatabaseException {
+    public void removePeopleByIds(ArrayList<String> people, Connection conn) throws DatabaseException {
         for (String person : people) {
-            removePersonById(person);
+            removePersonById(person, conn);
         }
     }
 
-    public ModelPerson findPersonById(String personId) throws DatabaseException {
+    public ModelPerson findPersonById(String personId, Connection conn) throws DatabaseException {
         ModelPerson person;
         ResultSet rs = null;
         String sql = "select * from people where person_id = ?;";
-        try (PreparedStatement stmt = this.conn.prepareStatement(sql)) {
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, personId);
             rs = stmt.executeQuery();
             if (rs.next()) {
@@ -145,11 +145,11 @@ public class DaoPerson {
         }
     }
 
-    public ArrayList<ModelPerson> findPeopleByIds(ArrayList<String> personIds) throws DatabaseException{
+    public ArrayList<ModelPerson> findPeopleByIds(ArrayList<String> personIds, Connection conn) throws DatabaseException{
         ModelPerson person;
         ArrayList<ModelPerson> people = new ArrayList<>();
         for (String personId : personIds){
-            person = findPersonById(personId);
+            person = findPersonById(personId, conn);
             if(person!=null){
                 people.add(person);
             }
@@ -157,12 +157,12 @@ public class DaoPerson {
         return people;
     }
 
-    public ArrayList<ModelPerson> findPeopleByAssociatedUserName(String associatedUserName) throws DatabaseException {
+    public ArrayList<ModelPerson> findPeopleByAssociatedUserName(String associatedUserName, Connection conn) throws DatabaseException {
         ModelPerson person;
         ArrayList<ModelPerson> people = new ArrayList<>();
         ResultSet rs = null;
         String sql = "select * from people where associated_user_name = ?;";
-        try (PreparedStatement stmt = this.conn.prepareStatement(sql)) {
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, associatedUserName);
             rs = stmt.executeQuery();
             while (rs.next()) {

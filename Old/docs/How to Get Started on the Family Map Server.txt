@@ -1,0 +1,86 @@
+﻿How to Get Started on the Family Map Server
+Purpose
+The document will instruct you on how to set up your Server project in IntelliJ so that you can run the test cases from within IntelliJ. This test driver is almost identical to that which will be used by the TA’s, so the tests you pass while running it yourself should match those you pass when the TA’s run your code. At the bottom of this document, there will be instructions to run the in-terminal pass-off driver. Those instructions are left for students who do not wish to use IntelliJ, but most students should ignore them.
+System requirements
+This should work on the lab computers without any additional set up on your part. If you wish to program on a personal computer, any version of IntelliJ should be compatible with these instructions, but we’ll update this document if we discover anything to the contrary.
+Downloading the Project
+This first thing that we are going to do is download the IntelliJ project with our skeleton project. Go to the project’s Github repository. Once there, click on “Clone or download” and select “Download zip.”
+  
+
+
+
+Once downloaded, uncompress the contents of the folder to the directory that you’d like to store the project in. Then open IntelliJ. Select File -> Open… Navigate to the location that you placed the uncompressed folder and select the innermost folder called “FamilyMapServerStudent-master” as pictured below.
+  
+
+
+
+* Then click OK. 
+* Allow IntelliJ a few minutes to download any dependencies and set up the project. 
+* Once it is done loading, try running the HelloWorld.java's main function. It is found in src/main/java/HelloWorld.java. 
+* If you get an error message like "release version 12 not supported," select File -> Settings -> Build, Execution, Deployment -> Compiler -> Java Compiler and change the target byteode version to 8. 
+* Select Help -> Edit Custom VM Options and add the following line to the end of the file: -Deditable.java.test.console=true
+* Select File -> Invalidate Caches / Restart
+
+
+Once IntelliJ finishes restarting, you should be good to go. You can run the JUnit test cases in the same way that you did for the other projects. They are found in the ServerTest.java found in src/test/java/passoff/ServerTest.java. In this file, you may need to initialize the host variable and port variable to the host and port of your server, respectively.
+
+
+
+
+
+
+Setting up for the Persistence Test
+One of the tests that we include in the ServerTest file is the Persistence Test. This test is designed to make sure that your database is persistent and not dependent on your server running. To test this, this test will have you shut down your server during the test and start it back up. You will need to provide input so that the test file knows that your server has been restarted (and does not cause a connection error). To accept input during unit tests however you need to configure IntelliJ for that. First go into Help > Edit Custom VM Options 
+
+  
+
+
+IntelliJ may say that the file doesn’t exist. If that is the case just press “OK” when it prompts you to create the file.
+
+The file idea64.exe.vmoptions or something similar should pop-up. You will need to add the line -Deditable.java.test.console=true Somewhere in the file. 
+
+
+  
+
+
+
+Make sure you restart IntelliJ for the new option to take effect. 
+All Done!
+Great job. You’re ready to get started on your project. From here, you can delete the HelloWorld.java file and get to work on your server by creating your first packages in the src/main/java folder.
+
+
+Make sure to run your server before running the test cases. You can run the test cases now to make sure that they work, but they should all fail do to a “Connection refused” error. If you ever get this error, it’s probably because your server isn’t running.
+
+
+Good luck!
+________________
+
+
+Family Map Server In-Terminal Test Driver Tutorial (old method)
+Purpose
+This document will instruct you on how to download and run the test driver for the Family Map Server test driver. This test driver is almost identical to that which will be used by the TA’s, so the tests you pass while running it yourself should match those you pass when the TA’s run your code. You should ignore this if you’re running the tests in IntelliJ.
+System Requirements
+This should work on the lab computers without any additional set up on your part. If you wish to run the test driver on your own windows machine, simply install java on your computer and use the Windows command prompt instead of the Linux terminal. To run it on your own linux machine, you should run “sudo apt install openjdk-8-jre” in your terminal to install java.
+Downloading the Drivers
+Go to the Canvas Family Map Server Program assignment and click “Test Driver(Zip) “
+Once there click on “Test Driver” on in the Family Map Server section.
+
+
+You should then be prompted for where to save the FMSTestDriver.zip file. Save it wherever you’d like. Then extract its content to wherever you’d like. After the extraction, you should have a new folder named “FMSTestDriver”. Open a terminal and navigate to FMSTestDriver/driver.
+  
+
+
+
+Inside this folder you should see FMSTesting.jar, LoadData.json, README, and web, as shown above. Don’t modify LoadData.json or web. If you forget how to run the driver, you can read the README file. We will now discuss how to run the driver.
+Running the Test Driver
+First, make sure that your server is running. You can do this by opening a web browser and typing “http://localhost:<port>” in the address. You should see the index.html displayed as shown below.
+  
+
+
+
+Once you have your server running and a terminal open to the FMSTestDriver/driver folder, you are ready to run the test driver. To run the test driver, run the following command: “java -jar FMSTesting.jar <host> <port>”. The test driver has been compiled to a jar file with a main function. It accepts as parameters the host and port of your server. If you’re running the test driver on the same machine as your server, you can replace “<host>” with “localhost”. It might be good to try it with your actual ip address because that is what you will need to enter when you pass off with the TA’s. You should replace “<port>” with the port that your server is running on (usually 8080). The command you run might look like the image below.
+  
+
+
+
+Usually the first test to run is the Persistence Test. When this test runs, it will prompt you to turn your server off and back on. Once you have done this, press enter to finish the test. The rest of the tests will run without any user interaction. It normally takes one to five minutes to run the tests. If you pass all the tests, you should see an output similar to the below image. Congratulations, you’ve run the pass off driver.

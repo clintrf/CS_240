@@ -1,131 +1,127 @@
 package dataAccessClasses;
 
-import java.sql.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import databaseClasses.DatabaseException;
 import modelClasses.*;
 
 public class DaoAuthToken {
-    private Connection conn;
-    public DaoAuthToken(Connection conn){
-        this.conn = conn;
-    }
+    public Connection conn;
+    //public DaoAuthToken(Connection conn){
+    //    this.conn = conn;
+    //}
 
-    public void create() throws DatabaseException {
+    public void create(Connection conn){
         String sql = "create table if not exists auth_tokens (" +
                 " auth_token text primary key," +
                 " user_name text not null," +
                 " password text not null" +
                 " );";
-        try(PreparedStatement stmt = this.conn.prepareStatement(sql)){
+        try(PreparedStatement stmt = conn.prepareStatement(sql)){
             stmt.executeUpdate();
             stmt.close();
-        } catch (SQLException e) {
-            throw new DatabaseException("Error create auth_tokens table");
-        }
-    }
+            //return true;
 
-    public void clear() throws DatabaseException{
-        String sql = "delete from auth_tokens";
-        try (PreparedStatement stmt = this.conn.prepareStatement(sql)){
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new DatabaseException("Error clear auth_tokens table");
-        }
-    }
-
-    public void drop() throws DatabaseException {
-        String sql = "drop table if exists auth_tokens";
-        try(PreparedStatement stmt = this.conn.prepareStatement(sql)){
-            stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Error drop auth_tokens table");
+            //return false;
         }
     }
 
-    public void insert(ModelAuthToken authToken) throws DatabaseException {
+    public void clear(Connection conn) {
+        String sql = "delete from auth_tokens";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)){
+            stmt.executeUpdate();
+            //stmt.close();
+            //return true;
+        } catch (SQLException e) {
+           e.printStackTrace();
+           //return false;
+        }
+    }
+
+    public void drop(Connection conn) {
+        String sql = "drop table if exists auth_tokens";
+        try(PreparedStatement stmt = conn.prepareStatement(sql)){
+            stmt.executeUpdate();
+            stmt.close();
+            //return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            //return false;
+        }
+    }
+
+    public void insert(ModelAuthToken authToken, Connection conn) {
         String sql = "insert into auth_tokens ("+
                 " auth_token," +
                 " user_name," +
                 " password" +
                 ")" +
                 " values (?,?,?);";
-        try(PreparedStatement stmt = this.conn.prepareStatement(sql)){
+        try(PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, authToken.getAuthToken());
             stmt.setString(2, authToken.getUserName());
             stmt.setString(3, authToken.getPassword());
 
             stmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new DatabaseException("Error insert auth_tokens table");
+            //stmt.close();
+            //return true;
+        }catch (SQLException e){
+            e.printStackTrace();
+            //return false;
         }
     }
 
-    public void removeAuthTokenByToken(String authToken) throws DatabaseException {
+    public boolean removeAuthTokenByToken(String authToken, Connection conn) {
         String sql = "delete from auth_tokens where auth_token = ?;";
-        try(PreparedStatement stmt = this.conn.prepareStatement(sql)){
+        try(PreparedStatement stmt = conn.prepareStatement(sql)){
             stmt.setString(1,authToken);
             stmt.executeUpdate();
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Error removeAuthTokenByToken auth_tokens table");
+            return false;
         }
     }
 
-    public void removeAuthTokensByTokens(ArrayList<String> authTokens) throws DatabaseException {
+    public void removeAuthTokensByTokens(ArrayList<String> authTokens, Connection conn) {
         for (String authToken : authTokens) {
-            removeAuthTokenByToken(authToken);
+            removeAuthTokenByToken(authToken, conn);
         }
     }
 
-    public ModelAuthToken findAuthTokenByToken(String token) throws DatabaseException{
-        ModelAuthToken authToken;
-        ResultSet rs = null;
+    public ModelAuthToken getAuthTokenByToken(String token, Connection conn) throws SQLException {
         String sql = "select * from auth_tokens where auth_token = ?;";
-        try (PreparedStatement stmt = this.conn.prepareStatement(sql)) {
+        PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, token);
-            rs = stmt.executeQuery();
-            if (rs.next()) {
+            ResultSet rs = stmt.executeQuery();
+            ModelAuthToken authToken = new ModelAuthToken(
+                    null,
+                    null,
+                    null
+            );
+            while(rs.next()) {
                 authToken = new ModelAuthToken(
-                        rs.getString("auth_token"),
-                        rs.getString("user_name"),
-                        rs.getString("password")
+                        rs.getString(1),
+                        rs.getString(2),
+                        rs.getString(3)
                 );
-                return authToken;
             }
-            else{
-                authToken = new ModelAuthToken(
-                        null,
-                        null,
-                        null
-                );
-                return authToken;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new DatabaseException("Error findAuthTokenMyToken auth_tokens table");
-        } finally {
-            if(rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+            rs.close();
+            stmt.close();
+            return authToken;
+
     }
 
-    public ArrayList<ModelAuthToken> findAuthTokensByTokens(ArrayList<String> tokens) throws DatabaseException{
+    public ArrayList<ModelAuthToken> findAuthTokensByTokens(ArrayList<String> tokens, Connection conn) throws SQLException {
         ModelAuthToken authToken;
         ArrayList<ModelAuthToken> authTokens = new ArrayList<>();
         for (String token : tokens){
-            authToken = findAuthTokenByToken(token);
+            authToken = getAuthTokenByToken(token, conn);
             if(authToken!=null){
                 authTokens.add(authToken);
             }
@@ -133,41 +129,29 @@ public class DaoAuthToken {
         return authTokens;
     }
 
-    public ModelAuthToken findAuthTokenByUserName(String userName) throws DatabaseException {
-        ModelAuthToken name;
-        ResultSet rs = null;
+    public ModelAuthToken findAuthTokenByUserName(String userName, Connection conn) {
         String sql = "select * from auth_tokens where user_name = ?;";
-        try (PreparedStatement stmt = this.conn.prepareStatement(sql)) {
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, userName);
-            rs = stmt.executeQuery();
-            if (rs.next()) {
-                name = new ModelAuthToken(
-                        rs.getString("auth_token"),
-                        rs.getString("user_name"),
-                        rs.getString("password")
+            ResultSet rs = stmt.executeQuery();
+            ModelAuthToken authToken = new ModelAuthToken(
+                    rs.getString(null),
+                    rs.getString(null),
+                    rs.getString(null)
+            );
+            while (rs.next()) {
+                authToken = new ModelAuthToken(
+                        rs.getString(1),
+                        rs.getString(2),
+                        rs.getString(3)
                 );
-                return name;
             }
-            else{
-                name = new ModelAuthToken(
-                        null,
-                        null,
-                        null
-                );
-                return name;
-            }
-        } catch (SQLException e) {
+            rs.close();
+            stmt.close();
+            return authToken;
+        }catch (SQLException e){
             e.printStackTrace();
-            throw new DatabaseException("Error findAuthTokenMyUserName auth_tokens table");
-        } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-
         }
+        return null;
     }
 }

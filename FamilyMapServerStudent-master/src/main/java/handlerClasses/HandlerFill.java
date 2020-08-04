@@ -4,7 +4,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import databaseClasses.DatabaseException;
 import serviceClasses.Services;
-import serviceClasses.resultService.ResultsFill;
+import serviceClasses.ResponseFill;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -15,23 +15,23 @@ public class HandlerFill implements HttpHandler {
 
     public Services services;
 
-    public HandlerFill() throws DatabaseException {
-        services = new Services();
+    public HandlerFill(Services services) throws DatabaseException {
+        this.services = services;
     }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
-        ResultsFill fillResult = services.getFillResult();
-        EncoderDecoder coder = services.getCoder();
+        ResponseFill fillResult = new ResponseFill(services.database);
+        EncoderDecoder coder = new EncoderDecoder();
 
         try{
             String[] uri = httpExchange.getRequestURI().toString().split("/");
             String username = uri[2];
             if (uri.length>3){
-                fillResult.fillResult(username, Integer.parseInt(uri[3]));
+                services.fillResponse(username, Integer.parseInt(uri[3]));
             }
             else{
-                fillResult.fillResult(username, 4);
+                services.fillResponse(username, 4);
             }
 
             if (httpExchange.getRequestMethod().toLowerCase().equals("post")) {
