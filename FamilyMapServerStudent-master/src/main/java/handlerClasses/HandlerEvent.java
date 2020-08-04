@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-
+/*
 public class HandlerEvent implements HttpHandler {
 
     public Services services;
@@ -78,3 +78,4 @@ public class HandlerEvent implements HttpHandler {
         sw.flush();
     }
 }
+*/

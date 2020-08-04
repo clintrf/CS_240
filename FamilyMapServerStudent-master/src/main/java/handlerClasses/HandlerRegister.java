@@ -11,7 +11,7 @@ import serviceClasses.ResponseRegister;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
-
+/*
 public class HandlerRegister implements HttpHandler {
 
     public Services services;
@@ -69,3 +69,4 @@ public class HandlerRegister implements HttpHandler {
         return sb.toString();
     }
 }
+*/

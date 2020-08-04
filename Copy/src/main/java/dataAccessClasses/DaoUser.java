@@ -1,13 +1,8 @@
-
 package main.java.dataAccessClasses;
-
 import main.java.modelClasses.ModelUsers;
-
 import java.sql.*;
 
-
 public class DaoUser {
-
     public void create(Connection conn){
         String sql = "create table if not exists users (" +
                 " userName text not null primary key," +

@@ -118,7 +118,7 @@ public class ServerTest {
             Assertions.fail(serverConnectionException.getMessage());
         }
     }
-/*
+
     @Test
     @DisplayName("Re-Register User Test")
     public void testReRegister(TestInfo paramTestInfo) throws Client.ServerConnectionException {
@@ -205,7 +205,7 @@ public class ServerTest {
             Assertions.fail(serverConnectionException.getMessage());
         }
     }
-/*
+
     @Test
     @DisplayName("Person Wrong User Test")
     public void testWrongUserPerson(TestInfo paramTestInfo) throws Client.ServerConnectionException {
@@ -686,7 +686,7 @@ public class ServerTest {
             Assertions.fail(serverConnectionException.getMessage());
         }
     }
-*/
+
     private String fileToString(String paramString) {
         try {
             FileInputStream fileInputStream = new FileInputStream(new File(paramString));

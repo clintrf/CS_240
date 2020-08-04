@@ -4,6 +4,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.sql.SQLException;
 import java.util.UUID;
 
 import com.sun.net.httpserver.*;
@@ -12,104 +13,63 @@ import databaseClasses.DatabaseDatabase;
 import databaseClasses.DatabaseException;
 import handlerClasses.*;
 import org.apache.commons.io.IOUtils;
-import serviceClasses.ResponseClear;
-import serviceClasses.ResponseFill;
-import serviceClasses.Services;
+import serviceClasses.*;
 
 
 public class Server {
 
     private static final int MAX_WAITING_CONNECTIONS = 12;
+    private static Services service = new Services();
+    private static HttpServer server;
+    private static EncoderDecoder coder = new EncoderDecoder();
 
+    public static void main(String[] args)  {
+        int port = 8080;
 
-    private static  Services services = new Services();
+        System.out.println("server listening on port: " + port);
+        System.out.println();
 
-
-
-    private void run(String portNumber) throws DatabaseException {
-
-        System.out.println("Initializing HTTP Server");
-
-        String port = "8080";
-        if (portNumber == null){
-            portNumber = port;
-        }
-
-        System.out.println("server listening on port" + portNumber);
-        System.out.println("default port: " + port + "\n");
-
-        HttpServer server;
         try {
-            server = HttpServer.create(
-                    new InetSocketAddress(Integer.parseInt(portNumber)),
-                    MAX_WAITING_CONNECTIONS);
-        }
-        catch (IOException e) {
-            e.printStackTrace();
+            server = HttpServer.create(new InetSocketAddress(port), MAX_WAITING_CONNECTIONS);
+        }catch(IOException ex){
+            ex.printStackTrace();
             return;
         }
+
         server.setExecutor(null);
 
-//        System.out.println("Creating contexts");
-//        server.createContext("/clear", new HandlerClear());
-//        server.createContext("/event/", new HandlerEvent());
-//        server.createContext("/fill/", new HandlerFill());
-//        server.createContext("/load", new HandlerLoad());
-//        server.createContext("/user/login", new HandlerLogin());
-//        server.createContext("/person/", new HandlerPerson());
-//        server.createContext("/user/register", new HandlerRegister());
-//        server.createContext("/", new Handler());
         server.createContext("/clear", new ClearHandler());
 
-        server.createContext("/event/", new EventHandler());
+        server.createContext("/event", new EventHandler());
 
-        server.createContext("/fill/", new FillHandler());
+        server.createContext("/fill", new FillHandler());
 
         server.createContext("/load", new LoadHandler());
 
         server.createContext("/user/login", new LoginHandler());
 
-        server.createContext("/person/", new PeopleHandler());
+        server.createContext("/person", new PeopleHandler());
 
         server.createContext("/user/register", new RegisterHandler());
 
         server.createContext("/", new RootHandler());
 
-        System.out.println("Starting server");
         server.start();
-        System.out.println("Server started");
-    }
-
-    public static void main(String[] args) throws DatabaseException {
-        if(args.length!=0){
-            System.out.println(args.length);
-            String portNumber = args[0];
-            new Server().run(portNumber);
-        }
-        else {
-            new Server().run(null);
-        }
 
     }
 
-    //private static ServerFacade service = new ServerFacade();
 
 
 
 
-
-    private static HttpServer server;
-    private static EncoderDecoder coder = new EncoderDecoder();
 
     //handler classes
     public static class ClearHandler implements HttpHandler{
 
         public void handle(HttpExchange exchange){
-            //cf ResultsClear clear = service.clear();
-            ResultsClear clear = services.;
-            clear.clearResult();
+            ResponseClear clear = service.clear();
 //            System.out.println("Before Clear Json");
-            String send_back = coder.encodeResultsClear(clear);
+            String send_back = coder.encodetoResponseClear(clear);
 //            System.out.println("After Clear Json");
 
             try {
@@ -141,12 +101,62 @@ public class Server {
     }
 
     public static class  EventHandler implements HttpHandler{
+        ResponseEvent eventResponse;
+        ResponseEvents eventsResponse;
+        String send_back;
+        public void handle(HttpExchange exchange){
+            String [] uri = exchange.getRequestURI().toString().split("/");
+            Headers reqHeaders = exchange.getRequestHeaders();
+            String auth_token = "";
+            if (reqHeaders.containsKey("Authorization")) {
+                auth_token = reqHeaders.getFirst("Authorization");
+//                System.out.println(auth_token);
+            }
+            if(uri.length > 2){ //this means it is a single event request
+                String eventID = uri[2];
+                eventResponse = service.event(auth_token, eventID);
+                send_back = coder.encodeResponseEvent(eventResponse);
+                try {
+                    if(eventResponse.getSuccess()){
+                        exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+                        OutputStream respBody = exchange.getResponseBody();
+                        writeString(send_back, respBody);
+                        respBody.close();
+                    }
+                    else {
+                        exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
+                        OutputStream respBody = exchange.getResponseBody();
+                        writeString(send_back, respBody);
+                        respBody.close();
+                    };
 
-        @Override
-        public void handle(HttpExchange httpExchange) throws IOException {
+                }catch(IOException ex){
+                    ex.printStackTrace();
+                }
+            }else{
+                System.out.println("AUTH_TOKEN: " + auth_token);
+                eventsResponse = service.events(auth_token);
+                send_back = coder.encodeResponseEvents(eventsResponse);
+                System.out.println(send_back);
+                try {
+                    if(eventsResponse.getSuccess()){
+                        exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+                        OutputStream respBody = exchange.getResponseBody();
+                        writeString(send_back, respBody);
+                        respBody.close();
+                    }
+                    else {
+                        exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
+                        OutputStream respBody = exchange.getResponseBody();
+                        writeString(send_back, respBody);
+                        respBody.close();
+                    };
 
+                }catch(IOException ex){
+                    ex.printStackTrace();
+                }
+            }
         }
-    }
 
         private void writeString(String str, OutputStream os) throws IOException {
             OutputStreamWriter sw = new OutputStreamWriter(os);
@@ -162,15 +172,19 @@ public class Server {
             String [] uri = exchange.getRequestURI().toString().split("/");
             String username = uri[2];
             if(uri.length > 3){ //specifying the number of generations wanted
-                //cf fillResponse = service.fill(username, Integer.parseInt(uri[3]));
-                fillResponse = new ResponseFill(services.);
-                fillResponse.fillResult(username,Integer.parseInt(uri[3]));
+                try {
+                    fillResponse = service.fill(username, Integer.parseInt(uri[3]));
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }else{
-                //cf fillResponse = service.fill(username);
-                fillResponse = services.getFillResult();
-                fillResponse.fillResult(username,0); //fix later
+                try {
+                    fillResponse = service.fill(username);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
-            String send_back = coder.encode(fillResponse);
+            String send_back = coder.encodeResponseFill(fillResponse);
 
             try {
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
@@ -215,7 +229,7 @@ public class Server {
 
         public void handle(HttpExchange exchange){
             System.out.println("In Load Handler");
-            ResultsLoad loadResponse;
+            ResponseLoad loadResponse;
             String requestBody = "";
 //            System.out.println("in register handler");
             try {
@@ -223,27 +237,24 @@ public class Server {
             }catch(IOException ex){
                 ex.printStackTrace();
             }
-            RequestLoad send_to = coder.decodeToRequestLoad(requestBody);
-            //cf loadResponse = service.load(send_to);
-            loadResponse = services.getLoadResult();
-            loadResponse.loadResult(send_to);
-            String send_back = coder.encode(loadResponse);
+            RequestLoad send_to = coder.decodetoRequestLoad(requestBody);
+            loadResponse = service.load(send_to);
+            String send_back = coder.encodeResponseLoad(loadResponse);
 
             try {
-                exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
 
-                // Now that the status code and headers have been sent to the client,
-                // next we send the JSON data in the HTTP response body.
-
-                // Get the response body output stream.
-                OutputStream respBody = exchange.getResponseBody();
-                // Write the JSON string to the output stream.
-                writeString(send_back, respBody);
-                // Close the output stream.  This is how Java knows we are done
-                // sending data and the response is complete/
-                respBody.close();
-//                exchange.sendResponseHeaders(200, 0);
-//                exchange.getResponseBody().close();
+                if(loadResponse.getSuccess()){
+                    exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+                    OutputStream respBody = exchange.getResponseBody();
+                    writeString(send_back, respBody);
+                    respBody.close();
+                }
+                else {
+                    exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
+                    OutputStream respBody = exchange.getResponseBody();
+                    writeString(send_back, respBody);
+                    respBody.close();
+                }
             }catch(IOException ex){
                 ex.printStackTrace();
             }
@@ -258,7 +269,7 @@ public class Server {
     }
 
     public static class LoginHandler implements HttpHandler{
-        ResultsLogin loginResponse;
+        ResponseLogin loginResponse;
         public void handle(HttpExchange exchange){
             String requestBody = "";
 //            System.out.println("in register handler");
@@ -267,27 +278,23 @@ public class Server {
             }catch(IOException ex){
                 ex.printStackTrace();
             }
-            RequestLogin loginRequest = coder.decodeToRequestLogin(requestBody);
-            //cf loginResponse = service.login(loginRequest);
-            loginResponse = services.getLoginResult();
-            loginResponse.loginResult(loginRequest);
-            String send_back = coder.encode(loginResponse);
+            RequestLogin loginRequest = coder.decodetoRequestLogin(requestBody);
+            loginResponse = service.login(loginRequest);
+            String send_back = coder.encodeResponseLogin(loginResponse);
 
             try {
-                exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
-
-                // Now that the status code and headers have been sent to the client,
-                // next we send the JSON data in the HTTP response body.
-
-                // Get the response body output stream.
-                OutputStream respBody = exchange.getResponseBody();
-                // Write the JSON string to the output stream.
-                writeString(send_back, respBody);
-                // Close the output stream.  This is how Java knows we are done
-                // sending data and the response is complete/
-                respBody.close();
-//                exchange.sendResponseHeaders(200, 0);
-//                exchange.getResponseBody().close();
+                if(loginResponse.getSuccess()){
+                    exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+                    OutputStream respBody = exchange.getResponseBody();
+                    writeString(send_back, respBody);
+                    respBody.close();
+                }
+                else {
+                    exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
+                    OutputStream respBody = exchange.getResponseBody();
+                    writeString(send_back, respBody);
+                    respBody.close();
+                }
             }catch(IOException ex){
                 ex.printStackTrace();
             }
@@ -303,60 +310,67 @@ public class Server {
 
     public static class PeopleHandler implements HttpHandler{
         //check for people/persons
-        ResultsPeople peopleResponse;
-        ResultsPerson personResponse;
+        ResponsePeople peopleResponse;
+        ResponsePerson personResponse;
         String send_back;
-        //DaoAuthToken tokenAccess = new DaoAuthToken();
+        DaoAuthToken tokenAccess = new DaoAuthToken();
 
-        public void handle(HttpExchange exchange){
+        public void handle(HttpExchange exchange) throws IOException {
             Headers reqHeaders = exchange.getRequestHeaders();
             String auth_token = "";
             if (reqHeaders.containsKey("Authorization")) {
                 auth_token = reqHeaders.getFirst("Authorization");
-//                System.out.println(auth_token);
             }
-            try {
-//                String[] uri = IOUtils.toString(exchange.getRequestURI(), StandardCharsets.UTF_8).split("/");
-                String[] uri = exchange.getRequestURI().toString().split("/");
-//                System.out.println(exchange.getRequestURI().toString());
-//                System.out.println(uri.length);
-                if(uri.length > 2){ //going for a single person
-                    String personID = uri[2];
-//                    System.out.println(personID);
-                    //personResponse = service.person(auth_token,personID);
-                    personResponse = services.getPersonResult();
-                    personResponse.personResult(auth_token,personID);
-                    send_back = coder.encode(personResponse);
-//                    System.out.println(send_back);
-                }else{ //multiple people
-                    //cf peopleResponse = service.people(auth_token);
-                    peopleResponse = services.getPeopleResult();
-                    peopleResponse.peopleResult(auth_token);
-                    send_back = coder.encode(peopleResponse);
+
+
+            String[] uri = exchange.getRequestURI().toString().split("/");
+
+            if(uri.length > 2){ //going for a single person
+                String personID = uri[2];
+                personResponse = service.person(auth_token,personID);
+                send_back = coder.encodeResponsePerson(personResponse);
+
+                try {
+                    if(personResponse.getSuccess()){
+                        exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+                        OutputStream respBody = exchange.getResponseBody();
+                        writeString(send_back, respBody);
+                        respBody.close();
+                    }
+                    else {
+                        exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
+                        OutputStream respBody = exchange.getResponseBody();
+                        writeString(send_back, respBody);
+                        respBody.close();
+                    };
+                }catch(IOException ex){
+                    ex.printStackTrace();
+                    exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
+                    exchange.getResponseBody().close();
                 }
-            }catch(Exception ex){
-                ex.printStackTrace();
+
+            }else{ //multiple people
+                peopleResponse = service.people(auth_token);
+                send_back = coder.encodeResponsePeople(peopleResponse);
+                try {
+                    if(peopleResponse.getSuccess()){
+                        exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+                        OutputStream respBody = exchange.getResponseBody();
+                        writeString(send_back, respBody);
+                        respBody.close();
+                    }
+                    else {
+                        exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
+                        OutputStream respBody = exchange.getResponseBody();
+                        writeString(send_back, respBody);
+                        respBody.close();
+                    };
+                }catch(IOException ex){
+                    ex.printStackTrace();
+                    exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
+                    exchange.getResponseBody().close();
+                }
             }
-
-            try {
-                exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
-
-                // Now that the status code and headers have been sent to the client,
-                // next we send the JSON data in the HTTP response body.
-
-                // Get the response body output stream.
-                OutputStream respBody = exchange.getResponseBody();
-                // Write the JSON string to the output stream.
-                writeString(send_back, respBody);
-                // Close the output stream.  This is how Java knows we are done
-                // sending data and the response is complete/
-                respBody.close();
-//                exchange.sendResponseHeaders(200, 0);
-//                exchange.getResponseBody().close();
-            }catch(IOException ex){
-                ex.printStackTrace();
-            }
-//            writer.close();
         }
 
         private void writeString(String str, OutputStream os) throws IOException {
@@ -367,44 +381,42 @@ public class Server {
     }
 
     public static class RegisterHandler implements HttpHandler{
-        ResultsRegister registerResponse;
-        public void handle(HttpExchange exchange){
+        ResponseRegister registerResponse;
+        public void handle(HttpExchange exchange) throws IOException {
             String requestBody = "";
-//            System.out.println("in register handler");
+
             try {
                 requestBody = IOUtils.toString(exchange.getRequestBody(), StandardCharsets.UTF_8);
             }catch(IOException ex){
                 ex.printStackTrace();
             }
 //            System.out.println(requestBody);
-            RequestRegister registerRequest = coder.decodeToRequestRegister(requestBody);
-            //cf registerResponse = service.register(registerRequest);
-            registerResponse = services.registerResult(registerRequest);
-            //registerResponse = services.getRegisterResult();
-            //registerResponse.registerResult(registerRequest);
-            String send_back = coder.encodeResponseRegister(registerResponse);
-//            System.out.println(send_back);
-//            PrintWriter writer = new PrintWriter(exchange.getResponseBody());
-//            writer.write(send_back);
+            RequestRegister registerRequest = coder.decodetoRequestRegister(requestBody);
             try {
-                exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+                registerResponse = service.register(registerRequest);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            String send_back = coder.encodeResponseRegister(registerResponse);
 
-                // Now that the status code and headers have been sent to the client,
-                // next we send the JSON data in the HTTP response body.
-
-                // Get the response body output stream.
-                OutputStream respBody = exchange.getResponseBody();
-                // Write the JSON string to the output stream.
-                writeString(send_back, respBody);
-                // Close the output stream.  This is how Java knows we are done
-                // sending data and the response is complete/
-                respBody.close();
-//                exchange.sendResponseHeaders(200, 0);
-//                exchange.getResponseBody().close();
+            try {
+                if(registerResponse.getSuccess()){
+                    exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+                    OutputStream respBody = exchange.getResponseBody();
+                    writeString(send_back, respBody);
+                    respBody.close();
+                }
+                else {
+                    exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
+                    OutputStream respBody = exchange.getResponseBody();
+                    writeString(send_back, respBody);
+                    respBody.close();
+                }
             }catch(IOException ex){
                 ex.printStackTrace();
+                exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
+                exchange.getResponseBody().close();
             }
-//            writer.close();
         }
 
         private void writeString(String str, OutputStream os) throws IOException {
@@ -414,21 +426,30 @@ public class Server {
         }
     }
 
-    public static class RootHandler implements HttpHandler{
+    public static class RootHandler implements HttpHandler {
 
         public void handle(HttpExchange exchange){
-            String path = "C:/Users/logan/Documents/Android/Fmserver/fm_server_lib/src/";
+            String path = "/home/clint/GITHUB/CS_240/FamilyMapServerStudent-master/";
             String relative_path = "web" + exchange.getRequestURI().toString();
             if(exchange.getRequestURI().toString().equals("/")){
                 relative_path = relative_path + "index.html";
             }
+
             String filepath = path + relative_path;
             Path file_path = FileSystems.getDefault().getPath(filepath);
-            Path path_404 = FileSystems.getDefault().getPath("C:/Users/logan/Documents/Android/Fmserver/fm_server_lib/src/web/HTML/404.html");
+            Path path_404 = FileSystems.getDefault().getPath("/home/clint/GITHUB/CS_240/FamilyMapServerStudent-master/web/HTML/404.html");
             try {
-                exchange.sendResponseHeaders(200, 0);
-                Files.copy(file_path, exchange.getResponseBody());
-                exchange.getResponseBody().close();
+                if(!exchange.getRequestURI().toString().equals("get")){
+                    exchange.sendResponseHeaders(200, 0);
+                    Files.copy(file_path, exchange.getResponseBody());
+                    exchange.getResponseBody().close();
+                }
+                else{
+                    exchange.sendResponseHeaders(200, 0);
+                    Files.copy(file_path, exchange.getResponseBody());
+                    exchange.getResponseBody().close();
+                }
+
             }catch(IOException ex){
                 try {
                     Files.copy(path_404, exchange.getResponseBody());
@@ -441,6 +462,5 @@ public class Server {
             }
         }
     }
-
 
 }

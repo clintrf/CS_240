@@ -9,11 +9,11 @@ import java.io.File;
 import java.io.FileInputStream;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+/*
 public class ResultsTests {
 
     Services services;
-/*
+
     @BeforeEach
     public void initTests() throws DatabaseException {
         services = new Services();
@@ -297,4 +297,4 @@ public class ResultsTests {
 
     }
 */
-}
+

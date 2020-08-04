@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-
+/*
 public class HandlerPerson implements HttpHandler {
 
     public Services services;
@@ -74,3 +74,4 @@ public class HandlerPerson implements HttpHandler {
         sw.flush();
     }
 }
+*/

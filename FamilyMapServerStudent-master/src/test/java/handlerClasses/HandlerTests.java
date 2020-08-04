@@ -58,7 +58,7 @@ import java.util.logging.Logger;
         import passoffresult.PersonResult;
         import passoffresult.PersonsResult;
         import passoffresult.RegisterResult;
-
+/*
 public class HandlerTests {
     private static Logger logger;
 
@@ -708,7 +708,7 @@ public class HandlerTests {
             Assertions.fail(serverConnectionException.getMessage());
         }
     }
-*/
+
     private String fileToString(String paramString) {
         try {
             FileInputStream fileInputStream = new FileInputStream(new File(paramString));
@@ -916,3 +916,4 @@ public class HandlerTests {
         displayCurrentTest = false;
     }
 }
+*/

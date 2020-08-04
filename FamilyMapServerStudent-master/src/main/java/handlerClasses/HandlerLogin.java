@@ -12,6 +12,7 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
 
+/*
 public class HandlerLogin implements HttpHandler {
 
     public Services services;
@@ -72,3 +73,4 @@ public class HandlerLogin implements HttpHandler {
     }
 
 }
+*/

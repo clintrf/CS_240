@@ -4,152 +4,84 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
-import databaseClasses.DatabaseException;
 import modelClasses.*;
 
 public class DaoUser {
-    private Connection conn;
-//    public DaoUser(Connection conn){
-//        this.conn = conn;
-//    }
 
-    public void create(Connection conn)  {
+    public void create(Connection conn){
         String sql = "create table if not exists users (" +
-                " user_name text primary key," +
+                " userName text not null primary key," +
                 " password text not null," +
                 " email text not null," +
-                " first_name text not null," +
-                " last_name text not null," +
+                " firstName text not null," +
+                " lastName text not null," +
                 " gender text not null," +
-                " person_id text not null" +
-                " constraint ck_gender check (gender in ('f', 'm'))" +
-                " );";
+                " personID text not null)";
         try(PreparedStatement stmt = conn.prepareStatement(sql)){
             stmt.executeUpdate();
-        } catch (SQLException e) {
-//            throw new DatabaseException("Error create users table");
+        }
+        catch(SQLException ex){
+            ex.printStackTrace();
         }
     }
 
-    public void clear(Connection conn) throws DatabaseException{
-        String sql = "delete from users";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)){
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new DatabaseException("Error clear users table");
-        }
-    }
 
-    public void drop(Connection conn) throws DatabaseException {
+    public void drop(Connection conn){
         String sql = "drop table if exists users";
         try(PreparedStatement stmt = conn.prepareStatement(sql)){
             stmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new DatabaseException("Error drop users table");
+        }
+        catch(SQLException ex){
+            ex.printStackTrace();
         }
     }
 
-    public void insert(ModelUser user, Connection conn) throws SQLException {
+    public void insert(ModelUser person, Connection conn) throws SQLException{
         String sql = "insert into users ("+
-                " user_name," +
+                " userName," +
                 " password," +
                 " email," +
-                " first_name," +
-                " last_name," +
+                " firstName," +
+                " lastName," +
                 " gender," +
-                " person_id" +
+                " personID" +
                 ")" +
                 " values (?,?,?,?,?,?,?);";
         PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setString(1, user.getUserName());
-            stmt.setString(2, user.getPassword());
-            stmt.setString(3, user.getEmail());
-            stmt.setString(4, user.getFirstName());
-            stmt.setString(5, user.getLastName());
-            stmt.setString(6, user.getGender());
-            stmt.setString(7, user.getPersonID());
+        stmt.setString(1, person.getUserName());
+        stmt.setString(2, person.getPassword());
+        stmt.setString(3, person.getEmail());
+        stmt.setString(4, person.getFirstName());
+        stmt.setString(5, person.getLastName());
+        stmt.setString(6, person.getGender());
+        stmt.setString(7, person.getPersonID());
+        stmt.executeUpdate();
+        stmt.close();
 
-            stmt.executeUpdate();
     }
+    public ModelUser getUserByUsername(String userName, Connection conn) throws SQLException{
+        ModelUser newUser;
+        String sql = "select * from users where userName = ?";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setString(1, userName);
+        ResultSet results = stmt.executeQuery();
 
-    public boolean removeUserByUserName(String userName, Connection conn) throws SQLException {
-        String sql = "delete from users where user_name = ?;";
-        try(PreparedStatement stmt = conn.prepareStatement(sql)){
-            stmt.setString(1,userName);
-            stmt.executeUpdate();
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-
+        if(results.next()){
+            newUser = new ModelUser(
+                    results.getString("userName"),
+                    results.getString("password"),
+                    results.getString("email"),
+                    results.getString("firstName"),
+                    results.getString("lastName"),
+                    results.getString("gender"),
+                    results.getString("personID")
+            );
+            results.close();
+            stmt.close();
+            return newUser;
+        }else{
+            throw new SQLException();
         }
-    }
-
-    public boolean removeUsersByUserNames(ArrayList<String> users, Connection conn) throws SQLException {
-        for (String user : users) {
-            if(!removeUserByUserName(user, conn)){
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public ModelUser getUserByUserName(String userName, Connection conn) throws DatabaseException{
-        ModelUser user;
-        ResultSet rs = null;
-        String sql = "select * from users where user_name = ?;";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, userName);
-            rs = stmt.executeQuery();
-            if (rs.next()) {
-                user = new ModelUser(
-                        rs.getString("user_name"),
-                        rs.getString("password"),
-                        rs.getString("email"),
-                        rs.getString("first_name"),
-                        rs.getString("last_name"),
-                        rs.getString("gender"),
-                        rs.getString("person_id")
-                );
-                return user;
-            }
-            else {
-                user = new ModelUser(
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null);
-                return user;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new DatabaseException("Error findUserByUserName users table");
-        } finally {
-            if(rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    public ArrayList<ModelUser> findUsersByUserNames(ArrayList<String> userNames, Connection conn) throws DatabaseException{
-        ModelUser name;
-        ArrayList<ModelUser> names = new ArrayList<>();
-        for (String userName : userNames){
-            name = getUserByUserName(userName, conn);
-            if(name!=null){
-                names.add(name);
-            }
-        }
-        return names;
     }
 }

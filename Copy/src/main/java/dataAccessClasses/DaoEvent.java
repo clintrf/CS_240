@@ -1,11 +1,6 @@
-
 package main.java.dataAccessClasses;
-
-
 import java.util.*;
-
 import main.java.modelClasses.ModelEvents;
-
 import java.sql.*;
 
 public class DaoEvent {
@@ -141,5 +136,30 @@ public class DaoEvent {
             ex.printStackTrace();
             return false;
         }
+    }
+
+    public ArrayList<ModelEvents> getEventsByPersonID(String personID, Connection conn) throws SQLException {
+        ModelEvents event;
+        ArrayList<ModelEvents> newEvent = new ArrayList<>();
+        String sql = "select * from events where personID = ?";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setString(1, personID);
+        ResultSet resultSet = stmt.executeQuery();
+        while (resultSet.next()) {
+            event = new ModelEvents(
+                    resultSet.getString("eventID"),
+                    resultSet.getString("associatedUsername"),
+                    resultSet.getString("personID"),
+                    resultSet.getDouble("latitude"),
+                    resultSet.getDouble("longitude"),
+                    resultSet.getString("country"),
+                    resultSet.getString("city"),
+                    resultSet.getString("eventType"),
+                    resultSet.getInt("year"));
+            newEvent.add(event);
+        }
+        resultSet.close();
+        stmt.close();
+        return newEvent;
     }
 }

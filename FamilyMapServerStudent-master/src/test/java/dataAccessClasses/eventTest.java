@@ -3,7 +3,6 @@ package dataAccessClasses;
 
 import databaseClasses.DatabaseDatabase;
 import databaseClasses.DatabaseException;
-import handlerClasses.Handler;
 import modelClasses.ModelEvent;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,7 +14,7 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-
+/*
 public class eventTest {
     Services services = new Services();
 
@@ -178,5 +177,6 @@ public class eventTest {
 
     }
 
- */
+
 }
+*/

@@ -7,7 +7,7 @@ import java.io.*;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
-
+/*
 public class Handler implements HttpHandler {
 
 
@@ -55,3 +55,4 @@ public class Handler implements HttpHandler {
 //        sw.flush();
 //    }
 }
+*/

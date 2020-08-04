@@ -6,188 +6,127 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import databaseClasses.DatabaseException;
 import modelClasses.*;
 
+
 public class DaoPerson {
-    private Connection conn;
-
-//    public DaoPerson(Connection conn) {
-//        this.conn = conn;
-//    }
-
-    public void create(Connection conn) {
+    public void create(Connection conn){
         String sql = "create table if not exists people (" +
-                " person_id text primary key," +
-                " associated_user_name text not null," +
-                " first_name text not null," +
-                " last_name text not null," +
+                " personID text not null primary key," +
+                " associatedUsername text not null," +
+                " firstName text not null," +
+                " lastName text not null," +
                 " gender text not null," +
-                " father_id text," +
-                " mother_id text," +
-                " spouse_id text" +
-                " constraint ck_gender check (gender in ('f', 'm'))" +
-                " );";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                " fatherID text," +
+                " motherID text," +
+                " spouseID text)";
+        try(PreparedStatement stmt = conn.prepareStatement(sql)){
             stmt.executeUpdate();
-        } catch (SQLException e) {
-//            throw new DatabaseException("Error create people table");
+        }
+        catch(SQLException ex){
+            ex.printStackTrace();
         }
     }
 
-    public void clear(Connection conn) throws DatabaseException{
-        String sql = "delete from people";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)){
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new DatabaseException("Error clear people table");
-        }
-    }
-
-    public void drop(Connection conn) throws DatabaseException {
+    public void drop(Connection conn){
         String sql = "drop table if exists people";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try(PreparedStatement stmt = conn.prepareStatement(sql)){
             stmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new DatabaseException("Error drop people table");
+        }
+        catch(SQLException ex){
+            ex.printStackTrace();
         }
     }
 
-    public void insert(ModelPerson person, Connection conn) throws DatabaseException {
+    public void insert(ModelPerson person, Connection conn) throws SQLException{
         String sql = "insert into people (" +
-                " person_id," +
-                " associated_user_name," +
-                " first_name," +
-                " last_name," +
+                " personID," +
+                " associatedUsername," +
+                " firstName," +
+                " lastName," +
                 " gender," +
-                " father_id," +
-                " mother_id," +
-                " spouse_id" +
+                " fatherID," +
+                " motherID," +
+                " spouseID" +
                 ")" +
                 " values (?,?,?,?,?,?,?,?);";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, person.getPersonID());
-            stmt.setString(2, person.getAssociatedUsername());
-            stmt.setString(3, person.getFirstName());
-            stmt.setString(4, person.getLastName());
-            stmt.setString(5, person.getGender());
-            stmt.setString(6, person.getFatherID());
-            stmt.setString(7, person.getMotherID());
-            stmt.setString(8, person.getSpouseID());
 
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setString(1, person.getPersonID());
+        stmt.setString(2, person.getAssociatedUsername());
+        stmt.setString(3, person.getFirstName());
+        stmt.setString(4, person.getLastName());
+        stmt.setString(5, person.getGender());
+        stmt.setString(6, person.getFatherID());
+        stmt.setString(7, person.getMotherID());
+        stmt.setString(8, person.getSpouseID());
+        stmt.executeUpdate();
+
+    }
+    public ModelPerson getPersonByID(String person, Connection conn) throws SQLException{
+        ModelPerson newPerson;
+        String sql = "select * from people where personID = ?";
+
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setString(1, person);
+        ResultSet resultSet = stmt.executeQuery();
+
+        if(resultSet.next()){
+            newPerson = new ModelPerson(
+                    resultSet.getString("personID"),
+                    resultSet.getString("associatedUsername"),
+                    resultSet.getString("firstName"),
+                    resultSet.getString("lastName"),
+                    resultSet.getString("gender"),
+                    resultSet.getString("fatherID"),
+                    resultSet.getString("motherID"),
+                    resultSet.getString("spouseID")
+            );
+            resultSet.close();
+            stmt.close();
+            return newPerson;
+        }else{
+            throw new SQLException();
+        }
+
+    }
+
+    public ArrayList<ModelPerson> getPeopleByAssociatedUsername(String associatedUsername, Connection conn) throws SQLException{
+        ModelPerson newPerson;
+        ArrayList<ModelPerson> newPeople = new ArrayList<>();
+        String sql = "select * from people where associatedUsername = ?";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setString(1, associatedUsername);
+        ResultSet resultSet = stmt.executeQuery();
+        while(resultSet.next()) {
+            newPerson = new ModelPerson(
+                    resultSet.getString("personID"),
+                    resultSet.getString("associatedUsername"),
+                    resultSet.getString("firstName"),
+                    resultSet.getString("lastName"),
+                    resultSet.getString("gender"),
+                    resultSet.getString("fatherID"),
+                    resultSet.getString("motherID"),
+                    resultSet.getString("spouseID")
+            );
+            newPeople.add(newPerson);
+        }
+        resultSet.close();
+        stmt.close();
+        return newPeople;
+    }
+
+    public boolean removePersonByAssociatedUsername(String associatedUsername, Connection conn){
+        String sql = "delete from people where associatedUsername = ? ";
+        try(PreparedStatement stmt = conn.prepareStatement(sql)){
+            stmt.setString(1, associatedUsername);
             stmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new DatabaseException("Error insert people table");
+            stmt.close();
+            return true;
         }
-    }
-
-    public void removePersonById(String personId, Connection conn) throws DatabaseException {
-        String sql = "delete from people where person_id = ?;";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, personId);
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new DatabaseException("Error removePersonById people table");
-        }
-    }
-
-    public void removePeopleByIds(ArrayList<String> people, Connection conn) throws DatabaseException {
-        for (String person : people) {
-            removePersonById(person, conn);
-        }
-    }
-
-    public ModelPerson findPersonById(String personId, Connection conn) throws DatabaseException {
-        ModelPerson person;
-        ResultSet rs = null;
-        String sql = "select * from people where person_id = ?;";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, personId);
-            rs = stmt.executeQuery();
-            if (rs.next()) {
-                person = new ModelPerson(
-                        rs.getString("person_id"),
-                        rs.getString("associated_user_name"),
-                        rs.getString("first_name"),
-                        rs.getString("last_name"),
-                        rs.getString("gender"),
-                        rs.getString("father_id"),
-                        rs.getString("mother_id"),
-                        rs.getString("spouse_id"));
-                return person;
-            }
-            else{
-                person = new ModelPerson(
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null
-                );
-                return person;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new DatabaseException("Error findPersonById people table");
-        } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    public ArrayList<ModelPerson> findPeopleByIds(ArrayList<String> personIds, Connection conn) throws DatabaseException{
-        ModelPerson person;
-        ArrayList<ModelPerson> people = new ArrayList<>();
-        for (String personId : personIds){
-            person = findPersonById(personId, conn);
-            if(person!=null){
-                people.add(person);
-            }
-        }
-        return people;
-    }
-
-    public ArrayList<ModelPerson> findPeopleByAssociatedUserName(String associatedUserName, Connection conn) throws DatabaseException {
-        ModelPerson person;
-        ArrayList<ModelPerson> people = new ArrayList<>();
-        ResultSet rs = null;
-        String sql = "select * from people where associated_user_name = ?;";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, associatedUserName);
-            rs = stmt.executeQuery();
-            while (rs.next()) {
-                person = new ModelPerson(rs.getString("person_id"),
-                        rs.getString("associated_user_name"),
-                        rs.getString("first_name"),
-                        rs.getString("last_name"),
-                        rs.getString("gender"),
-                        rs.getString("father_id"),
-                        rs.getString("mother_id"),
-                        rs.getString("spouse_id"));
-                people.add(person);
-            }
-            return people;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new DatabaseException("Error findPeopleByAssociatedUserName people table");
-        } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+        catch(SQLException ex) {
+            ex.printStackTrace();
+            return false;
         }
     }
 }

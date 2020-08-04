@@ -1,8 +1,5 @@
-
 package main.java.dataAccessClasses;
-
 import main.java.modelClasses.ModelPersons;
-
 import java.util.*;
 import java.sql.*;
 

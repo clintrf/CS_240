@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-
+/*
 public class HandlerClear implements HttpHandler {
 
     public Services services;
@@ -58,3 +58,4 @@ public class HandlerClear implements HttpHandler {
         sw.flush();
     }
 }
+*/
