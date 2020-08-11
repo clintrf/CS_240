@@ -1,23 +1,13 @@
 package testing.java.tests;
 
-import main.java.daoClasses.*;
-import main.java.modelClasses.ModelAuthTokens;
-import main.java.modelClasses.ModelEvents;
-import main.java.modelClasses.ModelPersons;
-import main.java.modelClasses.ModelUsers;
 import main.java.serviceClasses.*;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.nio.charset.StandardCharsets;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ResultsTests {
 
@@ -55,7 +45,7 @@ class ResultsTests {
 
 
     @Test
-    public void login() throws Exception {
+    public void login() {
         services.clear();
         RequestRegister request = new RequestRegister();
         ;
@@ -90,12 +80,12 @@ class ResultsTests {
     }
 
     @Test
-    public void clear() throws Exception {
+    public void clear() {
         services.clear();
     }
 
     @Test
-    public void fill() throws Exception {
+    public void fill() {
 
         services.clear();
         services.clear();
@@ -169,7 +159,7 @@ class ResultsTests {
 
 
     @Test
-    public void people() throws Exception {
+    public void people() {
 
         services.clear();
         RequestRegister request = new RequestRegister();
@@ -207,7 +197,7 @@ class ResultsTests {
     }
 
     @Test
-    public void event() throws Exception {
+    public void event() {
 
         services.clear();
         RequestRegister request = new RequestRegister();
@@ -233,7 +223,7 @@ class ResultsTests {
     }
 
     @Test
-    public void events() throws Exception {
+    public void events() {
         services.clear();
         RequestRegister request = new RequestRegister();
 
