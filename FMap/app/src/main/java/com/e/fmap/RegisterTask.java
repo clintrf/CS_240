@@ -40,6 +40,7 @@ public class RegisterTask extends AsyncTask<RequestRegister, Void, ResponseRegis
             ServerProxy myServerProxy = new ServerProxy();
 
             URL urla = new URL("http://" + myRegisterRequests[0].getHost() + ":" + myRegisterRequests[0].getPort() + "/user/register");
+            //URL urla = new URL("http://" + "10.0.2.2" + ":" + "8080" + "/user/register");
             answer = myServerProxy.getRegisterUrl(urla, myRegisterRequests[0]);
 
             return answer;
@@ -55,9 +56,16 @@ public class RegisterTask extends AsyncTask<RequestRegister, Void, ResponseRegis
         if(android.os.Debug.isDebuggerConnected())
             android.os.Debug.waitForDebugger();
 
+        if(response == null){
+            Toast.makeText(fragActivity.getContext(),
+                    R.string.registerNotSuccessful,
+                    Toast.LENGTH_SHORT).show();
+        }
+
         if (response.getSuccess()){ //was a successful register
 
             String url = new String ("http://" + taskRequest.getHost() + ":" + taskRequest.getPort() + "/person/");
+            //String url = new String ("http://" + "10.0.2.2" + ":" + "8080" + "/person/");
             String stringForToastIfSuccessful = new String("Register Success!" + "\n" + taskRequest.getFirstName() + "\n" + taskRequest.getLastName());
 
             GetPeopleTask peopleTask = new GetPeopleTask(fragActivity, taskRequest, response, myMainActivity,stringForToastIfSuccessful);

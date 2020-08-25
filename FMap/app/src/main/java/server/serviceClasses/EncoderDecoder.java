@@ -27,6 +27,7 @@ public class EncoderDecoder {
     public RequestRegister decodeRequestRegister(String jSON){ return gson.fromJson(jSON, RequestRegister.class); }
 
     public ResponsePerson decodeResponsePerson(String jSON){ return gson.fromJson(jSON, ResponsePerson.class); }
+    public ResponsePerson decodeResponsePersonReader(Reader jSON) {return gson.fromJson(jSON, ResponsePerson.class); }
     public ResponseEvent decodeResponseEvent(String jSON){ return gson.fromJson(jSON, ResponseEvent.class); }
 
     // encode
@@ -54,7 +55,9 @@ public class EncoderDecoder {
 
     public ResponseRegister decodeResponseRegister(Reader jSON) {return gson.fromJson(jSON, ResponseRegister.class); }
 
-    public ResponseEvents decodeResponseEvents(String jSON) {return gson.fromJson(jSON, ResponseEvents.class); }
+    public ResponseEvents decodeResponseEvents(Reader jSON) {return gson.fromJson(jSON, ResponseEvents.class); }
 
-    public ResponsePeople decodeResponsePeople(String jSON) {return gson.fromJson(jSON, ResponsePeople.class); }
+    public ResponsePeople decodeResponsePeople(Reader jSON) {return gson.fromJson(jSON, ResponsePeople.class); }
+
+
 }

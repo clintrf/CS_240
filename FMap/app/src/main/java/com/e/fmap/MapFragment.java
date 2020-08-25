@@ -33,6 +33,11 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.joanzapata.iconify.IconDrawable;
+import com.joanzapata.iconify.Iconify;
+import com.joanzapata.iconify.fonts.FontAwesomeIcons;
+import com.joanzapata.iconify.fonts.FontAwesomeModule;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,9 +86,10 @@ public class MapFragment extends Fragment {
         if (comingFromPerson) {
             setHasOptionsMenu(false);
         } else {
-            setHasOptionsMenu(true);
+            setHasOptionsMenu(true); //was true ct
         }
         super.onCreate(savedInstanceState);
+
     }
 
     @SuppressLint("ResourceType")
@@ -97,18 +103,18 @@ public class MapFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-//            case R.id.search:
-//                Intent intentThree = new Intent(getActivity(), SearchActivity.class);
-//                startActivity(intentThree);
-//                return true;
-//            case R.id.filter:
-//                Intent intentTwo = new Intent(getActivity(), FilterActivity.class);
-//                startActivity(intentTwo);
-//                return true;
-//            case R.id.settings:
-//                Intent intent = new Intent(getActivity(), SettingsActivity.class);
-//                startActivity(intent);
-//                return true;
+            case R.id.search:
+                Intent intentThree = new Intent(getActivity(), SearchActivity.class);
+                startActivity(intentThree);
+                return true;
+            case R.id.filter:
+                Intent intentTwo = new Intent(getActivity(), FilterActivity.class);
+                startActivity(intentTwo);
+                return true;
+            case R.id.settings:
+                Intent intent = new Intent(getActivity(), SettingsActivity.class);
+                startActivity(intent);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -222,13 +228,13 @@ public class MapFragment extends Fragment {
             public void onClick(View v) {
                 // Start person activity
                 if (markerClicked) {
-//                    Intent intent = new Intent(getActivity(), PersonActivity.class);
-//                    Bundle mBundle = new Bundle();
-//
-//                    mBundle.putString("personID", mapsEventSelected.getPersonID());
-//                    intent.putExtras(mBundle);
-//
-//                    startActivity(intent);
+                    Intent intent = new Intent(getActivity(), PersonActivity.class);
+                    Bundle mBundle = new Bundle();
+
+                    mBundle.putString("personID", mapsEventSelected.getPersonID());
+                    intent.putExtras(mBundle);
+
+                    startActivity(intent);
                 }
 
             }
@@ -244,20 +250,23 @@ public class MapFragment extends Fragment {
 
         ImageView img = (ImageView) v.findViewById(R.id.iconImageView);
 
-//        if (personSelected.getGender().equals("f")) {
-//            Drawable genderIcon = new IconDrawable(getActivity(), FontAwesomeIcons.fa_female).colorRes(R.color.femaleColor).sizeDp(40);
-//            img.setImageDrawable(genderIcon);
-//        } else {
-//            Drawable genderIcon = new IconDrawable(getActivity(), FontAwesomeIcons.fa_male).colorRes(R.color.maleColor).sizeDp(40);
-//            img.setImageDrawable(genderIcon);
-//        }
-//
-//        TextView textTop = (TextView) v.findViewById(R.id.textTop);
-//        TextView textBottom = (TextView) v.findViewById(R.id.textBottom);
-//
-//        textTop.setText(personSelected.getDescription());
-//        textBottom.setText(mapsEventSelected.getDescription());
-//        markerClicked = true;
+        Iconify.with(new FontAwesomeModule());
+
+
+        if (personSelected.getGender().equals("f")) {
+            Drawable genderIcon = new IconDrawable(getActivity(), FontAwesomeIcons.fa_female).colorRes(R.color.femaleColor).sizeDp(40);
+            img.setImageDrawable(genderIcon);
+        } else {
+            Drawable genderIcon = new IconDrawable(getActivity(), FontAwesomeIcons.fa_male).colorRes(R.color.maleColor).sizeDp(40);
+            img.setImageDrawable(genderIcon);
+        }
+
+        TextView textTop = (TextView) v.findViewById(R.id.textTop);
+        TextView textBottom = (TextView) v.findViewById(R.id.textBottom);
+
+        textTop.setText(personSelected.getDescription());
+        textBottom.setText(mapsEventSelected.getDescription());
+        markerClicked = true;
     }
 
 

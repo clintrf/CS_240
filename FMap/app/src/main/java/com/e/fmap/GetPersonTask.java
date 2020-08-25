@@ -64,6 +64,7 @@ public class GetPersonTask extends AsyncTask<String, Void, ResponsePerson> {
             String stringForToastIfSuccessful = new String("Login Success!" + "\n" + response.getFirstName() + "\n" + response.getLastName());
             responseForGetPeopleTask.setAuthToken(loginResponse.getAuthToken());
             String url = new String ("http://" + requestForGetPeopleTask.getHost() + ":" + requestForGetPeopleTask.getPort() + "/person/");
+            //String url = new String ("http://" + "10.0.2.2" + ":" + "8080" + "/person/");
 
             GetPeopleTask myPeopleTask = new GetPeopleTask(myFrag,requestForGetPeopleTask, responseForGetPeopleTask, whereICameFrom, stringForToastIfSuccessful);
             myPeopleTask.execute(url, responseForGetPeopleTask.getAuthToken());

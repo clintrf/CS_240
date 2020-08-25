@@ -3,6 +3,7 @@ package com.e.fmap.Model;
 import android.util.Log;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -99,7 +100,7 @@ public class ServerProxy {
             if (connection.getResponseCode() == HttpURLConnection.HTTP_OK){
                 Reader reader = new InputStreamReader(connection.getInputStream());
                 EncoderDecoder coder = new EncoderDecoder();
-                ResponseEvents out = coder.decodeResponseEvents(reader.toString());
+                ResponseEvents out = coder.decodeResponseEvents(reader);
                 out.setSuccess(true);
                 return out;
 
@@ -131,7 +132,7 @@ public class ServerProxy {
             if (connection.getResponseCode() == HttpURLConnection.HTTP_OK){
                 Reader reader = new InputStreamReader(connection.getInputStream());
                 EncoderDecoder coder = new EncoderDecoder();
-                ResponsePeople out = coder.decodeResponsePeople(reader.toString());
+                ResponsePeople out = coder.decodeResponsePeople(reader);
                 out.setSuccess(true);
 
                 return out;
@@ -161,7 +162,7 @@ public class ServerProxy {
             if (connection.getResponseCode() == HttpURLConnection.HTTP_OK){
                 Reader reader = new InputStreamReader(connection.getInputStream());
                 EncoderDecoder coder = new EncoderDecoder();
-                ResponsePerson out = coder.decodeResponsePerson(reader.toString());
+                ResponsePerson out = coder.decodeResponsePersonReader(reader);
                 out.setSuccess(true);
                 return out;
 

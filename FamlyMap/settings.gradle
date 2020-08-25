@@ -1,2 +1,0 @@
-include ':app', ':server'
-rootProject.name='FamlyMap'

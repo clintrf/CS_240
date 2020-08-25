@@ -55,4 +55,9 @@ public class ModelEvents{
     public String getCity(){ return this.city; }
     public String getEventType(){ return this.eventType; }
     public int getYear(){ return this.year; }
+
+    public String getDescription() {
+        String out = new String(eventType + ": " + city + ", " + country + "(" + year + ")");
+        return out;
+    }
 }

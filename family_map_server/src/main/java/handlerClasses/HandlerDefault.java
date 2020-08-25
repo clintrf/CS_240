@@ -10,7 +10,7 @@ import java.nio.file.Path;
 public class HandlerDefault implements HttpHandler {
 
     public void handle(HttpExchange exchange) {
-        String string_home = "/home/clint/GITHUB/CS_240/family_map_server/web/";
+        String string_home = "/home/clintfrandsen/GITHUB/CS_240/family_map_server/web/";
         String string_404 = "HTML/404.html";
         String string_non_404;
         if(exchange.getRequestURI().toString().equals("/")) {

@@ -1,0 +1,73 @@
+<resources>
+    <string name="app_name">FamlyMap</string>
+    <string name="serverHostText">ServerHost:</string>
+    <string name="serverPortText">ServerPort:</string>
+    <string name="userNameText">UserName:</string>
+    <string name="passwordText">Password:</string>
+    <string name="firstNameText">FirstName:</string>
+    <string name="lastNameText">LastName:</string>
+    <string name="emailText">Email:</string>
+    <string name="genderText">Gender:</string>
+    <string name="maleText">Male</string>
+    <string name="femaleText">Female</string>
+    <string name="signInText">SIGN IN</string>
+    <string name="registerText">REGISTER</string>
+    <string name="loginNotSuccessful">Faild Login</string>
+    <string name="loginNotSuccessfulPerson">Failed Login</string>
+    <string name="registerNotSuccessfulPeopleGetAll">Failed Register</string>
+    <string name="registerNotSuccessfulEventGetALL">Failed register events</string>
+    <string name="registerNotSuccessful">Failedd Register</string>
+
+
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyB9rNomaHLzsWeLF-gQHD8nJoiURM4EDSA</string>
+    <string name="title_activity_my_map">Family Map</string>
+    <string name="personLabel">Family Map: Person Details</string>
+    <string name="familysettings">Family Map: Settings</string>
+    <string name="filtertitle">Family Map: Filters</string>
+
+    <string name="gender">Gender</string>
+
+
+
+
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="life_story_lines">Life Story Lines</string>
+    <string name="life_story_lines_show">SHOW LIFE STORY LINES</string>
+    <string name="family_tree_lines">Family Tree Lines</string>
+    <string name="tree_lines_show">SHOW TREE LINES</string>
+    <string name="spouse_lines_string">Spouse Lines</string>
+    <string name="spouse_lines_show">SHOW SPOUSE LINES</string>
+    <string name="background_display_on_map">BACKGROUND DISPLAY ON MAP</string>
+    <string name="from_familymap_service">FROM FAMILYMAP SERVICE</string>
+    <string name="re_sync_data">Re-sync Data</string>
+    <string name="lougout">Logout</string>
+
+    <string name="returns_to_login_screen">RETURNS TO LOGIN SCREEN</string>
+    <string name="familyMapSearchLabel">Family Map: Search</string>
+    <string name="nameOfApp">MyApplication</string>
+    <string name="blue">Blue</string>
+    <string name="green">Green</string>
+    <string name="red">Red</string>
+    <string name="map_type">Map Type</string>
+    <string name="normal">Normal</string>
+
+    <string name="label_person_activity">Family Map: Person</string>
+    <string name="label_event_activity">Family Map: Event</string>
+    <string name="label_settings_activity">Family Map: Settings</string>
+    <string name="label_search_activity">Family Map: Search</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="mapMessage">Click on a marker \n to see event details</string>
+    <string name="father_side_show">FILTER BY FATHER\'S SIDE OF FAMILY</string>
+    <string name="father_side_string">Father\'s Side</string>
+    <string name="mother_side_string">Mother\'s Side</string>
+    <string name="mother_side_show">FILTER BY MOTHER\'S SIDE OF FAMILY</string>
+    <string name="male_events_string">Male Events</string>
+    <string name="male_events_show">FILTER EVENTS BASED ON GENDER</string>
+    <string name="female_events_string">Female Events</string>
+    <string name="female_events_show">FILTER EVENTS BASED ON GENDER</string>
+</resources>

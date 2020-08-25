@@ -97,9 +97,9 @@ public class ResponseFill{
 
 
     public static ArrayList<ModelPersons> createCouple(ModelPersons child, String associatedUsername, Connection conn) throws SQLException {
-        final String FEMALE_NAME = "/home/clint/GITHUB/CS_240/family_map_server/src/json/fnames.json";
-        final String MALE_NAME = "/home/clint/GITHUB/CS_240/family_map_server/src/json/mnames.json";
-        final String LAST_NAME = "/home/clint/GITHUB/CS_240/family_map_server/src/json/snames.json";
+        final String FEMALE_NAME = "/home/clintfrandsen/GITHUB/CS_240/family_map_server/src/json/fnames.json";
+        final String MALE_NAME = "/home/clintfrandsen/GITHUB/CS_240/family_map_server/src/json/mnames.json";
+        final String LAST_NAME = "/home/clintfrandsen/GITHUB/CS_240/family_map_server/src/json/snames.json";
         ArrayList<ModelPersons> parents = new ArrayList<>();
         ModelPersons father = new ModelPersons(
                 getRandomIDNum(),
@@ -133,7 +133,7 @@ public class ResponseFill{
     }
 
     public static void createBirthDeath(ModelPersons person, ModelPersons child, Connection conn) throws SQLException {
-        final String LOCATION = "/home/clint/GITHUB/CS_240/family_map_server/src/json/locations.json";
+        final String LOCATION = "/home/clintfrandsen/GITHUB/CS_240/family_map_server/src/json/locations.json";
         EncoderDecoder coder = new EncoderDecoder();
         DaoEvent eventDao = new DaoEvent(conn);
 
@@ -167,14 +167,14 @@ public class ResponseFill{
             death.setPersonID(person.getPersonID());
             death.setEventType("death");
 
-            death.setYear(birth.getYear() - 30 - (int)(Math.random()*50));
+            death.setYear(birth.getYear() + 30 + (int)(Math.random()*50));
             eventDao.insert(death);
             incrementEventTotal();
         }
     }
 
     public static void createMarriage(ModelPersons father, ModelPersons mother, Connection conn) throws SQLException {
-        final String LOCATION = "/home/clint/GITHUB/CS_240/family_map_server/src/json/locations.json";
+        final String LOCATION = "/home/clintfrandsen/GITHUB/CS_240/family_map_server/src/json/locations.json";
         EncoderDecoder coder = new EncoderDecoder();
         DaoEvent eventDao = new DaoEvent(conn);
         int youngestAge = 2020;

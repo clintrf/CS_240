@@ -559,7 +559,7 @@ public class ServerTest {
             Assertions.fail(serverConnectionException.getMessage());
         }
     }
-
+/*
     @Test
     @DisplayName("Persistence Test")
     public void testPersistence(TestInfo paramTestInfo) throws Client.ServerConnectionException {
@@ -587,7 +587,7 @@ public class ServerTest {
             Assertions.fail("passoffFiles/LoadData.json not found in project root directory");
         }
     }
-
+*/
     @Test
     @DisplayName("Clear Test")
     public void testClear(TestInfo paramTestInfo) throws Client.ServerConnectionException {

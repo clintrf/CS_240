@@ -54,4 +54,8 @@ public class ModelPersons{
     public String getMotherID(){ return this.motherID; }
     public String getSpouseID(){ return this.spouseID; }
 
+    public String getDescription() {
+        String out = new String(firstName + " " + lastName);
+        return out;
+    }
 }

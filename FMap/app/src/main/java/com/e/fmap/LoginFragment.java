@@ -119,8 +119,13 @@ public class LoginFragment extends Fragment {
             @Override
             public void onTextChanged(
                     CharSequence s, int start, int before, int count) {
-                myLoginRequest.setHost(s.toString());
-                myRequestRegister.setHost(s.toString());
+                if(s.toString().equals("0")){
+                    myLoginRequest.setHost("10.0.2.2");
+                    myRequestRegister.setHost("10.0.2.2");
+                }else {
+                    myLoginRequest.setHost(s.toString());
+                    myRequestRegister.setHost(s.toString());
+                }
 
             }
 
@@ -144,8 +149,13 @@ public class LoginFragment extends Fragment {
             @Override
             public void onTextChanged(
                     CharSequence s, int start, int before, int count) {
-                myLoginRequest.setPort(s.toString());
-                myRequestRegister.setPort(s.toString());
+                if(s.toString().equals("0")){
+                    myLoginRequest.setPort("8080");
+                    myRequestRegister.setPort("8080");
+                }else {
+                    myLoginRequest.setPort(s.toString());
+                    myRequestRegister.setPort(s.toString());
+                }
             }
 
             @Override

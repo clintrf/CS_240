@@ -64,6 +64,7 @@ public class GetPeopleTask extends AsyncTask<String,Void, ResponsePeople> {
             //Now making EventGetAll task
             GetEventsTask eventTask = new GetEventsTask(myFrag, taskRequest, whereICameFrom, stringForToastIfSuccessful);
             String url = new String("http://" + taskRequest.getHost() + ":" + taskRequest.getPort() + "/event/");
+            //String url = new String("http://" + "10.0.2.2" + ":" + "8080" + "/event/");
             eventTask.execute(url, responseFromRegister.getAuthToken());
 
 

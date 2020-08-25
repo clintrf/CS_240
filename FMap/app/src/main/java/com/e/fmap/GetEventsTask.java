@@ -58,6 +58,12 @@ public class GetEventsTask extends AsyncTask<String,Void, ResponseEvents> {
         if(android.os.Debug.isDebuggerConnected())
             android.os.Debug.waitForDebugger();
 
+        if (response == null){
+            Toast.makeText(myFrag.getContext(),
+                    R.string.registerNotSuccessfulEventGetALL,
+                    Toast.LENGTH_SHORT).show();
+        }
+
         if (response.getSuccess()){ //was a successful EventGetAll
             Model cm = Model.getInstance();
             cm.setEvents(myResponse.getData());

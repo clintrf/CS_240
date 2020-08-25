@@ -34,6 +34,7 @@ public class SignInTask extends AsyncTask<RequestLogin, Void, ResponseLogin> {
             ServerProxy myProxy = new ServerProxy();
 
             URL url = new URL("http://" + myLoginRequest[0].getHost() + ":" + myLoginRequest[0].getPort() + "/user/login");
+            //URL url = new URL("http://" + "10.0.2.2" + ":" + "8080" + "/user/login");
             answer = myProxy.getLoginUrl(url, myLoginRequest[0]);
 
             return answer;
@@ -52,6 +53,7 @@ public class SignInTask extends AsyncTask<RequestLogin, Void, ResponseLogin> {
         if (answer.getSuccess()){
 
             String url = new String("http://" + myRequest.getHost() + ":" + myRequest.getPort() + "/person/" + response.getPersonID());
+            //String url = new String("http://" + "10.0.2.2" + ":" + "8080" + "/person/" + response.getPersonID());
             GetPersonTask personTask = new GetPersonTask(myFrag, myMainActivity,myRequest, response);
             personTask.execute(url, response.getAuthToken());
 
