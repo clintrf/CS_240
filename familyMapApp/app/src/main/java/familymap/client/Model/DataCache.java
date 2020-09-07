@@ -1,5 +1,10 @@
 package familymap.client.Model;
 
+import android.os.Build;
+import android.util.ArraySet;
+
+import androidx.annotation.RequiresApi;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -294,12 +299,35 @@ public class DataCache {
 
 
         ArrayList<ModelEvents> returnEvents = new ArrayList<ModelEvents>();
+
         List<ModelEvents> eventsToDisplay = DataCache.getInstance().getEventsOfPersonByPersonId(person.getPersonID());
+
+
         for (int i = 0; i < eventsToDisplay.size(); i++) {
             if (person.getPersonID().equals(eventsToDisplay.get(i).getPersonID())) {
-                returnEvents.add(eventsToDisplay.get(i));
+                if (DataCache.getInstance().getUserSettings().isMaleEvents() && person.getGender().equals("m")) {
+                    returnEvents.add(eventsToDisplay.get(i));
+                }
+                if (DataCache.getInstance().getUserSettings().isFemaleEvents() && person.getGender().equals("f")) {
+                    returnEvents.add(eventsToDisplay.get(i));
+                }
             }
         }
+
+        Map<String, ModelEvents> events;
+
+        if (DataCache.getInstance().getUserSettings().isFatherSide() && DataCache.getInstance().getUserSettings().isMotherSide()){
+            events = DataCache.getInstance().getEventMap();
+        } else if (!DataCache.getInstance().getUserSettings().isFatherSide() && DataCache.getInstance().getUserSettings().isMotherSide()){
+            events = DataCache.getInstance().getEventMapMaternal();
+        } else if(DataCache.getInstance().getUserSettings().isFatherSide() && !DataCache.getInstance().getUserSettings().isMotherSide()){
+            events = DataCache.getInstance().getEventMapPaternal();
+        } else {
+            events= new HashMap<>();
+        }
+
+
+
         for (int i = 0; i < 60; i++) {
             for (int j = 0; j < returnEvents.size() - 1; j++) {
                 if (returnEvents.get(j).getYear() > returnEvents.get(j + 1).getYear()) {
@@ -313,7 +341,9 @@ public class DataCache {
 
         for (int i = 0; i < returnEvents.size(); i++) {
             DisplayObj temp = new DisplayObj(returnEvents.get(i).getDescription() + "\n" + person.getDescription(), "event", returnEvents.get(i).getEventID());
-            eventRows.add(temp);
+            if(events.containsValue(returnEvents.get(i))){
+                eventRows.add(temp);
+            }
         }
         return eventRows;
 
@@ -448,32 +478,75 @@ public class DataCache {
 
     ArrayList<DisplayObj> searchList = new ArrayList<>();
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public void search(String searchString) {
         searchList.clear();
 
-        for (Map.Entry<String, ModelPersons> entry : peopleMap.entrySet()) {
-            if (entry.getValue().getLastName().toLowerCase().contains(searchString.toLowerCase())) {
-                DisplayObj obj = new DisplayObj(entry.getValue());
-                searchList.add(obj);
-            } else if (entry.getValue().getFirstName().toLowerCase().contains(searchString.toLowerCase())) {
-                DisplayObj obj = new DisplayObj(entry.getValue());
-                searchList.add(obj);
-            }
+        Map<String, ModelPersons> people;
+        if (DataCache.getInstance().getUserSettings().isFatherSide() && DataCache.getInstance().getUserSettings().isMotherSide()){
+            people = DataCache.getInstance().getPeopleMap();
+        } else if (!DataCache.getInstance().getUserSettings().isFatherSide() && DataCache.getInstance().getUserSettings().isMotherSide()){
+            people = DataCache.getInstance().getPeopleMapMaternal();
+        } else if(DataCache.getInstance().getUserSettings().isFatherSide() && !DataCache.getInstance().getUserSettings().isMotherSide()){
+            people = DataCache.getInstance().getPeopleMapPaternal();
+        } else {
+            people= new HashMap<>();
         }
-        for (Map.Entry<String, ModelEvents> entry : eventMap.entrySet()) {
+
+        for (Map.Entry<String, ModelPersons> entry : people.entrySet()) {
+                if (entry.getValue().getLastName().toLowerCase().contains(searchString.toLowerCase())) {
+                    DisplayObj obj = new DisplayObj(entry.getValue());
+                    searchList.add(obj);
+                } else if (entry.getValue().getFirstName().toLowerCase().contains(searchString.toLowerCase())) {
+                    DisplayObj obj = new DisplayObj(entry.getValue());
+                    searchList.add(obj);
+                }
+
+        }
+
+        Map<String, ModelEvents> events;
+        if (DataCache.getInstance().getUserSettings().isFatherSide() && DataCache.getInstance().getUserSettings().isMotherSide()){
+            events = DataCache.getInstance().getEventMap();
+        } else if (!DataCache.getInstance().getUserSettings().isFatherSide() && DataCache.getInstance().getUserSettings().isMotherSide()){
+            events = DataCache.getInstance().getEventMapMaternal();
+        } else if(DataCache.getInstance().getUserSettings().isFatherSide() && !DataCache.getInstance().getUserSettings().isMotherSide()){
+            events = DataCache.getInstance().getEventMapPaternal();
+        } else {
+            events= new HashMap<>();
+        }
+
+
+        for (Map.Entry<String, ModelEvents> entry : events.entrySet()) {
             String compareYear = Integer.toString(entry.getValue().getYear());
-            if (compareYear.contains(searchString)) {
-                DisplayObj obj = new DisplayObj(entry.getValue());
-                searchList.add(obj);
-            } else if (entry.getValue().getEventType().toLowerCase().contains(searchString.toLowerCase())) {
-                DisplayObj obj = new DisplayObj(entry.getValue());
-                searchList.add(obj);
-            } else if (entry.getValue().getCountry().toLowerCase().contains(searchString.toLowerCase())) {
-                DisplayObj obj = new DisplayObj(entry.getValue());
-                searchList.add(obj);
-            } else if (entry.getValue().getCity().toLowerCase().contains(searchString.toLowerCase())) {
-                DisplayObj obj = new DisplayObj(entry.getValue());
-                searchList.add(obj);
+            if (DataCache.getInstance().getUserSettings().isMaleEvents() && DataCache.getInstance().getPersonById(entry.getValue().getPersonID()).getGender().equals("m")) {
+                if (compareYear.contains(searchString)) {
+                    DisplayObj obj = new DisplayObj(entry.getValue());
+                    searchList.add(obj);
+                } else if (entry.getValue().getEventType().toLowerCase().contains(searchString.toLowerCase())) {
+                    DisplayObj obj = new DisplayObj(entry.getValue());
+                    searchList.add(obj);
+                } else if (entry.getValue().getCountry().toLowerCase().contains(searchString.toLowerCase())) {
+                    DisplayObj obj = new DisplayObj(entry.getValue());
+                    searchList.add(obj);
+                } else if (entry.getValue().getCity().toLowerCase().contains(searchString.toLowerCase())) {
+                    DisplayObj obj = new DisplayObj(entry.getValue());
+                    searchList.add(obj);
+                }
+            }
+            if (DataCache.getInstance().getUserSettings().isFemaleEvents() && DataCache.getInstance().getPersonById(entry.getValue().getPersonID()).getGender().equals("f")) {
+                if (compareYear.contains(searchString)) {
+                    DisplayObj obj = new DisplayObj(entry.getValue());
+                    searchList.add(obj);
+                } else if (entry.getValue().getEventType().toLowerCase().contains(searchString.toLowerCase())) {
+                    DisplayObj obj = new DisplayObj(entry.getValue());
+                    searchList.add(obj);
+                } else if (entry.getValue().getCountry().toLowerCase().contains(searchString.toLowerCase())) {
+                    DisplayObj obj = new DisplayObj(entry.getValue());
+                    searchList.add(obj);
+                } else if (entry.getValue().getCity().toLowerCase().contains(searchString.toLowerCase())) {
+                    DisplayObj obj = new DisplayObj(entry.getValue());
+                    searchList.add(obj);
+                }
             }
         }
     }
@@ -504,6 +577,22 @@ public class DataCache {
 
     }
 
+    public Map<String, ModelPersons> getPeopleMapMaternal() {
+        Map<String, ModelPersons> temp = new HashMap<>();
+        List<String> tempID = new ArrayList<>();
+
+        for (ModelPersons t : motherSide) {
+            tempID.add(t.getPersonID());
+        }
+        for (Map.Entry<String, ModelPersons> entry : peopleMap.entrySet()) {
+            if (tempID.contains(entry.getValue().getPersonID())) {
+                temp.put(entry.getValue().getPersonID(), entry.getValue());
+            }
+        }
+        return temp;
+
+    }
+
     public Map<String, ModelEvents> getEventMapPaternal() {
         Map<String, ModelEvents> temp = new HashMap<>();
         List<String> tempID = new ArrayList<>();
@@ -514,6 +603,22 @@ public class DataCache {
         for (Map.Entry<String, ModelEvents> entry : eventMap.entrySet()) {
             if (tempID.contains(entry.getValue().getPersonID())) {
                 temp.put(entry.getValue().getEventID(), entry.getValue());
+            }
+        }
+        return temp;
+
+    }
+
+    public Map<String, ModelPersons> getPeopleMapPaternal() {
+        Map<String, ModelPersons> temp = new HashMap<>();
+        List<String> tempID = new ArrayList<>();
+
+        for (ModelPersons t : fatherSide) {
+            tempID.add(t.getPersonID());
+        }
+        for (Map.Entry<String, ModelPersons> entry : peopleMap.entrySet()) {
+            if (tempID.contains(entry.getValue().getPersonID())) {
+                temp.put(entry.getValue().getPersonID(), entry.getValue());
             }
         }
         return temp;

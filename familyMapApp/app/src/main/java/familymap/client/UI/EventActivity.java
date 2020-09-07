@@ -18,6 +18,9 @@ public class EventActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             if (getIntent().getExtras() != null) {
                 personID = getIntent().getExtras().getString("personID");
+                if(personID == null){
+                    personID = getIntent().getExtras().getString("eventIDToZoom");
+                }
             }
         } else {
             personID = (String) savedInstanceState.getSerializable("personID");

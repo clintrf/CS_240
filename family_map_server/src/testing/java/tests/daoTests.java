@@ -1,5 +1,6 @@
 package testing.java.tests;
 
+import com.google.gson.internal.bind.SqlDateTypeAdapter;
 import main.java.daoClasses.*;
 import main.java.modelClasses.ModelAuthTokens;
 import main.java.modelClasses.ModelEvents;
@@ -13,10 +14,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
-    class authTokenTest {
+class authTokenTest {
         DatabaseDatabase database;
         Connection conn;
         DaoAuthToken tempDao;
@@ -54,27 +54,63 @@ import static org.junit.jupiter.api.Assertions.assertNull;
         }
 
         @AfterEach
-        public void finish() throws SQLException {
-            tempDao.drop();
+        public void finish() {
+            try {
+                tempDao.drop();
+                assertTrue(true);
+            } catch (SQLException e){
+                e.getStackTrace();
+                fail();
+            }
         }
 
         @Test
-        public void createTest() throws SQLException {
-            tempDao.create();
+        public void createTest() {
+            try {
+                tempDao.create();
+                assertEquals(
+                        "authToken01",
+                        tempDao.getAuthTokenByToken("authToken01").getAuthToken(),
+                        "AuthTokens are not equal"
+                );
+            } catch (SQLException e){
+                e.getStackTrace();
+                fail();
+            }
         }
 
         @Test
         public void clearTest() throws SQLException {
-            tempDao.clear();
+            try {
+                tempDao.clear();
+                assertNotEquals(
+                        "authToken01",
+                        tempDao.getAuthTokenByToken("authToken01").getAuthToken(),
+                        "AuthTokens are not equal"
+                );
+            } catch (SQLException | NullPointerException e){
+                e.getStackTrace();
+                assertTrue(true);
+            }
         }
 
         @Test
-        public void dropTest() throws SQLException {
-            tempDao.drop();
+        public void dropTest() {
+            try {
+                tempDao.drop();
+                assertNotEquals(
+                        "authToken01",
+                        tempDao.getAuthTokenByToken("authToken01").getAuthToken(),
+                        "AuthTokens are not equal"
+                );
+            } catch (SQLException | NullPointerException e){
+                e.getStackTrace();
+                assertTrue(true);
+            }
         }
 
         @Test
-        public void insertTest() throws SQLException {
+        public void insertGoodTest() throws SQLException {
 
             ModelAuthTokens tempModel_new = new ModelAuthTokens(
                     "authToken_new",
@@ -90,11 +126,30 @@ import static org.junit.jupiter.api.Assertions.assertNull;
             );
         }
 
+        @Test
+        public void insertFailTest() throws SQLException {
+            try {
+                ModelAuthTokens tempModel_new = new ModelAuthTokens(
+                        "authToken_new",
+                        "username_new",
+                        "password_new"
+                );
+                tempDao.insert(tempModel_new);
 
+                assertNotEquals(
+                        tempModel_new.getAuthToken(),
+                        tempDao.getAuthTokenByToken("authToken_neww").getAuthToken(),
+                        "AuthTokens are equal with bad name"
+                );
+            } catch (NullPointerException e){
+                e.printStackTrace();
+                assertTrue(true);
+            }
+        }
 
 
         @Test
-        public void findAuthTokenByTokenTest() throws SQLException {
+        public void findAuthTokenByTokenGoodTest() throws SQLException {
 
             assertEquals(
                     tempModel01.getAuthToken(),
@@ -111,6 +166,30 @@ import static org.junit.jupiter.api.Assertions.assertNull;
                     tempDao.getAuthTokenByToken("authToken03").getAuthToken(),
                     "AuthTokens are not equal"
             );
+        }
+
+        @Test
+        public void findAuthTokenByTokenFailTest() throws SQLException {
+            try {
+                assertNotEquals(
+                        tempModel01.getAuthToken(),
+                        tempDao.getAuthTokenByToken("authToken011").getAuthToken(),
+                        "AuthTokens are equal"
+                );
+                assertNotEquals(
+                        tempModel02.getAuthToken(),
+                        tempDao.getAuthTokenByToken("authToken022").getAuthToken(),
+                        "AuthTokens are equal"
+                );
+                assertNotEquals(
+                        tempModel03.getAuthToken(),
+                        tempDao.getAuthTokenByToken("authToken033").getAuthToken(),
+                        "AuthTokens are equal"
+                );
+            } catch (NullPointerException e){
+                e.printStackTrace();
+                assertTrue(true);
+            }
         }
     }
 
@@ -178,22 +257,61 @@ import static org.junit.jupiter.api.Assertions.assertNull;
         }
 
         @Test
-        public void createTest() throws SQLException {
-            tempDao.create();
+        public void createTest() {
+            try {
+                tempDao.create();
+                assertEquals(
+                        "event_id_01",
+                        tempDao.getEventById("event_id_01").getEventID(),
+                        "event_id_01 are not equal"
+                );
+            } catch (SQLException e){
+                e.getStackTrace();
+                fail();
+            }
         }
 
         @Test
-        public void clearTest() throws SQLException {
-            tempDao.clear();
+        public void clearTest() {
+            try {
+                tempDao.clear();
+                assertNotEquals(
+                        "event_id_01",
+                        tempDao.getEventById("event_id_01").getEventID(),
+                        "event_id_01 are not equal"
+                );
+            } catch (SQLException | NullPointerException e){
+                e.getStackTrace();
+                assertTrue(true);
+            }
         }
 
         @Test
-        public void dropTest() throws SQLException {
-            tempDao.drop();
+        public void dropGoodTest() {
+            try {
+                tempDao.drop();
+                tempDao.getEventById("event_id_01").getEventID();
+                fail();
+            } catch (SQLException e){
+                e.getStackTrace();
+                assertTrue(true);
+            }
         }
 
         @Test
-        public void insertTest() throws SQLException {
+        public void dropFailTest() {
+            try {
+                tempDao.drop();
+                tempDao.getEventById("event_id_011").getEventID();
+                fail();
+            } catch (SQLException e){
+                e.getStackTrace();
+                assertTrue(true);
+            }
+        }
+
+        @Test
+        public void insertGoodTest() throws SQLException {
             ModelEvents tempModel_new = new ModelEvents(
                     "event_id_new",
                     "associated_user_name_new",
@@ -205,7 +323,13 @@ import static org.junit.jupiter.api.Assertions.assertNull;
                     "event_type_new",
                     2001
             );
-            tempDao.insert(tempModel_new);
+            try {
+                tempDao.insert(tempModel_new);
+                assertTrue(true);
+            } catch (SQLException e){
+                e.getStackTrace();
+                fail();
+            }
 
             assertEquals(
                     tempModel_new.getEventID(),
@@ -213,17 +337,44 @@ import static org.junit.jupiter.api.Assertions.assertNull;
                     "AuthTokens are not equal"
             );
         }
+        @Test
+        public void insertFailTest() {
+            ModelEvents tempModel_new = new ModelEvents(
+                    "event_id_new",
+                    "associated_user_name_new",
+                    null,
+                    0.1,
+                    0.1,
+                    "country_new",
+                    "city_new",
+                    "event_type_new",
+                    2001
+            );
+            try {
+                tempDao.insert(tempModel_new);
+                fail();
+            } catch (SQLException e){
+                e.getStackTrace();
+                assertTrue(true);
+            }
+        }
 
         @Test
-        public void removeEventByIdTest() throws SQLException {
+        public void removeEventByIdGoodTest() throws SQLException {
             tempDao.removeEventByAssociatedUsername("associated_user_name_01");
 
             assertNull(tempDao.getEventById("event_id_01"), "Was not removed");
         }
 
+        @Test
+        public void removeEventByIdFailTest() throws SQLException {
+            tempDao.removeEventByAssociatedUsername("associated_user_name_011");
+            assertNotNull(tempDao.getEventById("event_id_01"), "Given wrong ID event was removed ");
+        }
+
 
         @Test
-        public void getEventByIdTest() throws SQLException {
+        public void getEventByIdGoodTest() throws SQLException {
 
             assertEquals(
                     tempModel01.getEventID(),
@@ -240,6 +391,29 @@ import static org.junit.jupiter.api.Assertions.assertNull;
                     tempDao.getEventById("event_id_03").getEventID(),
                     "Id's are not equal"
             );
+        }
+        @Test
+        public void getEventByIdFailTest() {
+            try {
+                assertNotEquals(
+                        tempModel01.getEventID(),
+                        tempDao.getEventById("event_id_011").getEventID(),
+                        "Found event with wrong ID"
+                );
+                assertNotEquals(
+                        tempModel02.getEventID(),
+                        tempDao.getEventById("event_id_022").getEventID(),
+                        "Found event with wrong ID"
+                );
+                assertNotEquals(
+                        tempModel03.getEventID(),
+                        tempDao.getEventById("event_id_033").getEventID(),
+                        "Found event with wrong ID"
+                );
+            } catch (NullPointerException | SQLException ex){
+                ex.getStackTrace();
+                assertTrue(true); // could not find events by wrong ID
+            }
         }
 
     }
@@ -301,22 +475,54 @@ import static org.junit.jupiter.api.Assertions.assertNull;
         }
 
         @Test
-        public void createTest() throws SQLException {
-            tempDao.create();
+        public void createTest() {
+            try {
+                tempDao.create();
+                assertEquals(
+                        "person_id_01",
+                        tempDao.getPersonByID("person_id_01").getPersonID(),
+                        "person_id are not equal"
+                );
+            } catch (SQLException e){
+                e.getStackTrace();
+                fail();
+            }
         }
 
         @Test
-        public void clearTest() throws SQLException {
-            tempDao.clear();
+        public void clearTest() {
+            try {
+                tempDao.clear();
+                assertNotEquals(
+                        "person_id_01",
+                        tempDao.getPersonByID("person_id_01").getPersonID(),
+                        "person_id are not equal"
+                );
+            } catch (SQLException | NullPointerException e){
+                e.getStackTrace();
+                assertTrue(true);
+            }
         }
 
         @Test
-        public void dropTest() throws SQLException {
-            tempDao.drop();
+        public void dropTest() {
+
+            try {
+                tempDao.drop();
+                assertNotEquals(
+                        "person_id_01",
+                        tempDao.getPersonByID("person_id_01").getPersonID(),
+                        "person_id are not equal"
+                );
+
+            } catch (SQLException e){
+                e.getStackTrace();
+                assertTrue(true);
+            }
         }
 
         @Test
-        public void insertTest() throws SQLException {
+        public void insertGoodTest() throws SQLException {
             ModelPersons tempModel_new = new ModelPersons(
                     "person_id_new",
                     "associated_user_name_new",
@@ -335,16 +541,41 @@ import static org.junit.jupiter.api.Assertions.assertNull;
                     "person_id are not equal"
             );
         }
+        @Test
+        public void insertFailTest() throws SQLException {
+            ModelPersons tempModel_new = new ModelPersons(
+                    null,
+                    "associated_user_name_new",
+                    "first_name_new",
+                    "last_name_new",
+                    "m",
+                    "father_id_new",
+                    "mother_id_new",
+                    "spouse_id_new"
+            );
+            try {
+                tempDao.insert(tempModel_new);
+                fail();
+            } catch (SQLException e){
+                e.getStackTrace();
+                assertTrue(true);
+            }
+        }
 
         @Test
-        public void removePersonByIdTest() throws SQLException {
+        public void removePersonByIdGoodTest() throws SQLException {
             tempDao.removePersonByAssociatedUsername("associated_user_name_01");
-
             assertNull(tempDao.getPersonByID("person_id_01"), "Was not removed");
         }
 
         @Test
-        public void removePeopleByIds() throws SQLException {
+        public void removePersonByIdFailTest() throws SQLException {
+            tempDao.removePersonByAssociatedUsername("associated_user_name_011");
+            assertNotNull(tempDao.getPersonByID("person_id_01"), "person was removed with bad ID");
+        }
+
+        @Test
+        public void removePeopleByIdsGood() throws SQLException {
 
             ArrayList<String> tempStringArray = new ArrayList<String>();
             tempStringArray.add("associated_user_name_01");
@@ -356,29 +587,46 @@ import static org.junit.jupiter.api.Assertions.assertNull;
             assertNull(tempDao.getPersonByID("person_id_01"), "01 was not removed");
             assertNull(tempDao.getPersonByID("person_id_02"), "02 was not removed");
         }
-
         @Test
-        public void findPersonByIdTest() throws SQLException {
+        public void removePeopleByIdsFail() throws SQLException {
 
-            assertEquals(
-                    tempModel01.getPersonID(),
-                    tempDao.getPersonByID("person_id_01").getPersonID(),
-                    "Id's are not equal"
-            );
-            assertEquals(
-                    tempModel02.getPersonID(),
-                    tempDao.getPersonByID("person_id_02").getPersonID(),
-                    "Id's are not equal"
-            );
-            assertEquals(
-                    tempModel03.getPersonID(),
-                    tempDao.getPersonByID("person_id_03").getPersonID(),
-                    "Id's are not equal"
-            );
+            ArrayList<String> tempStringArray = new ArrayList<String>();
+            tempStringArray.add("associated_user_name_011");
+            tempStringArray.add("associated_user_name_022");
+
+            tempDao.removePersonByAssociatedUsername(tempStringArray.get(0));
+            tempDao.removePersonByAssociatedUsername(tempStringArray.get(1));
+
+            assertNotNull(tempDao.getPersonByID("person_id_01"), "01 was removed from bad id");
+            assertNotNull(tempDao.getPersonByID("person_id_02"), "02 was removed from bad id");
         }
 
         @Test
-        public void findPeopleByIdsTest() throws SQLException {
+        public void findPersonByIdTest() throws SQLException {
+            try {
+                assertNotEquals(
+                        tempModel01.getPersonID(),
+                        tempDao.getPersonByID("person_id_011").getPersonID(),
+                        "Id's are equal"
+                );
+                assertNotEquals(
+                        tempModel02.getPersonID(),
+                        tempDao.getPersonByID("person_id_022").getPersonID(),
+                        "Id's are equal"
+                );
+                assertNotEquals(
+                        tempModel03.getPersonID(),
+                        tempDao.getPersonByID("person_id_033").getPersonID(),
+                        "Id's are equal"
+                );
+            } catch (NullPointerException e){
+                e.printStackTrace();
+                assertTrue(true);
+            }
+        }
+
+        @Test
+        public void findPeopleByIdsGoodTest() throws SQLException {
             ArrayList<String> tempStringArray = new ArrayList<String>();
             tempStringArray.add("person_id_01");
             tempStringArray.add("person_id_02");
@@ -388,12 +636,41 @@ import static org.junit.jupiter.api.Assertions.assertNull;
         }
 
         @Test
-        public void findPeopleByAssociatedUserNameTest() throws SQLException {
+        public void findPeopleByIdsFailTest() throws SQLException {
+            try {
+                ArrayList<String> tempStringArray = new ArrayList<String>();
+                tempStringArray.add("person_id_011");
+                tempStringArray.add("person_id_022");
+                assertNotEquals(tempModel01.getPersonID(), tempDao.getPersonByID(tempStringArray.get(0)).getPersonID(), "Multiple find not working");
+                assertNotEquals(tempModel02.getPersonID(), tempDao.getPersonByID(tempStringArray.get(1)).getPersonID(), "Multiple find not working");
+            } catch(NullPointerException e){
+                e.printStackTrace();
+                assertTrue(true);
+            }
+
+        }
+
+        @Test
+        public void findPeopleByAssociatedUserNameGoodTest() throws SQLException {
             assertEquals(
                     tempModel01.getAssociatedUsername(),
                     tempDao.getPeopleByAssociatedUsername("associated_user_name_01").get(0).getAssociatedUsername(),
                     "find by username find not working");
 
+        }
+
+        @Test
+        public void findPeopleByAssociatedUserNameFailTest() throws SQLException {
+            try {
+                assertNotEquals(
+                        tempModel01.getAssociatedUsername(),
+                        tempDao.getPeopleByAssociatedUsername("associated_user_name_011").get(0).getAssociatedUsername(),
+                        "find by username find not working");
+
+            }catch (NullPointerException | IndexOutOfBoundsException e){
+                e.printStackTrace();
+                assertTrue(true);
+            }
         }
     }
 
@@ -451,21 +728,53 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
         @Test
         public void createTest() throws SQLException {
-            tempDao.create();
+            try{
+                tempDao.create();
+                assertEquals(
+                        "user_name_01",
+                        tempDao.getUserByUsername("user_name_01").getUserName(),
+                        "user_name are not equal"
+                );
+            } catch (NullPointerException | SQLException e){
+                e.printStackTrace();
+                fail();
+            }
+
         }
 
         @Test
         public void clearTest() throws SQLException {
-            tempDao.clear();
+
+            try{
+                tempDao.clear();
+                assertNotEquals(
+                        "user_name_01",
+                        tempDao.getUserByUsername("user_name_01").getUserName(),
+                        "user_name are not equal"
+                );
+            } catch (NullPointerException | SQLException e){
+                e.printStackTrace();
+                assertTrue(true);
+            }
         }
 
         @Test
         public void dropTest() throws SQLException {
-            tempDao.drop();
+            try{
+                tempDao.drop();
+                assertNotEquals(
+                        "user_name_01",
+                        tempDao.getUserByUsername("user_name_01").getUserName(),
+                        "user_name are not equal"
+                );
+            } catch (NullPointerException | SQLException e){
+                e.printStackTrace();
+                assertTrue(true);
+            }
         }
 
         @Test
-        public void insertTest() throws SQLException {
+        public void insertGoodTest() throws SQLException {
             ModelUsers tempModel_new = new ModelUsers(
                     "user_name_new",
                     "password_new",
@@ -484,9 +793,34 @@ import static org.junit.jupiter.api.Assertions.assertNull;
             );
         }
 
+        @Test
+        public void insertFailTest() {
+            ModelUsers tempModel_new = new ModelUsers(
+                    null,
+                    "password_new",
+                    "email_new",
+                    "first_name_new",
+                    "last_name_new",
+                    "m",
+                    "person_id_new"
+            );
+            try {
+                tempDao.insert(tempModel_new);
+
+                assertNotEquals(
+                        tempModel_new.getUserName(),
+                        tempDao.getUserByUsername("user_name_news").getUserName(),
+                        "user_name are equal"
+                );
+            }catch (NullPointerException | SQLException e){
+                e.printStackTrace();
+                assertTrue(true);
+            }
+        }
+
 
         @Test
-        public void findUserByUserNameTest() throws SQLException {
+        public void findUserByUserNameGoodTest() throws SQLException {
 
             assertEquals(
                     tempModel01.getUserName(),
@@ -506,12 +840,51 @@ import static org.junit.jupiter.api.Assertions.assertNull;
         }
 
         @Test
-        public void findUsersByUserNamesTest() throws SQLException {
+        public void findUserByUserNameFailTest() throws SQLException {
+            try {
+                assertNotEquals(
+                        tempModel01.getUserName(),
+                        tempDao.getUserByUsername("user_name_011").getUserName(),
+                        "Id's are  equal"
+                );
+                assertNotEquals(
+                        tempModel02.getUserName(),
+                        tempDao.getUserByUsername("user_name_022").getUserName(),
+                        "Id's are  equal"
+                );
+                assertNotEquals(
+                        tempModel03.getUserName(),
+                        tempDao.getUserByUsername("user_name_033").getUserName(),
+                        "Id's are  equal"
+                );
+            } catch (SQLException | NullPointerException e){
+                e.printStackTrace();
+                assertTrue(true);
+            }
+        }
+
+        @Test
+        public void findUsersByUserNamesGoodTest() throws SQLException {
             ArrayList<String> tempStringArray = new ArrayList<String>();
             tempStringArray.add("user_name_01");
             tempStringArray.add("user_name_02");
             assertEquals(tempModel01.getUserName(), tempDao.getUserByUsername(tempStringArray.get(0)).getUserName(), "Multiple find not working");
             assertEquals(tempModel02.getUserName(), tempDao.getUserByUsername(tempStringArray.get(1)).getUserName(), "Multiple find not working");
+
+        }
+
+        @Test
+        public void findUsersByUserNamesFailTest() throws SQLException {
+            try {
+                ArrayList<String> tempStringArray = new ArrayList<String>();
+                tempStringArray.add("user_name_011");
+                tempStringArray.add("user_name_022");
+                assertNotEquals(tempModel01.getUserName(), tempDao.getUserByUsername(tempStringArray.get(0)).getUserName(), "Multiple find not working");
+                assertNotEquals(tempModel02.getUserName(), tempDao.getUserByUsername(tempStringArray.get(1)).getUserName(), "Multiple find not working");
+            } catch (SQLException | NullPointerException e){
+                e.printStackTrace();
+                assertTrue(true);
+            }
 
         }
 

@@ -226,8 +226,8 @@ public class MapFragment extends Fragment implements  OnMapReadyCallback{
                 "#4CAF50", //G
                 "#CDDC39", //Y
                 "#673AB7", //P
-                "#000000",
-                "#000000",
+                "#BA7300",
+                "#289261",
                 "#000000",
                 "#000000");;
 
@@ -258,8 +258,8 @@ public class MapFragment extends Fragment implements  OnMapReadyCallback{
             if (DataCache.getInstance().getUserSettings().isFemaleEvents() &&
                     DataCache.getInstance().getPersonById(event.getPersonID()).getGender().equals("f")) {
                 int indexOfColorToUse = finalListOfEventTypes.indexOf(event.getEventType().toLowerCase());
-                if(indexOfColorToUse<1){
-                    indexOfColorToUse = indexOfColorToUse*(-1);
+                if(indexOfColorToUse<0){
+                    indexOfColorToUse = 4 + (indexOfColorToUse *-1);
                 }
                 String colorHexValue = colorList.get(indexOfColorToUse);
 
@@ -270,8 +270,8 @@ public class MapFragment extends Fragment implements  OnMapReadyCallback{
 
             if (DataCache.getInstance().getUserSettings().isMaleEvents() && DataCache.getInstance().getPersonById(event.getPersonID()).getGender().equals("m")) {
                 int indexOfColorToUse = finalListOfEventTypes.indexOf(event.getEventType().toLowerCase());
-                if(indexOfColorToUse<1){
-                    indexOfColorToUse = indexOfColorToUse*(-1);
+                if(indexOfColorToUse<0){
+                    indexOfColorToUse = 4 + (indexOfColorToUse *-1);
                 }
                 String colorHexValue = colorList.get(indexOfColorToUse);
 
@@ -323,45 +323,64 @@ public class MapFragment extends Fragment implements  OnMapReadyCallback{
     }
 
     public void setTreeLines(ModelEvents selectedEvent, GoogleMap googleMap){
-        setTreeLinesPerson(
-                DataCache.getInstance().getPersonByEvent(selectedEvent),
-                selectedEvent,
-                googleMap,
-                1);
+        if (DataCache.getInstance().getUserSettings().isMaleEvents() && DataCache.getInstance().getPersonById(selectedEvent.getPersonID()).getGender().equals("m")) {
+            setTreeLinesPerson(
+                    DataCache.getInstance().getPersonByEvent(selectedEvent),
+                    selectedEvent,
+                    googleMap,
+                    1);
+        }
+        if (DataCache.getInstance().getUserSettings().isFemaleEvents() && DataCache.getInstance().getPersonById(selectedEvent.getPersonID()).getGender().equals("f")) {
+            setTreeLinesPerson(
+                    DataCache.getInstance().getPersonByEvent(selectedEvent),
+                    selectedEvent,
+                    googleMap,
+                    1);
+        }
+
     }
 
     public void setTreeLinesPerson(ModelPersons person, ModelEvents selectedEvent, GoogleMap googleMap, int generation){
-        if(person.getFatherID() != null){
+        int genMother;
+        int genFather;
+        if(person.getFatherID() != null) {
             ModelEvents fatherFirst = DataCache.getInstance().findFirstEvent(
                     DataCache.getInstance().findPersonByID(person.getFatherID()));
             if (fatherFirst != null) {
-                setSingleLine(
-                        new LinkEvents(selectedEvent, fatherFirst),
-                        DataCache.getInstance().getUserSettings().getTreeLinesColor(),
-                        googleMap,
-                        12/generation);
-                setTreeLinesPerson(
-                        DataCache.getInstance().findPersonByID(person.getFatherID()),
-                        fatherFirst,
-                        googleMap,
-                        generation++);
+                if (DataCache.getInstance().getUserSettings().isMaleEvents()) {
+                    setSingleLine(
+                            new LinkEvents(selectedEvent, fatherFirst),
+                            DataCache.getInstance().getUserSettings().getTreeLinesColor(),
+                            googleMap,
+                            20 / generation);
+                    genFather = generation+1;
+                    setTreeLinesPerson(
+                            DataCache.getInstance().findPersonByID(person.getFatherID()),
+                            fatherFirst,
+                            googleMap,
+                            genFather);
+                }
+
             }
         }
-
         if(person.getMotherID() != null){
             ModelEvents motherFirst = DataCache.getInstance().findFirstEvent(
                     DataCache.getInstance().findPersonByID(person.getMotherID()));
             if(motherFirst!=null){
-                setSingleLine(
-                        new LinkEvents(selectedEvent, motherFirst),
-                        DataCache.getInstance().getUserSettings().getTreeLinesColor(),
-                        googleMap,
-                        12/generation);
-                setTreeLinesPerson(
-                        DataCache.getInstance().findPersonByID(person.getMotherID()),
-                        motherFirst,
-                        googleMap,
-                        generation++);
+                if (DataCache.getInstance().getUserSettings().isFemaleEvents()) {
+                    setSingleLine(
+                            new LinkEvents(selectedEvent, motherFirst),
+                            DataCache.getInstance().getUserSettings().getTreeLinesColor(),
+                            googleMap,
+                            20/generation);
+                    genMother = generation+1;
+                    setTreeLinesPerson(
+                            DataCache.getInstance().findPersonByID(person.getMotherID()),
+                            motherFirst,
+                            googleMap,
+                            genMother);
+                }
+
             }
         }
     }
@@ -371,11 +390,20 @@ public class MapFragment extends Fragment implements  OnMapReadyCallback{
         if(spouse != null){
             ModelEvents eventSecond = DataCache.getInstance().findFirstEvent(spouse);
             if(eventSecond != null){
-                setSingleLine(
-                        new LinkEvents(selectedEvent, eventSecond),
-                        DataCache.getInstance().getUserSettings().getSpouseLinesColor(),
-                        googleMap,
-                        12);
+                if (DataCache.getInstance().getUserSettings().isMaleEvents() && DataCache.getInstance().getPersonById(spouse.getPersonID()).getGender().equals("m")) {
+                    setSingleLine(
+                            new LinkEvents(selectedEvent, eventSecond),
+                            DataCache.getInstance().getUserSettings().getSpouseLinesColor(),
+                            googleMap,
+                            12);
+                }
+                if (DataCache.getInstance().getUserSettings().isFemaleEvents() && DataCache.getInstance().getPersonById(spouse.getPersonID()).getGender().equals("f")) {
+                    setSingleLine(
+                            new LinkEvents(selectedEvent, eventSecond),
+                            DataCache.getInstance().getUserSettings().getSpouseLinesColor(),
+                            googleMap,
+                            12);
+                }
             }
         }
     }

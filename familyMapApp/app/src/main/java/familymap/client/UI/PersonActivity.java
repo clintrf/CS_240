@@ -24,10 +24,12 @@ import com.bignerdranch.expandablerecyclerview.model.Parent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import familymap.client.Model.DataCache;
 import familymap.client.Model.DisplayObj;
 import familymap.client.R;
+import familymap.server.modelClasses.ModelEvents;
 import familymap.server.modelClasses.ModelPersons;
 
 public class PersonActivity extends AppCompatActivity {
@@ -57,9 +59,11 @@ public class PersonActivity extends AppCompatActivity {
             ((TextView)findViewById(R.id.gender)).setText(R.string.female);
         }
 
-
         ArrayList<DisplayObj> eventList = DataCache.getInstance().getOrderEvents(person);
+
         ArrayList<DisplayObj> peopleList = DataCache.getInstance().getOrderPeople(person);
+
+
 
         ArrayList<Group> groupList = new ArrayList<>();
         groupList.add(new Group("EVENTS", eventList));
@@ -121,7 +125,7 @@ public class PersonActivity extends AppCompatActivity {
 
         @Override
         public boolean isInitiallyExpanded() {
-            return true;
+            return false;
         }
     }
 
@@ -134,9 +138,7 @@ public class PersonActivity extends AppCompatActivity {
         void bind(Group group) {
             textView.setText(group.title);
         }
-        @Override
-        public void onClick(View view) {
-        }
+
 
     }
 

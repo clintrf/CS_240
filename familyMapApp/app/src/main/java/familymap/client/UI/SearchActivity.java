@@ -174,14 +174,11 @@ public class SearchActivity extends AppCompatActivity {
                 bottomView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
                         Intent intent = new Intent(context, EventActivity.class);
                         intent.putExtra("eventIDToZoom", outer_item.getEvent().getEventID());
                         startActivity(intent);
                     }
                 });
-
-
             }
         }
 

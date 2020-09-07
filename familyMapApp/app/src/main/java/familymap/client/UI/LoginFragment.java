@@ -108,6 +108,7 @@ public class LoginFragment extends Fragment {
         });
 
 
+
         myServerHostEditField = (EditText) v.findViewById(R.id.serverHostEditText);
         myServerHostEditField.addTextChangedListener(new TextWatcher() {
             @Override
@@ -283,8 +284,8 @@ public class LoginFragment extends Fragment {
         checkRegisterFieldsForEmptyValues();
 
 
-
         return v;
+
     }
 
 
@@ -297,5 +298,7 @@ public class LoginFragment extends Fragment {
         RegisterTask registerTask = new RegisterTask(this, context);
         registerTask.execute(requestRegister);
     }
+
+
 
 }
